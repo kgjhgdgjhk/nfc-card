@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-page">
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1><i class="fas fa-cogs"></i> لوحة التحكم - بطاقات NFC</h1>
+            <div class="admin-stats">
+                <div class="stat-box">
+                    <span class="stat-number"><%= cards.length %></span>
+                    <span class="stat-label">إجمالي البطاقات</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number"><%= visits.length %></span>
+                    <span class="stat-label">إجمالي الزيارات</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- رسائل النجاح والخطأ -->
+        <% if (query.success) { %>
+        <div class="alert success"><i class="fas fa-check-circle"></i> <%= query.success %></div>
+        <% } %>
+        <% if (query.error) { %>
+        <div class="alert error"><i class="fas fa-exclamation-circle"></i> <%= query.error %></div>
+        <% } %>
+
+        <!-- نموذج إضافة بطاقة جديدة -->
+        <div class="admin-section">
+            <h2><i class="fas fa-plus-circle"></i> إضافة بطاقة جديدة</h2>
+            <form action="/admin/card/add" method="POST" class="card-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>معرف البطاقة (NFC ID):</label>
+                        <input type="text" name="cardId" placeholder="nfc-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الاسم الكامل:</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المسمى الوظيفي:</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الشركة:</label>
+                        <input type="text" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني:</label>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الجوال:</label>
+                        <input type="tel" name="phone" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label>الموقع الإلكتروني:</label>
+                        <input type="url" name="website" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label>العنوان:</label>
+                        <input type="text" name="address">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>نبذة تعريفية:</label>
+                        <textarea name="bio" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>LinkedIn:</label>
+                        <input type="url" name="linkedin" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label>Twitter/X:</label>
+                        <input type="url" name="twitter" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub:</label>
+                        <input type="url" name="github" dir="ltr">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>رابط ديناميكي:</label>
+                        <input type="url" name="dynamicLink" dir="ltr" placeholder="https://...">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">إضافة البطاقة</button>
+            </form>
+        </div>
+
+        <!-- قائمة البطاقات الموجودة -->
+        <div class="admin-section">
+            <h2><i class="fas fa-list"></i> البطاقات الموجودة</h2>
+            <div class="cards-list">
+                <% cards.forEach(card => { %>
+                <div class="card-item">
+                    <div class="card-header">
+                        <h3><%= card.name %></h3>
+                        <span class="card-id"><%= card.cardId %></span>
+                    </div>
+                    <div class="card-body">
+                        <p><i class="fas fa-briefcase"></i> <%= card.title %> - <%= card.company %></p>
+                        <p><i class="fas fa-phone"></i> <%= card.phone || 'غير متوفر' %></p>
+                        <p><i class="fas fa-envelope"></i> <%= card.email || 'غير متوفر' %></p>
+                    </div>
+                    <div class="card-actions">
+                        <a href="/card/<%= card.cardId %>" target="_blank" class="btn-view">
+                            <i class="fas fa-eye"></i> عرض
+                        </a>
+                        <button onclick="editCard('<%= card.cardId %>')" class="btn-edit">
+                            <i class="fas fa-edit"></i> تعديل
+                        </button>
+                        <form action="/admin/card/delete/<%= card.cardId %>" method="POST" style="display:inline;" 
+                              onsubmit="return confirm('هل أنت متأكد من حذف هذه البطاقة؟')">
+                            <button type="submit" class="btn-delete">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- سجل الزيارات -->
+        <div class="admin-section">
+            <h2><i class="fas fa-chart-line"></i> سجل الزيارات</h2>
+            <div class="visits-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>البطاقة</th>
+                            <th>التاريخ والوقت</th>
+                            <th>IP العنوان</th>
+                            <th>المتصفح</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% visits.slice(0, 20).forEach(visit => { %>
+                        <tr>
+                            <td><%= visit.cardId %></td>
+                            <td><%= new Date(visit.timestamp).toLocaleString('ar-SA') %></td>
+                            <td><%= visit.ip %></td>
+                            <td><%= visit.userAgent.substring(0, 50) %>...</td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // دالة تعديل البطاقة
+        function editCard(cardId) {
+            // يمكن تنفيذ نافذة تعديل منبثقة أو توجيه لصفحة تعديل
+            alert('سيتم إضافة صفحة تعديل البطاقة قريباً: ' + cardId);
+        }
+
+        // تحديث الإحصائيات كل 30 ثانية
+        setInterval(() => {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

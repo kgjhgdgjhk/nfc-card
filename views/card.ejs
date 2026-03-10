@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="card-page">
+    <div class="business-card-container">
+        <!-- الهيدر مع الصورة -->
+        <div class="card-header-profile">
+            <div class="avatar-circle">
+                <%= card.name.charAt(0) %>
+            </div>
+            <h1><%= card.name %></h1>
+            <h2><%= card.title %></h2>
+            <p class="company"><%= card.company %></p>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="card-content">
+            <!-- السيرة الذاتية -->
+            <% if (card.bio) { %>
+            <div class="info-section">
+                <h3><i class="fas fa-user"></i> نبذة عني</h3>
+                <p class="bio"><%= card.bio %></p>
+            </div>
+            <% } %>
+
+            <!-- معلومات الاتصال -->
+            <div class="info-section">
+                <h3><i class="fas fa-address-card"></i> معلومات الاتصال</h3>
+                
+                <% if (card.email) { %>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span><%= card.email %></span>
+                </div>
+                <% } %>
+                
+                <% if (card.phone) { %>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span dir="ltr"><%= card.phone %></span>
+                </div>
+                <% } %>
+                
+                <% if (card.website) { %>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <a href="<%= card.website %>" target="_blank"><%= card.website %></a>
+                </div>
+                <% } %>
+                
+                <% if (card.address) { %>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span><%= card.address %></span>
+                </div>
+                <% } %>
+            </div>
+
+            <!-- الروابط الاجتماعية -->
+            <% if (card.social && (card.social.linkedin || card.social.twitter || card.social.github)) { %>
+            <div class="info-section">
+                <h3><i class="fas fa-share-alt"></i> التواصل الاجتماعي</h3>
+                <div class="social-links">
+                    <% if (card.social.linkedin) { %>
+                    <a href="<%= card.social.linkedin %>" target="_blank" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <% } %>
+                    
+                    <% if (card.social.twitter) { %>
+                    <a href="<%= card.social.twitter %>" target="_blank" class="social-link twitter">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                    <% } %>
+                    
+                    <% if (card.social.github) { %>
+                    <a href="<%= card.social.github %>" target="_blank" class="social-link github">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- الرابط الديناميكي -->
+            <% if (card.dynamicLink) { %>
+            <div class="info-section dynamic-link">
+                <h3><i class="fas fa-link"></i> رابط ديناميكي</h3>
+                <a href="<%= card.dynamicLink %>" target="_blank" class="dynamic-link-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    زيارة الرابط
+                </a>
+            </div>
+            <% } %>
+
+            <!-- زر حفظ جهة الاتصال -->
+            <button class="save-contact-btn" onclick="saveContact()">
+                <i class="fas fa-download"></i>
+                حفظ جهة الاتصال
+            </button>
+        </div>
+
+        <!-- الفوتر -->
+        <div class="card-footer-note">
+            <p>تم المسح باستخدام بطاقة NFC ذكية</p>
+            <small>آخر تحديث: <%= new Date(card.lastUpdated).toLocaleDateString('ar-SA') %></small>
+        </div>
+    </div>
+
+    <!-- رسالة تأكيد -->
+    <div id="toast-message" class="toast"></div>
+
+    <script>
+        // تسجيل الزيارة تلقائياً
+        console.log('تم فتح البطاقة المهنية');
+
+        // دالة حفظ جهة الاتصال
+        function saveContact() {
+            // إنشاء بيانات جهة الاتصال بصيغة vCard
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:<%= card.name %>
+TITLE:<%= card.title %>
+ORG:<%= card.company %>
+EMAIL:<%= card.email %>
+TEL:<%= card.phone %>
+URL:<%= card.website %>
+ADR:<%= card.address %>
+NOTE:<%= card.bio %>
+END:VCARD`;
+
+            // إنشاء ملف للتحميل
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '<%= card.name %>.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            // عرض رسالة تأكيد
+            showToast('تم حفظ جهة الاتصال بنجاح');
+        }
+
+        // دالة عرض الرسائل
+        function showToast(message) {
+            const toast = document.getElementById('toast-message');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

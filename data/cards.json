@@ -1,0 +1,58 @@
+{
+  "cards": [
+    {
+      "id": "nfc-001",
+      "cardId": "nfc-001",
+      "name": "أحمد محمد",
+      "title": "مطور برمجيات",
+      "company": "شركة التقنية",
+      "email": "ahmed@example.com",
+      "phone": "+966 50 123 4567",
+      "website": "https://ahmed.dev",
+      "address": "الرياض، المملكة العربية السعودية",
+      "bio": "مطور برمجيات بخبرة 5 سنوات في تطوير تطبيقات الويب والجوال",
+      "social": {
+        "linkedin": "https://linkedin.com/in/ahmed",
+        "twitter": "https://twitter.com/ahmed",
+        "github": "https://github.com/ahmed"
+      },
+      "dynamicLink": "https://ahmed.dev/portfolio",
+      "isActive": true,
+      "lastUpdated": "2026-03-10T19:17:15.547Z"
+    }
+  ],
+  "visits": [
+    {
+      "id": "696df08f-49f5-4354-b750-8375a298f2c3",
+      "cardId": "nfc-001",
+      "timestamp": "2026-03-10T19:17:30.030Z",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+      "referer": "direct"
+    },
+    {
+      "id": "cc333ffb-6e19-47da-9f1a-4a854b9bae26",
+      "cardId": "nfc-001",
+      "timestamp": "2026-03-10T19:18:02.087Z",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+      "referer": "http://localhost:3000/"
+    },
+    {
+      "id": "ccd622af-935b-443e-80f9-a0cf5c10d728",
+      "cardId": "nfc-001",
+      "timestamp": "2026-03-10T19:21:43.005Z",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+      "referer": "direct"
+    },
+    {
+      "id": "5fa2674b-455c-4282-a459-120413cd4fd8",
+      "cardId": "nfc-001",
+      "timestamp": "2026-03-10T19:58:21.939Z",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+      "referer": "http://localhost:3000/"
+    }
+  ]
+}

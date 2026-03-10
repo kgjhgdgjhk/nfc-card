@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-creation {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+        
+        .creation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .steps-header {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .steps-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .step-item {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            border: 2px solid #dee2e6;
+        }
+        
+        .step-item.completed {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .success-section {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 5em;
+            color: #28a745;
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s ease;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        
+        .success-section h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .success-section .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        
+        .profile-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: right;
+        }
+        
+        .profile-url {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .profile-url span {
+            color: #2c3e50;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a67d8;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .option-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+        
+        .option-card i {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .option-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .option-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .physical-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .note-box {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #856404;
+            text-align: right;
+        }
+        
+        .note-box i {
+            margin-left: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-creation">
+        <div class="creation-container">
+            <div class="steps-header">
+                <div class="steps-progress">
+                    <div class="step-item completed">1</div>
+                    <div class="step-item completed">2</div>
+                    <div class="step-item completed">3</div>
+                    <div class="step-item completed">4</div>
+                </div>
+            </div>
+            
+            <div class="success-section">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                
+                <h2>تهانينا! هويتك الذكية جاهزة</h2>
+                <p class="subtitle">اختر كيفية استخدام هويتك الذكية</p>
+                
+                <!-- النسخة المادية -->
+                <div class="profile-card">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <i class="fas fa-id-card" style="font-size: 2em; color: #667eea;"></i>
+                        <h3 style="margin: 0;">النسخة المادية</h3>
+                    </div>
+                    
+                    <div class="profile-url">
+                        <span><%= profileUrl %></span>
+                        <button class="copy-btn" onclick="copyToClipboard('<%= profileUrl %>')">
+                            <i class="fas fa-copy"></i> نسخ
+                        </button>
+                    </div>
+                    
+                    <p style="color: #666; margin: 10px 0;">
+                        <i class="fas fa-wifi"></i> NFC · احصل على بطاقات مادية مع رمز QR وشريحة
+                    </p>
+                    
+                    <a href="/order" class="physical-badge" style="text-decoration: none; display: inline-block;">
+                        طلب البطاقات
+                    </a>
+                </div>
+                
+                <!-- النسخة الرقمية -->
+                <div class="profile-card">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <i class="fas fa-link" style="font-size: 2em; color: #667eea;"></i>
+                        <h3 style="margin: 0;">النسخة الرقمية</h3>
+                    </div>
+                    
+                    <p style="color: #666; margin: 10px 0;">
+                        <i class="fas fa-globe"></i> رابط فريد يؤدي مباشرة إلى ملفك الشخصي
+                    </p>
+                    
+                    <div class="profile-url">
+                        <span><%= profileUrl %></span>
+                        <button class="copy-btn" onclick="copyToClipboard('<%= profileUrl %>')">
+                            <i class="fas fa-copy"></i> نسخ
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- خيارات التصدير الإضافية -->
+                <h3 style="text-align: right; margin: 30px 0 20px;">خيارات التصدير الإضافية</h3>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="downloadQR()">
+                        <i class="fas fa-qrcode"></i>
+                        <h3>تنزيل رمز QR</h3>
+                        <p>استخدمه في بطاقاتك، موقعك أو أي مكان آخر</p>
+                    </div>
+                    
+                    <div class="option-card" onclick="downloadVCard()">
+                        <i class="fas fa-address-card"></i>
+                        <h3>تصدير بطاقة الاتصال (vCard)</h3>
+                        <p>ملف vcf يمكنك مشاركته مع العملاء</p>
+                    </div>
+                    
+                    <div class="option-card" onclick="shareProfile()">
+                        <i class="fas fa-share-alt"></i>
+                        <h3>مشاركة ملف التعريف</h3>
+                        <p>شارك الرابط عبر وسائل التواصل الاجتماعي</p>
+                    </div>
+                </div>
+                
+                <!-- ملاحظة -->
+                <div class="note-box">
+                    <i class="fas fa-save"></i>
+                    حفظ الملف الشخصي - يمكنك تعديل ملفك في أي وقت من لوحة التحكم
+                </div>
+                
+                <!-- أزرار الإجراءات -->
+                <div class="action-buttons">
+                    <a href="/admin" class="btn-secondary">
+                        <i class="fas fa-cog"></i>
+                        لوحة التحكم
+                    </a>
+                    <a href="/" class="btn-primary">
+                        <i class="fas fa-home"></i>
+                        العودة للرئيسية
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('تم نسخ الرابط بنجاح!');
+            });
+        }
+        
+        function downloadQR() {
+            // هنا يمكن إضافة كود توليد QR code
+            alert('سيتم تحميل رمز QR قريباً...');
+        }
+        
+        function downloadVCard() {
+            // إنشاء vCard من البيانات
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:<%= formData.name || '' %>
+TITLE:<%= formData.title || '' %>
+ORG:<%= formData.company || '' %>
+EMAIL:<%= formData.email || '' %>
+TEL:<%= formData.phone || '' %>
+END:VCARD`;
+            
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'profile.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'هويتي الذكية',
+                    text: 'تفقد ملفي الشخصي',
+                    url: '<%= profileUrl %>'
+                });
+            } else {
+                copyToClipboard('<%= profileUrl %>');
+            }
+        }
+    </script>
+</body>
+</html>

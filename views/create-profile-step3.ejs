@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-creation {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+        
+        .creation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .steps-header {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .steps-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .steps-progress::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #dee2e6;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .step-item {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            border: 2px solid #dee2e6;
+        }
+        
+        .step-item.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .step-item.completed {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        
+        .security-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .security-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .security-section h3 i {
+            color: #667eea;
+        }
+        
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .toggle-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .toggle-info i {
+            width: 30px;
+            color: #667eea;
+        }
+        
+        .toggle-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .toggle-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .password-field {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            display: none;
+        }
+        
+        .password-field.show {
+            display: block;
+        }
+        
+        .password-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .password-field input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .btn-next {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-next:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-prev:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-creation">
+        <div class="creation-container">
+            <div class="steps-header">
+                <div class="steps-progress">
+                    <div class="step-item completed">
+                        <span class="step-number">1</span>
+                        <span>المعلومات الأساسية</span>
+                    </div>
+                    <div class="step-item completed">
+                        <span class="step-number">2</span>
+                        <span>اختيار القالب</span>
+                    </div>
+                    <div class="step-item active">
+                        <span class="step-number">3</span>
+                        <span>الحماية</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">4</span>
+                        <span>التأكيد</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>🔒 حماية ملفك الشخصي</h2>
+                
+                <form action="/create-profile/step3" method="POST">
+                    <!-- إخفاء بيانات الخطوات السابقة -->
+                    <% if (formData) { %>
+                        <% for (let [key, value] of Object.entries(formData)) { %>
+                            <input type="hidden" name="<%= key %>" value="<%= value %>">
+                        <% } %>
+                    <% } %>
+                    
+                    <div class="security-section">
+                        <h3><i class="fas fa-lock"></i> حماية بكلمة مرور</h3>
+                        
+                        <div class="toggle-switch">
+                            <div class="toggle-info">
+                                <i class="fas fa-key"></i>
+                                <div>
+                                    <div class="toggle-label">تفعيل الحماية بكلمة مرور</div>
+                                    <div class="toggle-description">تأمين معلوماتك الحساسة بكلمة مرور اختيارية</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="enablePassword" name="enablePassword" onchange="togglePasswordField()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="password-field" id="passwordField">
+                            <label>كلمة المرور</label>
+                            <input type="password" name="password" placeholder="أدخل كلمة المرور">
+                            <small style="color: #666; display: block; margin-top: 5px;">اختيارية - اتركها فارغة إذا لا تريد حماية</small>
+                        </div>
+                    </div>
+                    
+                    <div class="security-section">
+                        <h3><i class="fas fa-shield-alt"></i> إعدادات الخصوصية</h3>
+                        
+                        <div class="toggle-switch">
+                            <div class="toggle-info">
+                                <i class="fas fa-chart-bar"></i>
+                                <div>
+                                    <div class="toggle-label">إحصائيات المسح</div>
+                                    <div class="toggle-description">تمكين إحصائيات المسح (عدد المرات، آخر مسح)</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" name="enableStats" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-switch">
+                            <div class="toggle-info">
+                                <i class="fas fa-address-card"></i>
+                                <div>
+                                    <div class="toggle-label">تنزيل بطاقة الاتصال (vCard)</div>
+                                    <div class="toggle-description">السماح بتنزيل بطاقة الاتصال vCard</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" name="allowVCard" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <a href="javascript:history.back()" class="btn-prev">
+                            <i class="fas fa-arrow-right"></i>
+                            السابق
+                        </a>
+                        <button type="submit" class="btn-next">
+                            التالي
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function togglePasswordField() {
+            const checkbox = document.getElementById('enablePassword');
+            const passwordField = document.getElementById('passwordField');
+            
+            if (checkbox.checked) {
+                passwordField.classList.add('show');
+            } else {
+                passwordField.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>

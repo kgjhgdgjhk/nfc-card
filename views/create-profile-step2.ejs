@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-creation {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+        
+        .creation-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .steps-header {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .steps-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .steps-progress::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #dee2e6;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .step-item {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            border: 2px solid #dee2e6;
+        }
+        
+        .step-item.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .step-item.completed {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: white;
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .template-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .template-card.selected {
+            border-color: #667eea;
+        }
+        
+        .template-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .template-preview.modern {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .template-preview.classic {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+        }
+        
+        .template-preview.minimal {
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .preview-content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            color: white;
+        }
+        
+        .minimal .preview-content {
+            color: #2c3e50;
+        }
+        
+        .preview-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .preview-title {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .template-info {
+            padding: 20px;
+        }
+        
+        .template-info h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .template-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .template-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+        
+        .radio-input {
+            display: none;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .btn-next {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-next:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-prev:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-creation">
+        <div class="creation-container">
+            <div class="steps-header">
+                <div class="steps-progress">
+                    <div class="step-item completed">
+                        <span class="step-number">1</span>
+                        <span>المعلومات الأساسية</span>
+                    </div>
+                    <div class="step-item active">
+                        <span class="step-number">2</span>
+                        <span>اختيار القالب</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">3</span>
+                        <span>الحماية</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">4</span>
+                        <span>التأكيد</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>🎨 اختر قالب هويتك الذكية</h2>
+                
+                <form action="/create-profile/step2" method="POST" id="templateForm">
+                    <!-- إخفاء بيانات الخطوة السابقة -->
+                    <% if (formData) { %>
+                        <% for (let [key, value] of Object.entries(formData)) { %>
+                            <input type="hidden" name="<%= key %>" value="<%= value %>">
+                        <% } %>
+                    <% } %>
+                    
+                    <div class="templates-grid">
+                        <!-- القالب العصري -->
+                        <label class="template-card" for="template-modern">
+                            <input type="radio" name="template" id="template-modern" value="modern" class="radio-input" required>
+                            <div class="template-preview modern">
+                                <div class="preview-content">
+                                    <div class="preview-name"><%= formData.name || 'أحمد محمد' %></div>
+                                    <div class="preview-title"><%= formData.title || 'مطور برمجيات' %></div>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>القالب العصري</h3>
+                                <p>تصميم حديث بألوان جذابة مثالي للشخصيات الشبابية والشركات الناشئة</p>
+                                <span class="template-badge">الأكثر طلباً</span>
+                            </div>
+                        </label>
+                        
+                        <!-- القالب الكلاسيكي -->
+                        <label class="template-card" for="template-classic">
+                            <input type="radio" name="template" id="template-classic" value="classic" class="radio-input">
+                            <div class="template-preview classic">
+                                <div class="preview-content">
+                                    <div class="preview-name"><%= formData.name || 'أحمد محمد' %></div>
+                                    <div class="preview-title"><%= formData.title || 'مطور برمجيات' %></div>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>القالب الكلاسيكي</h3>
+                                <p>تصميم أنيق واحترافي يناسب الشركات الكبيرة والمؤسسات</p>
+                            </div>
+                        </label>
+                        
+                        <!-- القالب البسيط -->
+                        <label class="template-card" for="template-minimal">
+                            <input type="radio" name="template" id="template-minimal" value="minimal" class="radio-input">
+                            <div class="template-preview minimal">
+                                <div class="preview-content">
+                                    <div class="preview-name"><%= formData.name || 'أحمد محمد' %></div>
+                                    <div class="preview-title"><%= formData.title || 'مطور برمجيات' %></div>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>القالب البسيط</h3>
+                                <p>تصميم نظيف وبسيط يركز على المحتوى</p>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <a href="/create-profile" class="btn-prev">
+                            <i class="fas fa-arrow-right"></i>
+                            السابق
+                        </a>
+                        <button type="submit" class="btn-next">
+                            التالي
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // تفعيل اختيار القالب
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+    </script>
+</body>
+</html>

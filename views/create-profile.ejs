@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-creation {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+        
+        .creation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .steps-header {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .steps-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .steps-progress::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #dee2e6;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .step-item {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            border: 2px solid #dee2e6;
+        }
+        
+        .step-item.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .step-item.completed {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: white;
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .active .step-number {
+            background: white;
+            color: #667eea;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+        }
+        
+        .input-icon input {
+            padding-right: 45px;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .btn-next {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-next:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-prev:hover {
+            background: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .steps-progress {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .steps-progress::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-creation">
+        <div class="creation-container">
+            <div class="steps-header">
+                <div class="steps-progress">
+                    <div class="step-item active">
+                        <span class="step-number">1</span>
+                        <span>المعلومات الأساسية</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">2</span>
+                        <span>اختيار القالب</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">3</span>
+                        <span>الحماية</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">4</span>
+                        <span>التأكيد</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>📝 المعلومات الأساسية</h2>
+                
+                <form action="/create-profile/step1" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>الاسم الكامل</label>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" name="name" placeholder="أدخل اسمك الكامل" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>البريد الإلكتروني</label>
+                            <div class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" name="email" placeholder="example@domain.com" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>رقم الجوال</label>
+                            <div class="input-icon">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" name="phone" placeholder="+966 50 000 0000" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>المسمى الوظيفي</label>
+                            <div class="input-icon">
+                                <i class="fas fa-briefcase"></i>
+                                <input type="text" name="title" placeholder="مثال: مطور برمجيات">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>الشركة</label>
+                            <div class="input-icon">
+                                <i class="fas fa-building"></i>
+                                <input type="text" name="company" placeholder="اسم الشركة">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label>نبذة تعريفية (اختياري)</label>
+                            <textarea name="bio" rows="4" placeholder="اكتب نبذة مختصرة عن نفسك..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <a href="/" class="btn-prev">
+                            <i class="fas fa-arrow-right"></i>
+                            رجوع
+                        </a>
+                        <button type="submit" class="btn-next">
+                            التالي
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
