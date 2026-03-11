@@ -53,6 +53,14 @@
       "ip": "::1",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
       "referer": "http://localhost:3000/"
+    },
+    {
+      "id": "64a71fa2-7483-4e56-9a82-d8c55b3b1203",
+      "cardId": "nfc-001",
+      "timestamp": "2026-03-11T19:48:16.724Z",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+      "referer": "direct"
     }
   ]
 }

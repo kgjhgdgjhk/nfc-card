@@ -14,7 +14,7 @@
         }
         
         .creation-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -110,6 +110,7 @@
             color: #2c3e50;
             font-family: monospace;
             font-size: 1.1em;
+            word-break: break-all;
         }
         
         .copy-btn {
@@ -120,12 +121,143 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s ease;
+            white-space: nowrap;
         }
         
         .copy-btn:hover {
             background: #5a67d8;
         }
         
+        /* ===== أزرار CTA الجديدة ===== */
+        .cta-section {
+            margin: 40px 0 30px;
+        }
+        
+        .cta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .cta-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: block;
+        }
+        
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        .cta-card:hover::before {
+            transform: translateX(0);
+        }
+        
+        .cta-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .cta-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .cta-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .cta-price {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        /* ألوان مختلفة لكل زر */
+        .cta-card.physical {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .cta-card.digital {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .cta-card.qr {
+            background: linear-gradient(135deg, #dc3545, #fd7e14);
+        }
+        
+        .cta-card.share {
+            background: linear-gradient(135deg, #17a2b8, #6f42c1);
+        }
+        
+        .cta-card.vcard {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+        
+        /* أزرار إضافية */
+        .cta-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .cta-button {
+            background: white;
+            border: 2px solid #dee2e6;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #2c3e50;
+            display: block;
+        }
+        
+        .cta-button:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .cta-button i {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        /* باقي الأنماط */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -172,6 +304,7 @@
             border-radius: 20px;
             font-size: 0.9em;
             margin-top: 10px;
+            text-decoration: none;
         }
         
         .note-box {
@@ -233,9 +366,139 @@
             background: #5a6268;
         }
         
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .modal-content select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-btn.cancel {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .modal-btn.confirm {
+            background: #28a745;
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Floating CTA */
+        .floating-cta {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #667eea;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            border: none;
+        }
+        
+        .floating-cta:hover {
+            transform: scale(1.1);
+            background: #5a67d8;
+        }
+        
+        .floating-cta i {
+            font-size: 1.5em;
+        }
+        
+        .floating-tooltip {
+            position: absolute;
+            left: 70px;
+            background: white;
+            color: #2c3e50;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .floating-cta:hover .floating-tooltip {
+            display: block;
+        }
+        
         @media (max-width: 768px) {
+            .cta-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-row {
+                grid-template-columns: 1fr;
+            }
+            
             .action-buttons {
                 flex-direction: column;
+            }
+            
+            .profile-url {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .profile-url button {
+                width: 100%;
             }
         }
     </style>
@@ -260,6 +523,58 @@
                 <h2>تهانينا! هويتك الذكية جاهزة</h2>
                 <p class="subtitle">اختر كيفية استخدام هويتك الذكية</p>
                 
+                <!-- ===== أزرار CTA الرئيسية ===== -->
+                <div class="cta-section">
+                    <div class="cta-grid">
+                        <!-- زر 1: طلب بطاقة NFC مادية -->
+                        <div class="cta-card physical" onclick="orderPhysicalCard()">
+                            <div class="cta-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="cta-title">اطلب بطاقة NFC</div>
+                            <div class="cta-description">بطاقة مادية مع شريحة NFC ورمز QR</div>
+                            <div class="cta-price">99 ريال</div>
+                        </div>
+                        
+                        <!-- زر 2: مشاركة الملف الرقمي -->
+                        <div class="cta-card digital" onclick="shareProfile()">
+                            <div class="cta-icon">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <div class="cta-title">شارك ملفك الرقمي</div>
+                            <div class="cta-description">مجاناً - رابط مباشر للمشاركة</div>
+                            <div class="cta-price">مجاني</div>
+                        </div>
+                        
+                        <!-- زر 3: تنزيل رمز QR -->
+                        <div class="cta-card qr" onclick="downloadQR()">
+                            <div class="cta-icon">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="cta-title">رمز QR</div>
+                            <div class="cta-description">تنزيل رمز QR لاستخدامه في أي مكان</div>
+                            <div class="cta-price">مجاني</div>
+                        </div>
+                    </div>
+                    
+                    <!-- أزرار إضافية في صف ثاني -->
+                    <div class="cta-row">
+                        <!-- زر تنزيل vCard -->
+                        <div class="cta-button" onclick="downloadVCard()">
+                            <i class="fas fa-address-card"></i>
+                            <h4 style="margin: 10px 0;">تنزيل vCard</h4>
+                            <p style="color: #666; font-size: 0.9em;">ملف جهة اتصال جاهز</p>
+                        </div>
+                        
+                        <!-- زر نسخ الرابط -->
+                        <div class="cta-button" onclick="copyProfileLink()">
+                            <i class="fas fa-link"></i>
+                            <h4 style="margin: 10px 0;">نسخ الرابط</h4>
+                            <p style="color: #666; font-size: 0.9em;">شاركه مع أي شخص</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- النسخة المادية -->
                 <div class="profile-card">
                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
@@ -278,9 +593,9 @@
                         <i class="fas fa-wifi"></i> NFC · احصل على بطاقات مادية مع رمز QR وشريحة
                     </p>
                     
-                    <a href="/order" class="physical-badge" style="text-decoration: none; display: inline-block;">
+                    <button onclick="orderPhysicalCard()" class="physical-badge" style="border: none; cursor: pointer;">
                         طلب البطاقات
-                    </a>
+                    </button>
                 </div>
                 
                 <!-- النسخة الرقمية -->
@@ -346,27 +661,106 @@
         </div>
     </div>
     
+    <!-- نافذة منبثقة لتأكيد الطلب -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-shopping-cart"></i> تأكيد طلب البطاقة</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px;">عدد البطاقات:</label>
+                <select id="cardQuantity">
+                    <option value="1">1 بطاقة - 99 ريال</option>
+                    <option value="5">5 بطاقات - 449 ريال (وفر 46 ريال)</option>
+                    <option value="10">10 بطاقات - 849 ريال (وفر 141 ريال)</option>
+                    <option value="25">25 بطاقة - 1999 ريال (وفر 476 ريال)</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px;">نوع البطاقة:</label>
+                <select id="cardType">
+                    <option value="standard">قياسية (بلاستيك)</option>
+                    <option value="premium">بريميوم (معدن + تصميم خاص)</option>
+                    <option value="wood">خشبية (فخمة)</option>
+                </select>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal()">إلغاء</button>
+                <button class="modal-btn confirm" onclick="confirmOrder()">تأكيد الطلب</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر CTA عائم -->
+    <div class="floating-cta" onclick="orderPhysicalCard()">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="floating-tooltip">اطلب بطاقتك الآن</span>
+    </div>
+    
     <script>
+        // نسخ الرابط
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert('تم نسخ الرابط بنجاح!');
+                showNotification('✅ تم نسخ الرابط بنجاح!');
             });
         }
         
-        function downloadQR() {
-            // هنا يمكن إضافة كود توليد QR code
-            alert('سيتم تحميل رمز QR قريباً...');
+        function copyProfileLink() {
+            copyToClipboard('<%= profileUrl %>');
         }
         
+        // طلب بطاقة مادية
+        function orderPhysicalCard() {
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+        
+        // إغلاق النافذة
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+        
+        // تأكيد الطلب
+        function confirmOrder() {
+            const quantity = document.getElementById('cardQuantity').value;
+            const cardType = document.getElementById('cardType').value;
+            
+            // إظهار رسالة تأكيد
+            showNotification('✅ جاري تحويلك إلى واتساب...');
+            
+            // تحويل إلى واتساب
+            setTimeout(() => {
+                const message = encodeURIComponent(
+                    `طلب بطاقة NFC:\n` +
+                    `العدد: ${quantity}\n` +
+                    `النوع: ${cardType}\n` +
+                    `الرابط: <%= profileUrl %>`
+                );
+                window.open(`https://wa.me/<%= whatsappNumber || '966500000000' %>?text=${message}`, '_blank');
+                closeModal();
+            }, 1500);
+        }
+        
+        // تنزيل QR (مؤقتاً)
+        function downloadQR() {
+            showNotification('📱 جاري إنشاء رمز QR...');
+            
+            // استخدام API خارجي لإنشاء QR
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=<%= encodeURIComponent(profileUrl) %>`;
+            window.open(qrUrl, '_blank');
+        }
+        
+        // تنزيل vCard
         function downloadVCard() {
-            // إنشاء vCard من البيانات
             const vCardData = `BEGIN:VCARD
 VERSION:3.0
-FN:<%= formData.name || '' %>
-TITLE:<%= formData.title || '' %>
-ORG:<%= formData.company || '' %>
-EMAIL:<%= formData.email || '' %>
-TEL:<%= formData.phone || '' %>
+FN:<%= formData?.name || '' %>
+TITLE:<%= formData?.title || '' %>
+ORG:<%= formData?.company || '' %>
+EMAIL:<%= formData?.email || '' %>
+TEL:<%= formData?.phone || '' %>
+NOTE:هوية ذكية من نظام NFC
+URL:<%= profileUrl %>
 END:VCARD`;
             
             const blob = new Blob([vCardData], { type: 'text/vcard' });
@@ -378,8 +772,11 @@ END:VCARD`;
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
+            
+            showNotification('✅ تم تنزيل بطاقة الاتصال');
         }
         
+        // مشاركة الملف
         function shareProfile() {
             if (navigator.share) {
                 navigator.share({
@@ -388,7 +785,39 @@ END:VCARD`;
                     url: '<%= profileUrl %>'
                 });
             } else {
-                copyToClipboard('<%= profileUrl %>');
+                copyProfileLink();
+            }
+        }
+        
+        // إظهار الإشعارات
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #28a745;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1001;
+                animation: slideUp 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // إغلاق المودال عند النقر خارجه
+        window.onclick = function(event) {
+            const modal = document.getElementById('orderModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
             }
         }
     </script>

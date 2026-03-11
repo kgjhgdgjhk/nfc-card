@@ -4,8 +4,9 @@ const path = require('path');
 const ejs = require('ejs');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const fs = require('fs').promises;
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
+const fs = require('fs').promises;
 
 // تحميل متغيرات البيئة
 dotenv.config();
@@ -23,358 +24,208 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// مسار ملف البيانات
-const DATA_FILE = path.join(__dirname, 'data', 'cards.json');
-
-// التأكد من وجود مجلد البيانات وملف JSON
-async function initializeDataFile() {
-    try {
-        await fs.mkdir(path.join(__dirname, 'data'), { recursive: true });
-        try {
-            await fs.access(DATA_FILE);
-        } catch {
-            // إنشاء ملف بيانات افتراضي
-            const defaultData = {
-                cards: [
-                    {
-                        id: "nfc-001",
-                        cardId: "nfc-001",
-                        name: "أحمد محمد",
-                        title: "مطور برمجيات",
-                        company: "شركة التقنية",
-                        email: "ahmed@example.com",
-                        phone: "+966 50 123 4567",
-                        website: "https://ahmed.dev",
-                        address: "الرياض، المملكة العربية السعودية",
-                        bio: "مطور برمجيات بخبرة 5 سنوات في تطوير تطبيقات الويب والجوال",
-                        social: {
-                            linkedin: "https://linkedin.com/in/ahmed",
-                            twitter: "https://twitter.com/ahmed",
-                            github: "https://github.com/ahmed"
-                        },
-                        dynamicLink: "https://ahmed.dev/portfolio",
-                        isActive: true,
-                        lastUpdated: new Date().toISOString()
-                    }
-                ],
-                visits: []
-            };
-            await fs.writeFile(DATA_FILE, JSON.stringify(defaultData, null, 2));
-        }
-    } catch (error) {
-        console.error('خطأ في تهيئة ملف البيانات:', error);
-    }
-}
-
-// استدعاء تهيئة البيانات
-initializeDataFile();
+// استيراد الموديلات من PostgreSQL
+const { 
+  sequelize, 
+  Profile, 
+  Visit, 
+  Order,
+  saveProfile: saveProfileToDB,
+  findProfile: findProfileInDB,
+  createVisit,
+  createOrder,
+  getAllProfiles,
+  getAllVisits 
+} = require('./models/Profile');
 
 // ============================================
-// دوال مساعدة للتعامل مع البيانات
+// الاتصال بقاعدة البيانات PostgreSQL
 // ============================================
+let isPostgresConnected = false;
 
-// قراءة جميع البطاقات
-async function getCards() {
+async function connectToDatabase() {
     try {
-        const data = await fs.readFile(DATA_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        console.error('خطأ في قراءة البيانات:', error);
-        return { cards: [], visits: [] };
-    }
-}
-
-// حفظ البيانات
-async function saveCards(data) {
-    try {
-        await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
+        // اختبار الاتصال بقاعدة البيانات
+        await sequelize.authenticate();
+        console.log('✅ تم الاتصال بقاعدة البيانات PostgreSQL بنجاح');
+        isPostgresConnected = true;
         return true;
     } catch (error) {
-        console.error('خطأ في حفظ البيانات:', error);
+        console.error('❌ فشل الاتصال بقاعدة البيانات:');
+        console.error('📌 رسالة الخطأ:', error.message);
+        console.log('💡 استخدام الملفات المحلية كبديل');
+        isPostgresConnected = false;
         return false;
     }
 }
 
-// البحث عن بطاقة بواسطة المعرف
-async function findCardById(cardId) {
-    const data = await getCards();
-    return data.cards.find(card => card.cardId === cardId);
+// محاولة الاتصال بقاعدة البيانات
+connectToDatabase();
+
+// ============================================
+// دوال مساعدة للتعامل مع البيانات (مع دعم PostgreSQL والملفات المحلية)
+// ============================================
+
+// حفظ ملف شخصي جديد
+async function saveProfile(profileData) {
+    try {
+        if (isPostgresConnected) {
+            // استخدام PostgreSQL
+            return await saveProfileToDB(profileData);
+        } else {
+            // استخدام الملف المحلي كبديل
+            const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
+            
+            // التأكد من وجود مجلد data
+            const dataDir = path.join(__dirname, 'data');
+            try {
+                await fs.access(dataDir);
+            } catch {
+                await fs.mkdir(dataDir, { recursive: true });
+            }
+            
+            let profiles = [];
+            try {
+                const data = await fs.readFile(DATA_FILE, 'utf8');
+                profiles = JSON.parse(data);
+            } catch {
+                profiles = [];
+            }
+            
+            profiles.push(profileData);
+            await fs.writeFile(DATA_FILE, JSON.stringify(profiles, null, 2));
+            
+            return { success: true, data: profileData };
+        }
+    } catch (error) {
+        console.error('خطأ في حفظ الملف الشخصي:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// البحث عن ملف شخصي
+async function findProfile(profileId) {
+    try {
+        if (isPostgresConnected) {
+            return await findProfileInDB(profileId);
+        } else {
+            const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
+            
+            try {
+                const data = await fs.readFile(DATA_FILE, 'utf8');
+                const profiles = JSON.parse(data);
+                return profiles.find(p => p.profileId === profileId) || null;
+            } catch {
+                return null;
+            }
+        }
+    } catch (error) {
+        console.error('خطأ في البحث:', error);
+        return null;
+    }
+}
+
+// تحديث إحصائيات الزيارة (للملفات المحلية)
+async function updateProfileStatsLocally(profileId) {
+    try {
+        const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
+        const data = await fs.readFile(DATA_FILE, 'utf8');
+        const profiles = JSON.parse(data);
+        
+        const profileIndex = profiles.findIndex(p => p.profileId === profileId);
+        if (profileIndex !== -1) {
+            if (!profiles[profileIndex].stats) {
+                profiles[profileIndex].stats = { views: 0, uniqueVisitors: 0 };
+            }
+            profiles[profileIndex].stats.views = (profiles[profileIndex].stats.views || 0) + 1;
+            profiles[profileIndex].stats.lastView = new Date();
+            
+            await fs.writeFile(DATA_FILE, JSON.stringify(profiles, null, 2));
+        }
+    } catch (error) {
+        console.error('خطأ في تحديث الإحصائيات محلياً:', error);
+    }
 }
 
 // تسجيل زيارة
-async function logVisit(cardId, req) {
-    const data = await getCards();
-    const visit = {
-        id: uuidv4(),
-        cardId: cardId,
-        timestamp: new Date().toISOString(),
-        ip: req.ip || req.connection.remoteAddress,
-        userAgent: req.get('User-Agent'),
-        referer: req.get('Referer') || 'direct'
-    };
-    
-    if (!data.visits) data.visits = [];
-    data.visits.push(visit);
-    await saveCards(data);
-    return visit;
+async function logVisit(profileId, req) {
+    try {
+        const visitData = {
+            profileId,
+            ip: req.ip || req.connection.remoteAddress,
+            userAgent: req.get('User-Agent'),
+            referer: req.get('Referer') || 'direct',
+            timestamp: new Date()
+        };
+        
+        if (isPostgresConnected) {
+            // استخدام PostgreSQL
+            await createVisit(visitData);
+        } else {
+            // استخدام الملف المحلي
+            const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
+            
+            let visits = [];
+            try {
+                const data = await fs.readFile(VISITS_FILE, 'utf8');
+                visits = JSON.parse(data);
+            } catch {
+                visits = [];
+            }
+            
+            visits.push(visitData);
+            await fs.writeFile(VISITS_FILE, JSON.stringify(visits, null, 2));
+            
+            // تحديث إحصائيات الملف الشخصي
+            await updateProfileStatsLocally(profileId);
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('خطأ في تسجيل الزيارة:', error);
+        return false;
+    }
 }
 
 // ============================================
-// المسارات الرئيسية
-// ============================================
-
-// الصفحة الرئيسية
-app.get('/', (req, res) => {
-    res.render('index', { 
-        title: 'نظام بطاقات NFC',
-        message: 'مرحباً بك في نظام بطاقات NFC الذكية'
-    });
-});
-
-// ============================================
-// مسار طلب المنتج (مهم: هذا كان ناقصاً)
-// ============================================
-
-// صفحة طلب المنتج
-app.get('/order', (req, res) => {
-    res.render('order', {
-        title: 'طلب بطاقة NFC ذكية'
-    });
-});
-
-// API لطلب المنتج
-app.post('/api/order', async (req, res) => {
-    try {
-        const orderData = req.body;
-        console.log('طلب جديد:', orderData);
-        
-        res.json({
-            success: true,
-            message: 'تم استلام طلبك بنجاح',
-            data: orderData
-        });
-        
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'حدث خطأ في معالجة الطلب'
-        });
-    }
-});
-
-// صفحة البطاقة (عند مسح NFC)
-app.get('/card/:cardId', async (req, res) => {
-    try {
-        const cardId = req.params.cardId;
-        console.log(`تم مسح بطاقة NFC: ${cardId}`);
-        
-        // البحث عن البطاقة
-        const card = await findCardById(cardId);
-        
-        if (!card) {
-            return res.status(404).render('error', {
-                title: 'بطاقة غير موجودة',
-                message: 'عذراً، البطاقة غير موجودة أو غير مفعلة'
-            });
-        }
-        
-        // تسجيل الزيارة
-        await logVisit(cardId, req);
-        
-        // عرض صفحة البطاقة
-        res.render('card', {
-            title: `بطاقة ${card.name} المهنية`,
-            card: card,
-            baseUrl: process.env.BASE_URL
-        });
-        
-    } catch (error) {
-        console.error('خطأ في عرض البطاقة:', error);
-        res.status(500).render('error', {
-            title: 'خطأ في النظام',
-            message: 'حدث خطأ أثناء معالجة طلبك'
-        });
-    }
-});
-
-// API للحصول على بيانات البطاقة (للاستخدام مع NFC الديناميكي)
-app.get('/api/card/:cardId', async (req, res) => {
-    try {
-        const card = await findCardById(req.params.cardId);
-        
-        if (!card) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'البطاقة غير موجودة' 
-            });
-        }
-        
-        // تسجيل الزيارة من API
-        await logVisit(req.params.cardId, req);
-        
-        res.json({
-            success: true,
-            data: card
-        });
-        
-    } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            message: 'خطأ في الخادم' 
-        });
-    }
-});
-
-// صفحة الإدارة (لإضافة وتعديل البطاقات) - مع إصلاح مشكلة query
-app.get('/admin', async (req, res) => {
-    try {
-        const data = await getCards();
-        
-        // إصلاح مشكلة query - نمرر query parameters
-        res.render('admin', {
-            title: 'لوحة التحكم - بطاقات NFC',
-            cards: data.cards,
-            visits: data.visits || [],
-            query: req.query || {}  // هذا مهم جداً لإصلاح الخطأ
-        });
-        
-    } catch (error) {
-        console.error('خطأ في صفحة الإدارة:', error);
-        res.status(500).send('حدث خطأ في تحميل صفحة الإدارة');
-    }
-});
-
-// إضافة بطاقة جديدة
-app.post('/admin/card/add', async (req, res) => {
-    try {
-        const data = await getCards();
-        
-        // إنشاء بطاقة جديدة
-        const newCard = {
-            id: uuidv4(),
-            cardId: req.body.cardId || `nfc-${Date.now()}`,
-            name: req.body.name,
-            title: req.body.title,
-            company: req.body.company,
-            email: req.body.email,
-            phone: req.body.phone,
-            website: req.body.website,
-            address: req.body.address,
-            bio: req.body.bio,
-            social: {
-                linkedin: req.body.linkedin,
-                twitter: req.body.twitter,
-                github: req.body.github
-            },
-            dynamicLink: req.body.dynamicLink || '',
-            isActive: true,
-            lastUpdated: new Date().toISOString()
-        };
-        
-        data.cards.push(newCard);
-        await saveCards(data);
-        
-        res.redirect('/admin?success=تم إضافة البطاقة بنجاح');
-        
-    } catch (error) {
-        console.error('خطأ في إضافة البطاقة:', error);
-        res.redirect('/admin?error=حدث خطأ أثناء إضافة البطاقة');
-    }
-});
-
-// تحديث بطاقة
-app.post('/admin/card/update/:cardId', async (req, res) => {
-    try {
-        const data = await getCards();
-        const cardIndex = data.cards.findIndex(c => c.cardId === req.params.cardId);
-        
-        if (cardIndex === -1) {
-            return res.redirect('/admin?error=البطاقة غير موجودة');
-        }
-        
-        // تحديث بيانات البطاقة
-        data.cards[cardIndex] = {
-            ...data.cards[cardIndex],
-            name: req.body.name,
-            title: req.body.title,
-            company: req.body.company,
-            email: req.body.email,
-            phone: req.body.phone,
-            website: req.body.website,
-            address: req.body.address,
-            bio: req.body.bio,
-            social: {
-                linkedin: req.body.linkedin,
-                twitter: req.body.twitter,
-                github: req.body.github
-            },
-            dynamicLink: req.body.dynamicLink || '',
-            isActive: req.body.isActive === 'on',
-            lastUpdated: new Date().toISOString()
-        };
-        
-        await saveCards(data);
-        res.redirect('/admin?success=تم تحديث البطاقة بنجاح');
-        
-    } catch (error) {
-        console.error('خطأ في تحديث البطاقة:', error);
-        res.redirect('/admin?error=حدث خطأ أثناء تحديث البطاقة');
-    }
-});
-
-// حذف بطاقة
-app.post('/admin/card/delete/:cardId', async (req, res) => {
-    try {
-        const data = await getCards();
-        data.cards = data.cards.filter(c => c.cardId !== req.params.cardId);
-        await saveCards(data);
-        res.redirect('/admin?success=تم حذف البطاقة بنجاح');
-    } catch (error) {
-        res.redirect('/admin?error=حدث خطأ أثناء حذف البطاقة');
-    }
-});
-
-// إحصائيات الزيارات
-app.get('/admin/stats/:cardId', async (req, res) => {
-    try {
-        const data = await getCards();
-        const cardVisits = data.visits.filter(v => v.cardId === req.params.cardId);
-        
-        res.json({
-            success: true,
-            totalVisits: cardVisits.length,
-            visits: cardVisits
-        });
-    } catch (error) {
-        res.json({ success: false, error: error.message });
-    }
-});
-
-// صفحة الخطأ
-app.get('/error', (req, res) => {
-    res.render('error', {
-        title: 'خطأ',
-        message: req.query.message || 'حدث خطأ غير متوقع'
-    });
-});
-
-// ============================================
-// نظام إنشاء الهوية الذكية (4 خطوات)
+// نظام إنشاء الهوية الذكية (مع CTA buttons)
 // ============================================
 
 // صفحة إنشاء الهوية الذكية
 app.get('/create-profile', (req, res) => {
     res.render('create-profile', {
         title: 'إنشاء هويتك الذكية',
-        step: 1
+        step: 1,
+        ctaText: 'ابدأ الآن مجاناً',
+        ctaColor: '#667eea'
     });
 });
 
-// حفظ البيانات المؤقتة للخطوة 1
-app.post('/create-profile/step1', (req, res) => {
-    // هنا يمكن حفظ البيانات في session أو تمريرها كـ query
-    const { name, email, phone, title, company } = req.body;
-    res.redirect(`/create-profile/step2?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&title=${encodeURIComponent(title)}&company=${encodeURIComponent(company)}`);
+// حفظ البيانات للخطوة 1
+app.post('/create-profile/step1', async (req, res) => {
+    try {
+        const { name, email, phone, title, company, bio } = req.body;
+        
+        // التحقق من البيانات
+        if (!name || !email || !phone) {
+            return res.redirect('/create-profile?error=الرجاء إدخال جميع البيانات المطلوبة');
+        }
+        
+        // إنشاء معرف فريد
+        const profileId = `profile-${uuidv4().substring(0, 8)}`;
+        
+        // حفظ البيانات مؤقتاً في الجلسة أو تمريرها
+        const queryString = new URLSearchParams({
+            profileId,
+            name, email, phone, title, company, bio
+        }).toString();
+        
+        res.redirect(`/create-profile/step2?${queryString}`);
+        
+    } catch (error) {
+        console.error('خطأ:', error);
+        res.redirect('/create-profile?error=حدث خطأ، الرجاء المحاولة مرة أخرى');
+    }
 });
 
 // صفحة اختيار القالب (الخطوة 2)
@@ -382,7 +233,9 @@ app.get('/create-profile/step2', (req, res) => {
     res.render('create-profile-step2', {
         title: 'اختر قالب هويتك',
         step: 2,
-        formData: req.query
+        formData: req.query,
+        ctaText: 'اختر القالب واستمر',
+        ctaColor: '#28a745'
     });
 });
 
@@ -393,12 +246,14 @@ app.post('/create-profile/step2', (req, res) => {
     res.redirect(`/create-profile/step3?${queryString}`);
 });
 
-// صفحة إعدادات الحماية والخصوصية (الخطوة 3)
+// صفحة إعدادات الحماية (الخطوة 3)
 app.get('/create-profile/step3', (req, res) => {
     res.render('create-profile-step3', {
         title: 'حماية ملفك الشخصي',
         step: 3,
-        formData: req.query
+        formData: req.query,
+        ctaText: 'تأمين ملفي الشخصي',
+        ctaColor: '#dc3545'
     });
 });
 
@@ -415,27 +270,249 @@ app.post('/create-profile/step3', (req, res) => {
 });
 
 // صفحة التأكيد والنتيجة (الخطوة 4)
-app.get('/create-profile/step4', (req, res) => {
-    // إنشاء معرف فريد للملف الشخصي
-    const profileId = `profile-${Math.random().toString(36).substring(2, 10)}`;
-    const profileUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profileId}`;
-    
-    res.render('create-profile-step4', {
-        title: 'هويتك الذكية جاهزة',
-        step: 4,
-        formData: req.query,
-        profileId: profileId,
-        profileUrl: profileUrl
-    });
+app.get('/create-profile/step4', async (req, res) => {
+    try {
+        const formData = req.query;
+        const profileId = formData.profileId || `profile-${uuidv4().substring(0, 8)}`;
+        const profileUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profileId}`;
+        
+        // حفظ الملف الشخصي في قاعدة البيانات
+        const profileData = {
+            profileId,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            title: formData.title,
+            company: formData.company,
+            bio: formData.bio,
+            template: formData.template || 'modern',
+            password: formData.password,
+            isPasswordProtected: !!formData.password,
+            enableStats: formData.enableStats === 'on',
+            allowVCard: formData.allowVCard === 'on',
+            stats: { views: 0 },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            social: {
+                linkedin: null,
+                twitter: null,
+                github: null,
+                instagram: null
+            }
+        };
+        
+        const result = await saveProfile(profileData);
+        
+        if (!result.success) {
+            console.error('خطأ في الحفظ:', result.error);
+        }
+        
+        res.render('create-profile-step4', {
+            title: 'هويتك الذكية جاهزة',
+            step: 4,
+            formData,
+            profileId,
+            profileUrl,
+            ctaText: 'اطلب بطاقتك المادية الآن',
+            ctaColor: '#667eea',
+            whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000'
+        });
+        
+    } catch (error) {
+        console.error('خطأ في حفظ الملف الشخصي:', error);
+        res.redirect('/create-profile?error=حدث خطأ في حفظ البيانات');
+    }
 });
 
-// صفحة عرض الملف الشخصي (عند مسح NFC)
+// صفحة عرض الملف الشخصي العام
 app.get('/p/:profileId', async (req, res) => {
-    // هنا يمكن جلب بيانات الملف الشخصي من قاعدة البيانات
-    // حالياً نستخدم بيانات تجريبية
-    res.render('public-profile', {
-        title: 'الملف الشخصي',
-        profileId: req.params.profileId
+    try {
+        const profile = await findProfile(req.params.profileId);
+        
+        if (!profile) {
+            return res.render('error', {
+                title: 'الملف غير موجود',
+                message: 'عذراً، الملف الشخصي غير موجود'
+            });
+        }
+        
+        // تسجيل الزيارة
+        await logVisit(req.params.profileId, req);
+        
+        // التحقق من كلمة المرور إذا كانت مفعلة
+        if (profile.isPasswordProtected && profile.password) {
+            // عرض صفحة إدخال كلمة المرور
+            return res.render('profile-password', {
+                title: 'ملف محمي',
+                profileId: req.params.profileId
+            });
+        }
+        
+        // عرض الملف الشخصي حسب القالب المختار
+        res.render(`templates/template-${profile.template}`, {
+            title: `ملف ${profile.name} الشخصي`,
+            profile,
+            allowVCard: profile.allowVCard,
+            ctaText: 'احصل على بطاقتك NFC',
+            ctaLink: '/create-profile'
+        });
+        
+    } catch (error) {
+        console.error('خطأ:', error);
+        res.status(500).render('error', {
+            title: 'خطأ',
+            message: 'حدث خطأ في تحميل الملف الشخصي'
+        });
+    }
+});
+
+// التحقق من كلمة المرور
+app.post('/p/:profileId/verify', async (req, res) => {
+    try {
+        const { password } = req.body;
+        const profile = await findProfile(req.params.profileId);
+        
+        if (profile && profile.password === password) {
+            // تخزين في الجلسة أنه تم التحقق
+            res.redirect(`/p/${req.params.profileId}?verified=true`);
+        } else {
+            res.redirect(`/p/${req.params.profileId}?error=كلمة المرور غير صحيحة`);
+        }
+    } catch (error) {
+        res.redirect(`/p/${req.params.profileId}?error=حدث خطأ`);
+    }
+});
+
+// API لإنشاء طلب بطاقة
+app.post('/api/create-order', async (req, res) => {
+    try {
+        const { profileId, cardType, quantity } = req.body;
+        
+        const orderData = {
+            orderId: `ORD-${uuidv4().substring(0, 8)}`,
+            profileId,
+            cardType: cardType || 'physical',
+            quantity: quantity || 1,
+            status: 'pending',
+            createdAt: new Date()
+        };
+        
+        if (isPostgresConnected) {
+            await createOrder(orderData);
+        } else {
+            // حفظ في ملف محلي
+            const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
+            
+            let orders = [];
+            try {
+                const data = await fs.readFile(ORDERS_FILE, 'utf8');
+                orders = JSON.parse(data);
+            } catch {
+                orders = [];
+            }
+            
+            orders.push(orderData);
+            await fs.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2));
+        }
+        
+        // إرسال إشعار للواتساب
+        const whatsappMessage = `طلب جديد:\nالرقم: ${orderData.orderId}\nالنوع: ${cardType}\nالكمية: ${quantity}`;
+        
+        res.json({
+            success: true,
+            message: 'تم إنشاء الطلب بنجاح',
+            orderId: orderData.orderId,
+            whatsappLink: `https://wa.me/${process.env.WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`
+        });
+        
+    } catch (error) {
+        console.error('خطأ في إنشاء الطلب:', error);
+        res.status(500).json({
+            success: false,
+            message: 'حدث خطأ في إنشاء الطلب'
+        });
+    }
+});
+
+// لوحة التحكم مع إحصائيات
+app.get('/admin', async (req, res) => {
+    try {
+        let profiles = [];
+        let visits = [];
+        let orders = [];
+        let stats = {};
+        
+        if (isPostgresConnected) {
+            // استخدام PostgreSQL
+            profiles = await getAllProfiles();
+            visits = await getAllVisits(100);
+            
+            // إحصائيات إضافية
+            stats = {
+                totalProfiles: profiles.length,
+                totalVisits: visits.length,
+                todayVisits: visits.filter(v => 
+                    new Date(v.createdAt).toDateString() === new Date().toDateString()
+                ).length
+            };
+        } else {
+            // استخدام الملفات المحلية
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
+            const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
+            
+            try {
+                const profilesData = await fs.readFile(PROFILES_FILE, 'utf8');
+                profiles = JSON.parse(profilesData);
+            } catch {
+                profiles = [];
+            }
+            
+            try {
+                const visitsData = await fs.readFile(VISITS_FILE, 'utf8');
+                visits = JSON.parse(visitsData).slice(-100);
+            } catch {
+                visits = [];
+            }
+            
+            try {
+                const ordersData = await fs.readFile(ORDERS_FILE, 'utf8');
+                orders = JSON.parse(ordersData);
+            } catch {
+                orders = [];
+            }
+            
+            stats = {
+                totalProfiles: profiles.length,
+                totalVisits: visits.length,
+                todayVisits: visits.filter(v => 
+                    new Date(v.timestamp).toDateString() === new Date().toDateString()
+                ).length,
+                totalOrders: orders.length
+            };
+        }
+        
+        res.render('admin', {
+            title: 'لوحة التحكم',
+            profiles,
+            visits,
+            orders,
+            stats,
+            query: req.query || {},
+            isPostgresConnected
+        });
+        
+    } catch (error) {
+        console.error('خطأ في لوحة التحكم:', error);
+        res.status(500).send('حدث خطأ في تحميل لوحة التحكم');
+    }
+});
+
+// صفحة الخطأ
+app.get('/error', (req, res) => {
+    res.render('error', {
+        title: 'خطأ',
+        message: req.query.message || 'حدث خطأ غير متوقع'
     });
 });
 
@@ -448,9 +525,10 @@ app.listen(PORT, () => {
     ║     نظام بطاقات NFC الذكية               ║
     ╠══════════════════════════════════════════╣
     ║  الخادم يعمل على: http://localhost:${PORT}  ║
+    ║  إنشاء هوية: http://localhost:${PORT}/create-profile ║
     ║  لوحة التحكم: http://localhost:${PORT}/admin ║
-    ║  طلب المنتج: http://localhost:${PORT}/order   ║
-    ║  مثال لبطاقة: http://localhost:${PORT}/card/nfc-001 ║
+    ╠══════════════════════════════════════════╣
+    ║  قاعدة البيانات: ${isPostgresConnected ? '✅ PostgreSQL متصل' : '⚠️  ملفات محلية'} ║
     ╚══════════════════════════════════════════╝
     `);
 });
