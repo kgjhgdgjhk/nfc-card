@@ -3,149 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>NFC Pro | حماية البطاقة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة */
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            width: 80vmax;
+            height: 80vmax;
+            background: radial-gradient(circle at 30% 50%, rgba(76, 201, 240, 0.15) 0%, rgba(67, 97, 238, 0.15) 50%, transparent 70%);
+            border-radius: 50%;
+            top: -20%;
+            right: -20%;
+            animation: floatOrb 30s ease-in-out infinite;
+        }
+
+        .gradient-orb-2 {
+            position: absolute;
+            width: 70vmax;
+            height: 70vmax;
+            background: radial-gradient(circle at 70% 50%, rgba(172, 107, 255, 0.12) 0%, rgba(76, 201, 240, 0.12) 50%, transparent 70%);
+            border-radius: 50%;
+            bottom: -20%;
+            left: -20%;
+            animation: floatOrb 35s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, 5%) scale(1.1); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: moveParticles 60s linear infinite;
+        }
+
+        @keyframes moveParticles {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 200px 200px, -200px -200px; }
+        }
+
+        /* الحاوية الرئيسية */
         .profile-creation {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .creation-container {
-            max-width: 800px;
+            max-width: 900px;
+            width: 100%;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.8s ease-out;
         }
-        
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* رأس الخطوات */
         .steps-header {
-            background: #f8f9fa;
-            padding: 20px 40px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 30px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
         }
-        
+
         .steps-progress {
             display: flex;
             justify-content: space-between;
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
-        
+
         .steps-progress::before {
             content: '';
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
+            left: 60px;
+            right: 60px;
             height: 2px;
-            background: #dee2e6;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: translateY(-50%);
             z-index: 1;
         }
-        
+
         .step-item {
             position: relative;
             z-index: 2;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 100px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #6c757d;
-            border: 2px solid #dee2e6;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .step-item.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
+
         .step-item.completed {
-            background: #28a745;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
+            border-color: #4cc9f0;
             color: white;
-            border-color: #28a745;
         }
-        
+
+        .step-item.active {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-color: #4cc9f0;
+            color: white;
+            box-shadow: 0 10px 30px -10px #4361ee;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(76, 201, 240, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+            }
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .active .step-number,
+        .completed .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .step-item i {
+            font-size: 0.9em;
+        }
+
+        .completed i {
+            color: #4cc9f0;
+        }
+
+        /* قسم النموذج */
         .form-section {
-            padding: 40px;
+            padding: 50px 40px;
         }
-        
+
         .form-section h2 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 1.8em;
-        }
-        
-        .security-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .security-section h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .security-section h3 i {
-            color: #667eea;
-        }
-        
-        .toggle-switch {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .toggle-info {
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
+        .form-section h2 i {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2em;
+            animation: shieldPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* أقسام الحماية */
+        .security-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideInRight 0.6s ease-out forwards;
+        }
+
+        .security-section:nth-child(2) { animation-delay: 0.2s; }
+        .security-section:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .security-section:hover {
+            border-color: rgba(76, 201, 240, 0.3);
+            box-shadow: 0 20px 40px -20px #4361ee;
+        }
+
+        .security-section h3 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .security-section h3 i {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2em;
+        }
+
+        /* خيارات التبديل */
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .toggle-switch:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #4cc9f0;
+            transform: translateX(-5px);
+        }
+
+        .toggle-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
         .toggle-info i {
-            width: 30px;
-            color: #667eea;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4cc9f0;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
         }
-        
+
+        .toggle-switch:hover .toggle-info i {
+            transform: rotate(5deg) scale(1.1);
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
+        }
+
+        .toggle-text {
+            flex: 1;
+        }
+
         .toggle-label {
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+            font-size: 1.1em;
         }
-        
+
         .toggle-description {
-            color: #666;
+            color: rgba(255, 255, 255, 0.5);
             font-size: 0.9em;
         }
-        
+
+        /* مفتاح التبديل */
         .switch {
             position: relative;
             display: inline-block;
             width: 60px;
-            height: 34px;
+            height: 32px;
+            margin-right: 15px;
         }
-        
+
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
+
         .slider {
             position: absolute;
             cursor: pointer;
@@ -153,106 +363,306 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: rgba(255, 255, 255, 0.1);
             transition: .4s;
             border-radius: 34px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 24px;
+            width: 24px;
             left: 4px;
-            bottom: 4px;
+            bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
         }
-        
+
         input:checked + .slider {
-            background-color: #667eea;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
         }
-        
+
         input:checked + .slider:before {
-            transform: translateX(26px);
+            transform: translateX(28px);
         }
-        
+
+        /* حقل كلمة المرور */
         .password-field {
             margin-top: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #dee2e6;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
             display: none;
+            animation: slideDown 0.4s ease-out;
         }
-        
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .password-field.show {
             display: block;
         }
-        
+
         .password-field label {
             display: block;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 500;
         }
-        
+
         .password-field input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             font-size: 1em;
+            color: white;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        
+
+        .password-field input:focus {
+            outline: none;
+            border-color: #4cc9f0;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.1);
+        }
+
+        .password-field small {
+            color: rgba(255, 255, 255, 0.4) !important;
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .password-field small i {
+            color: #4cc9f0;
+            margin-left: 5px;
+        }
+
+        /* أزرار التنقل */
         .form-navigation {
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #dee2e6;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
-        .btn-next {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 10px;
+
+        .btn-next,
+        .btn-prev {
+            padding: 16px 40px;
+            border-radius: 16px;
             font-size: 1.1em;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .btn-next:hover {
-            background: #5a67d8;
-        }
-        
-        .btn-prev {
-            background: #6c757d;
-            color: white;
+            gap: 12px;
             border: none;
-            padding: 12px 40px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background 0.3s ease;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .btn-next {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            box-shadow: 0 10px 30px -10px #4361ee;
+        }
+
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-next::before,
+        .btn-prev::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-next:hover::before,
+        .btn-prev:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-next:hover,
         .btn-prev:hover {
-            background: #5a6268;
+            transform: translateY(-3px);
+        }
+
+        .btn-next:hover {
+            box-shadow: 0 20px 40px -10px #4361ee;
+        }
+
+        .btn-prev:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-next i,
+        .btn-prev i {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-next:hover i:last-child {
+            transform: translateX(-5px);
+        }
+
+        .btn-prev:hover i:first-child {
+            transform: translateX(5px);
+        }
+
+        /* تلميحات أمنية */
+        .security-tip {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+            border: 1px solid #4cc9f0;
+            border-radius: 16px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(76, 201, 240, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(76, 201, 240, 0.4); }
+        }
+
+        .security-tip i {
+            color: #4cc9f0;
+            font-size: 1.5em;
+        }
+
+        .security-tip p {
+            color: white;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .toggle-switch {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .switch {
+                align-self: flex-end;
+            }
+
+            .steps-progress {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .steps-progress::before {
+                display: none;
+            }
+            
+            .step-item {
+                width: 100%;
+            }
+            
+            .creation-container {
+                border-radius: 32px;
+            }
+            
+            .form-section {
+                padding: 30px 20px;
+            }
+            
+            .steps-header {
+                padding: 20px;
+            }
+
+            .form-section h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+        }
+
+        /* رسالة ترحيبية */
+        .security-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 100px;
+            color: white;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInLeft 0.5s ease-out;
+            z-index: 100;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="background">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb-2"></div>
+        <div class="particles"></div>
+    </div>
+
     <div class="profile-creation">
         <div class="creation-container">
             <div class="steps-header">
@@ -260,14 +670,17 @@
                     <div class="step-item completed">
                         <span class="step-number">1</span>
                         <span>المعلومات الأساسية</span>
+                        <i class="fas fa-check"></i>
                     </div>
                     <div class="step-item completed">
                         <span class="step-number">2</span>
                         <span>اختيار القالب</span>
+                        <i class="fas fa-check"></i>
                     </div>
                     <div class="step-item active">
                         <span class="step-number">3</span>
                         <span>الحماية</span>
+                        <i class="fas fa-shield-alt"></i>
                     </div>
                     <div class="step-item">
                         <span class="step-number">4</span>
@@ -277,23 +690,31 @@
             </div>
             
             <div class="form-section">
-                <h2>🔒 حماية ملفك الشخصي</h2>
+                <h2>
+                    <i class="fas fa-shield-alt"></i>
+                    حماية ملفك الشخصي
+                </h2>
                 
-                <form action="/create-profile/step3" method="POST">
-                    <!-- إخفاء بيانات الخطوات السابقة -->
-                    <% if (formData) { %>
-                        <% for (let [key, value] of Object.entries(formData)) { %>
-                            <input type="hidden" name="<%= key %>" value="<%= value %>">
-                        <% } %>
-                    <% } %>
+                <form action="/create-profile/step3" method="POST" id="securityForm">
+                    <!-- بيانات الخطوات السابقة -->
+                    <input type="hidden" name="name" value="أحمد محمد">
+                    <input type="hidden" name="email" value="ahmed@example.com">
+                    <input type="hidden" name="phone" value="+966500000000">
+                    <input type="hidden" name="title" value="مطور برمجيات">
+                    <input type="hidden" name="company" value="شركة التقنية">
+                    <input type="hidden" name="bio" value="مطور ويب بخبرة 5 سنوات">
+                    <input type="hidden" name="template" value="modern">
                     
                     <div class="security-section">
-                        <h3><i class="fas fa-lock"></i> حماية بكلمة مرور</h3>
+                        <h3>
+                            <i class="fas fa-lock"></i>
+                            حماية بكلمة مرور
+                        </h3>
                         
-                        <div class="toggle-switch">
+                        <div class="toggle-switch" onclick="document.getElementById('enablePassword').click()">
                             <div class="toggle-info">
                                 <i class="fas fa-key"></i>
-                                <div>
+                                <div class="toggle-text">
                                     <div class="toggle-label">تفعيل الحماية بكلمة مرور</div>
                                     <div class="toggle-description">تأمين معلوماتك الحساسة بكلمة مرور اختيارية</div>
                                 </div>
@@ -307,40 +728,51 @@
                         <div class="password-field" id="passwordField">
                             <label>كلمة المرور</label>
                             <input type="password" name="password" placeholder="أدخل كلمة المرور">
-                            <small style="color: #666; display: block; margin-top: 5px;">اختيارية - اتركها فارغة إذا لا تريد حماية</small>
+                            <small>
+                                <i class="fas fa-info-circle"></i>
+                                اختيارية - اتركها فارغة إذا كنت لا تريد حماية
+                            </small>
                         </div>
                     </div>
                     
                     <div class="security-section">
-                        <h3><i class="fas fa-shield-alt"></i> إعدادات الخصوصية</h3>
+                        <h3>
+                            <i class="fas fa-shield-alt"></i>
+                            إعدادات الخصوصية
+                        </h3>
                         
-                        <div class="toggle-switch">
+                        <div class="toggle-switch" onclick="document.getElementById('enableStats').click()">
                             <div class="toggle-info">
-                                <i class="fas fa-chart-bar"></i>
-                                <div>
+                                <i class="fas fa-chart-line"></i>
+                                <div class="toggle-text">
                                     <div class="toggle-label">إحصائيات المسح</div>
                                     <div class="toggle-description">تمكين إحصائيات المسح (عدد المرات، آخر مسح)</div>
                                 </div>
                             </div>
                             <label class="switch">
-                                <input type="checkbox" name="enableStats" checked>
+                                <input type="checkbox" id="enableStats" name="enableStats" checked>
                                 <span class="slider"></span>
                             </label>
                         </div>
                         
-                        <div class="toggle-switch">
+                        <div class="toggle-switch" onclick="document.getElementById('allowVCard').click()">
                             <div class="toggle-info">
                                 <i class="fas fa-address-card"></i>
-                                <div>
+                                <div class="toggle-text">
                                     <div class="toggle-label">تنزيل بطاقة الاتصال (vCard)</div>
                                     <div class="toggle-description">السماح بتنزيل بطاقة الاتصال vCard</div>
                                 </div>
                             </div>
                             <label class="switch">
-                                <input type="checkbox" name="allowVCard" checked>
+                                <input type="checkbox" id="allowVCard" name="allowVCard" checked>
                                 <span class="slider"></span>
                             </label>
                         </div>
+                    </div>
+
+                    <div class="security-tip">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>نصيحة: تفعيل الحماية بكلمة مرور يضيف طبقة أمان إضافية لبياناتك المهنية</p>
                     </div>
                     
                     <div class="form-navigation">
@@ -348,7 +780,7 @@
                             <i class="fas fa-arrow-right"></i>
                             السابق
                         </a>
-                        <button type="submit" class="btn-next">
+                        <button type="submit" class="btn-next" id="submitBtn">
                             التالي
                             <i class="fas fa-arrow-left"></i>
                         </button>
@@ -357,7 +789,12 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="security-status">
+        <i class="fas fa-shield-alt" style="margin-left: 8px; color: #4cc9f0;"></i>
+        مستوى الحماية: قوي
+    </div>
+
     <script>
         function togglePasswordField() {
             const checkbox = document.getElementById('enablePassword');
@@ -365,10 +802,93 @@
             
             if (checkbox.checked) {
                 passwordField.classList.add('show');
+                // تأثير اهتزاز للحقل
+                passwordField.style.animation = 'none';
+                passwordField.offsetHeight;
+                passwordField.style.animation = 'slideDown 0.4s ease-out';
             } else {
                 passwordField.classList.remove('show');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('%c🔒 NFC Pro - إعدادات الحماية', 'color: #4cc9f0; font-size: 14px; font-weight: bold;');
+
+            // تأثيرات تفاعلية للتبديل
+            const toggles = document.querySelectorAll('.toggle-switch');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    // منع النقر المزدوج على الـ checkbox
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                        
+                        // تحديث حقل كلمة المرور إذا كان المفتاح الخاص به
+                        if (checkbox.id === 'enablePassword') {
+                            togglePasswordField();
+                        }
+                        
+                        // تأثير عند التبديل
+                        this.style.transform = 'scale(0.99)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 200);
+                    }
+                });
+            });
+
+            // التحقق من صحة كلمة المرور
+            const form = document.getElementById('securityForm');
+            form.addEventListener('submit', function(e) {
+                const passwordCheck = document.getElementById('enablePassword');
+                const passwordField = document.querySelector('input[name="password"]');
+                
+                if (passwordCheck.checked && !passwordField.value) {
+                    e.preventDefault();
+                    
+                    // رسالة خطأ
+                    const passwordDiv = document.getElementById('passwordField');
+                    passwordDiv.style.borderColor = '#ff6b6b';
+                    
+                    // إظهار رسالة
+                    const errorMsg = document.createElement('div');
+                    errorMsg.style.color = '#ff6b6b';
+                    errorMsg.style.marginTop = '10px';
+                    errorMsg.style.fontSize = '0.9em';
+                    errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> الرجاء إدخال كلمة المرور';
+                    
+                    // إزالة أي رسالة خطأ سابقة
+                    const oldError = passwordDiv.querySelector('.error-message');
+                    if (oldError) oldError.remove();
+                    
+                    errorMsg.classList.add('error-message');
+                    passwordDiv.appendChild(errorMsg);
+                    
+                    // تأثير على الزر
+                    const btn = document.getElementById('submitBtn');
+                    btn.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        btn.style.transform = '';
+                    }, 200);
+                } else {
+                    // تأثير على الزر
+                    const btn = document.getElementById('submitBtn');
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+                }
+            });
+
+            // تأثير التركيز على حقل كلمة المرور
+            const passwordInput = document.querySelector('input[name="password"]');
+            if (passwordInput) {
+                passwordInput.addEventListener('focus', function() {
+                    this.parentElement.style.borderColor = '#4cc9f0';
+                });
+                
+                passwordInput.addEventListener('blur', function() {
+                    this.parentElement.style.borderColor = '';
+                });
+            }
+        });
     </script>
 </body>
 </html>

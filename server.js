@@ -534,7 +534,45 @@ app.get('/create-profile', (req, res) => {
         ctaColor: '#667eea'
     });
 });
+// ============================================
+// صفحة العرض التجريبي للبطاقة
+// ============================================
+// ============================================
 
+app.get('/card/card-nfc-001', (req, res) => {
+    // بيانات تجريبية للعرض
+    const demoProfile = {
+        profileId: 'nfc-001',
+        name: 'أحمد محمد',
+        email: 'ahmed@example.com',
+        phone: '+966 50 123 4567',
+        title: 'مطور برمجيات',
+        company: 'تك المحدودة',
+        bio: 'مطور واجهات أمامية بخبرة 5 سنوات في تطوير تطبيقات الويب',
+        template: 'modern',
+        isPasswordProtected: false,
+        enableStats: true,
+        allowVCard: true,
+        stats: { views: 1250 },
+        social: {
+            linkedin: 'https://linkedin.com/in/ahmed',
+            twitter: 'https://twitter.com/ahmed',
+            github: 'https://github.com/ahmed',
+            instagram: 'https://instagram.com/ahmed'
+        },
+        createdAt: new Date()
+    };
+
+    // عرض الملف الشخصي التجريبي
+    res.render('templates/template-modern', {
+        title: `ملف ${demoProfile.name} التجريبي`,
+        profile: demoProfile,
+        allowVCard: true,
+        isDemo: true,
+        ctaText: 'احصل على بطاقتك NFC الآن',
+        ctaLink: '/create-profile'
+    });
+});
 // ============================================
 // تشغيل الخادم
 // ============================================

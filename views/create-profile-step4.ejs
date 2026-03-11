@@ -3,159 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>NFC Pro | تم إنشاء بطاقتك بنجاح</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة */
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            width: 80vmax;
+            height: 80vmax;
+            background: radial-gradient(circle at 30% 50%, rgba(76, 201, 240, 0.15) 0%, rgba(67, 97, 238, 0.15) 50%, transparent 70%);
+            border-radius: 50%;
+            top: -20%;
+            right: -20%;
+            animation: floatOrb 30s ease-in-out infinite;
+        }
+
+        .gradient-orb-2 {
+            position: absolute;
+            width: 70vmax;
+            height: 70vmax;
+            background: radial-gradient(circle at 70% 50%, rgba(172, 107, 255, 0.12) 0%, rgba(76, 201, 240, 0.12) 50%, transparent 70%);
+            border-radius: 50%;
+            bottom: -20%;
+            left: -20%;
+            animation: floatOrb 35s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, 5%) scale(1.1); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: moveParticles 60s linear infinite;
+        }
+
+        @keyframes moveParticles {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 200px 200px, -200px -200px; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 30px;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            opacity: 0.5;
+            animation: confettiFall 3s ease-in-out infinite;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* الحاوية الرئيسية */
         .profile-creation {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .creation-container {
-            max-width: 900px;
+            max-width: 1100px;
+            width: 100%;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.8s ease-out;
         }
-        
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* رأس الخطوات */
         .steps-header {
-            background: #f8f9fa;
-            padding: 20px 40px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 30px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
         }
-        
+
         .steps-progress {
             display: flex;
             justify-content: space-between;
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
-        
+
+        .steps-progress::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
         .step-item {
             position: relative;
             z-index: 2;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 100px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #6c757d;
-            border: 2px solid #dee2e6;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .step-item.completed {
-            background: #28a745;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
+            border-color: #4cc9f0;
             color: white;
-            border-color: #28a745;
         }
-        
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .completed .step-number {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+        }
+
+        .step-item i {
+            color: #4cc9f0;
+            font-size: 0.9em;
+        }
+
+        /* قسم النجاح */
         .success-section {
-            padding: 40px;
-            text-align: center;
+            padding: 60px 40px;
         }
-        
+
         .success-icon {
-            font-size: 5em;
-            color: #28a745;
-            margin-bottom: 20px;
-            animation: scaleIn 0.5s ease;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
         }
-        
-        @keyframes scaleIn {
-            from {
-                transform: scale(0);
+
+        .success-icon i {
+            font-size: 6em;
+            background: linear-gradient(135deg, #28a745, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: successPop 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes successPop {
+            0% {
+                transform: scale(0) rotate(-180deg);
             }
-            to {
-                transform: scale(1);
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0);
             }
         }
-        
+
         .success-section h2 {
-            color: #2c3e50;
-            font-size: 2em;
+            color: white;
+            font-size: 2.5em;
+            font-weight: 800;
+            text-align: center;
             margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowText 2s ease-in-out infinite;
         }
-        
+
+        @keyframes glowText {
+            0%, 100% { text-shadow: 0 0 20px rgba(76, 201, 240, 0.3); }
+            50% { text-shadow: 0 0 40px rgba(76, 201, 240, 0.6); }
+        }
+
         .success-section .subtitle {
-            color: #666;
+            color: rgba(255, 255, 255, 0.6);
             font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        /* أزرار CTA الرئيسية */
+        .cta-section {
             margin-bottom: 40px;
         }
-        
-        .profile-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            text-align: right;
-        }
-        
-        .profile-url {
-            background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        
-        .profile-url span {
-            color: #2c3e50;
-            font-family: monospace;
-            font-size: 1.1em;
-            word-break: break-all;
-        }
-        
-        .copy-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            white-space: nowrap;
-        }
-        
-        .copy-btn:hover {
-            background: #5a67d8;
-        }
-        
-        /* ===== أزرار CTA الجديدة ===== */
-        .cta-section {
-            margin: 40px 0 30px;
-        }
-        
+
         .cta-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
-        
+
         .cta-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 25px 15px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-            text-decoration: none;
-            display: block;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out forwards;
         }
-        
+
+        .cta-card:nth-child(1) { animation-delay: 0.2s; }
+        .cta-card:nth-child(2) { animation-delay: 0.4s; }
+        .cta-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .cta-card::before {
             content: '';
             position: absolute;
@@ -163,209 +310,357 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
             transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.6s ease;
         }
-        
+
         .cta-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+            transform: translateY(-8px);
+            border-color: #4cc9f0;
+            box-shadow: 0 30px 50px -20px #4361ee;
         }
-        
+
         .cta-card:hover::before {
             transform: translateX(0);
         }
-        
+
         .cta-icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.3s ease;
         }
-        
+
+        .cta-card:hover .cta-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
         .cta-title {
-            font-size: 1.2em;
-            font-weight: bold;
+            color: white;
+            font-size: 1.3em;
+            font-weight: 700;
             margin-bottom: 10px;
         }
-        
+
         .cta-description {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95em;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
-        
+
         .cta-price {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 25px;
             display: inline-block;
-            font-weight: bold;
+            padding: 8px 25px;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-radius: 100px;
+            color: white;
+            font-weight: 700;
             font-size: 1.1em;
+            box-shadow: 0 10px 20px -10px #4361ee;
         }
-        
-        /* ألوان مختلفة لكل زر */
-        .cta-card.physical {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+
+        .cta-price.free {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #4cc9f0;
         }
-        
-        .cta-card.digital {
-            background: linear-gradient(135deg, #28a745, #20c997);
-        }
-        
-        .cta-card.qr {
-            background: linear-gradient(135deg, #dc3545, #fd7e14);
-        }
-        
-        .cta-card.share {
-            background: linear-gradient(135deg, #17a2b8, #6f42c1);
-        }
-        
-        .cta-card.vcard {
-            background: linear-gradient(135deg, #ffc107, #fd7e14);
-        }
-        
-        /* أزرار إضافية */
+
+        /* صف الأزرار الإضافية */
         .cta-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 15px 0;
+            gap: 20px;
+            margin-top: 20px;
         }
-        
+
         .cta-button {
-            background: white;
-            border: 2px solid #dee2e6;
-            padding: 20px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 25px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            color: #2c3e50;
             display: block;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out 0.8s forwards;
         }
-        
+
         .cta-button:hover {
-            border-color: #667eea;
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #4cc9f0;
+            background: rgba(255, 255, 255, 0.05);
         }
-        
+
         .cta-button i {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
         }
-        
-        /* باقي الأنماط */
+
+        .cta-button:hover i {
+            transform: scale(1.1);
+        }
+
+        .cta-button h4 {
+            color: white;
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+
+        .cta-button p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+        }
+
+        /* بطاقات الملف الشخصي */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out 1s forwards;
+        }
+
+        .profile-card:hover {
+            border-color: #4cc9f0;
+            box-shadow: 0 20px 40px -20px #4361ee;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-header i {
+            font-size: 2em;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-header h3 {
+            color: white;
+            font-size: 1.3em;
+            margin: 0;
+        }
+
+        .profile-url {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-url:hover {
+            border-color: #4cc9f0;
+            background: rgba(76, 201, 240, 0.05);
+        }
+
+        .profile-url span {
+            color: white;
+            font-family: monospace;
+            font-size: 1em;
+            word-break: break-all;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px #4361ee;
+        }
+
+        .copy-btn i {
+            font-size: 1em;
+        }
+
+        .physical-badge {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .physical-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px #4361ee;
+        }
+
+        /* خيارات التصدير */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin: 30px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out 1.2s forwards;
         }
-        
+
         .option-card {
-            background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 25px 20px;
             text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
-        
+
         .option-card:hover {
             transform: translateY(-5px);
-            border-color: #667eea;
+            border-color: #4cc9f0;
+            background: rgba(76, 201, 240, 0.05);
         }
-        
+
         .option-card i {
             font-size: 2.5em;
-            color: #667eea;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 15px;
+            transition: transform 0.3s ease;
         }
-        
+
+        .option-card:hover i {
+            transform: scale(1.1) rotate(5deg);
+        }
+
         .option-card h3 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .option-card p {
-            color: #666;
-            font-size: 0.9em;
-        }
-        
-        .physical-badge {
-            display: inline-block;
-            background: #667eea;
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .option-card p {
+            color: rgba(255, 255, 255, 0.5);
             font-size: 0.9em;
-            margin-top: 10px;
-            text-decoration: none;
+            line-height: 1.6;
         }
-        
+
+        /* ملاحظة */
         .note-box {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            border-radius: 10px;
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+            border: 1px solid #4cc9f0;
+            border-radius: 20px;
+            padding: 20px 25px;
             margin: 30px 0;
-            color: #856404;
-            text-align: right;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out 1.4s forwards;
         }
-        
+
         .note-box i {
-            margin-left: 10px;
+            color: #4cc9f0;
+            font-size: 1.5em;
         }
-        
+
+        .note-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* أزرار الإجراءات */
         .action-buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin: 30px 0;
+            margin: 40px 0 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out 1.6s forwards;
         }
-        
-        .btn-primary {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .btn-primary:hover {
-            background: #5a67d8;
-        }
-        
+
+        .btn-primary,
         .btn-secondary {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
+            padding: 16px 40px;
+            border-radius: 16px;
             font-size: 1.1em;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            border: none;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            box-shadow: 0 10px 30px -10px #4361ee;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover,
         .btn-secondary:hover {
-            background: #5a6268;
+            transform: translateY(-3px);
         }
-        
+
+        .btn-primary:hover {
+            box-shadow: 0 20px 40px -10px #4361ee;
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -374,116 +669,179 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
-        
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 400px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 40px;
+            max-width: 450px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            animation: modalSlideUp 0.4s ease-out;
         }
-        
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .modal-content h3 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        
-        .modal-content select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 1em;
-        }
-        
-        .modal-buttons {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 1.8em;
             display: flex;
+            align-items: center;
             gap: 10px;
         }
-        
+
+        .modal-content h3 i {
+            color: #4cc9f0;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .modal-content select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+        }
+
+        .modal-content select:focus {
+            outline: none;
+            border-color: #4cc9f0;
+        }
+
+        .modal-content select option {
+            background: #1a1a1f;
+            color: white;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
         .modal-btn {
             flex: 1;
-            padding: 12px;
+            padding: 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 16px;
             cursor: pointer;
             font-size: 1em;
-            transition: opacity 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
-        
+
         .modal-btn.cancel {
-            background: #6c757d;
+            background: rgba(255, 255, 255, 0.03);
             color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .modal-btn.confirm {
-            background: #28a745;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
             color: white;
         }
-        
+
         .modal-btn:hover {
-            opacity: 0.9;
+            transform: translateY(-2px);
         }
-        
-        /* Floating CTA */
+
+        /* زر عائم */
         .floating-cta {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            background: #667eea;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px #4361ee;
             transition: all 0.3s ease;
             z-index: 999;
             border: none;
+            animation: float 3s ease-in-out infinite;
         }
-        
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         .floating-cta:hover {
             transform: scale(1.1);
-            background: #5a67d8;
+            box-shadow: 0 20px 40px #4361ee;
         }
-        
+
         .floating-cta i {
-            font-size: 1.5em;
+            font-size: 1.8em;
         }
-        
+
         .floating-tooltip {
             position: absolute;
-            left: 70px;
-            background: white;
-            color: #2c3e50;
-            padding: 8px 15px;
-            border-radius: 20px;
+            left: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
             font-size: 0.9em;
             white-space: nowrap;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
-        
+
         .floating-cta:hover .floating-tooltip {
-            display: block;
+            opacity: 1;
+            transform: translateX(0);
         }
-        
+
+        /* تصميم متجاوب */
         @media (max-width: 768px) {
-            .cta-grid {
-                grid-template-columns: 1fr;
-            }
-            
+            .cta-grid,
+            .options-grid,
             .cta-row {
                 grid-template-columns: 1fr;
             }
@@ -494,24 +852,128 @@
             
             .profile-url {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
             
-            .profile-url button {
+            .profile-url span {
+                text-align: center;
+            }
+            
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .steps-progress {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .steps-progress::before {
+                display: none;
+            }
+            
+            .step-item {
                 width: 100%;
             }
+            
+            .success-section {
+                padding: 40px 20px;
+            }
+            
+            .success-section h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+        }
+
+        /* إشعارات */
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            animation: notificationSlide 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @keyframes notificationSlide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .notification i {
+            color: #4cc9f0;
         }
     </style>
 </head>
 <body>
+    <div class="background">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb-2"></div>
+        <div class="particles"></div>
+    </div>
+
+    <!-- كونفيتي احتفالي -->
+    <div class="confetti" id="confetti"></div>
+
     <div class="profile-creation">
         <div class="creation-container">
             <div class="steps-header">
                 <div class="steps-progress">
-                    <div class="step-item completed">1</div>
-                    <div class="step-item completed">2</div>
-                    <div class="step-item completed">3</div>
-                    <div class="step-item completed">4</div>
+                    <div class="step-item completed">
+                        <span class="step-number">1</span>
+                        <span>المعلومات الأساسية</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-item completed">
+                        <span class="step-number">2</span>
+                        <span>اختيار القالب</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-item completed">
+                        <span class="step-number">3</span>
+                        <span>الحماية</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-item completed">
+                        <span class="step-number">4</span>
+                        <span>التأكيد</span>
+                        <i class="fas fa-check"></i>
+                    </div>
                 </div>
             </div>
             
@@ -520,130 +982,131 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 
-                <h2>تهانينا! هويتك الذكية جاهزة</h2>
-                <p class="subtitle">اختر كيفية استخدام هويتك الذكية</p>
+                <h2>تهانينا! بطاقتك الذكية جاهزة</h2>
+                <p class="subtitle">اختر كيف تريد استخدام هويتك الرقمية</p>
                 
-                <!-- ===== أزرار CTA الرئيسية ===== -->
+                <!-- أزرار CTA الرئيسية -->
                 <div class="cta-section">
                     <div class="cta-grid">
                         <!-- زر 1: طلب بطاقة NFC مادية -->
-                        <div class="cta-card physical" onclick="orderPhysicalCard()">
+                        <div class="cta-card" onclick="orderPhysicalCard()">
                             <div class="cta-icon">
                                 <i class="fas fa-id-card"></i>
                             </div>
-                            <div class="cta-title">اطلب بطاقة NFC</div>
-                            <div class="cta-description">بطاقة مادية مع شريحة NFC ورمز QR</div>
-                            <div class="cta-price">99 ريال</div>
+                            <div class="cta-title">بطاقة NFC مادية</div>
+                            <div class="cta-description">بطاقة احترافية مع شريحة NFC ورمز QR</div>
+                            <div class="cta-price">٩٩ ر.س</div>
                         </div>
                         
                         <!-- زر 2: مشاركة الملف الرقمي -->
-                        <div class="cta-card digital" onclick="shareProfile()">
+                        <div class="cta-card" onclick="shareProfile()">
                             <div class="cta-icon">
                                 <i class="fas fa-share-alt"></i>
                             </div>
-                            <div class="cta-title">شارك ملفك الرقمي</div>
-                            <div class="cta-description">مجاناً - رابط مباشر للمشاركة</div>
-                            <div class="cta-price">مجاني</div>
+                            <div class="cta-title">مشاركة الملف الرقمي</div>
+                            <div class="cta-description">شارك رابط بطاقتك مع أي شخص</div>
+                            <div class="cta-price free">مجاناً</div>
                         </div>
                         
                         <!-- زر 3: تنزيل رمز QR -->
-                        <div class="cta-card qr" onclick="downloadQR()">
+                        <div class="cta-card" onclick="downloadQR()">
                             <div class="cta-icon">
                                 <i class="fas fa-qrcode"></i>
                             </div>
                             <div class="cta-title">رمز QR</div>
-                            <div class="cta-description">تنزيل رمز QR لاستخدامه في أي مكان</div>
-                            <div class="cta-price">مجاني</div>
+                            <div class="cta-description">تنزيل رمز QR لطباعته أو مشاركته</div>
+                            <div class="cta-price free">مجاناً</div>
                         </div>
                     </div>
                     
-                    <!-- أزرار إضافية في صف ثاني -->
+                    <!-- أزرار إضافية -->
                     <div class="cta-row">
-                        <!-- زر تنزيل vCard -->
                         <div class="cta-button" onclick="downloadVCard()">
                             <i class="fas fa-address-card"></i>
-                            <h4 style="margin: 10px 0;">تنزيل vCard</h4>
-                            <p style="color: #666; font-size: 0.9em;">ملف جهة اتصال جاهز</p>
+                            <h4>تنزيل vCard</h4>
+                            <p>ملف جهة اتصال جاهز</p>
                         </div>
                         
-                        <!-- زر نسخ الرابط -->
                         <div class="cta-button" onclick="copyProfileLink()">
                             <i class="fas fa-link"></i>
-                            <h4 style="margin: 10px 0;">نسخ الرابط</h4>
-                            <p style="color: #666; font-size: 0.9em;">شاركه مع أي شخص</p>
+                            <h4>نسخ الرابط</h4>
+                            <p>شاركه مع أي شخص</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- النسخة المادية -->
                 <div class="profile-card">
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                        <i class="fas fa-id-card" style="font-size: 2em; color: #667eea;"></i>
-                        <h3 style="margin: 0;">النسخة المادية</h3>
+                    <div class="profile-header">
+                        <i class="fas fa-id-card"></i>
+                        <h3>النسخة المادية</h3>
                     </div>
                     
                     <div class="profile-url">
-                        <span><%= profileUrl %></span>
-                        <button class="copy-btn" onclick="copyToClipboard('<%= profileUrl %>')">
+                        <span>https://nfc.pro/card/ahmed-123</span>
+                        <button class="copy-btn" onclick="copyToClipboard('https://nfc.pro/card/ahmed-123')">
                             <i class="fas fa-copy"></i> نسخ
                         </button>
                     </div>
                     
-                    <p style="color: #666; margin: 10px 0;">
-                        <i class="fas fa-wifi"></i> NFC · احصل على بطاقات مادية مع رمز QR وشريحة
+                    <p style="color: rgba(255, 255, 255, 0.6); margin: 10px 0;">
+                        <i class="fas fa-wifi" style="color: #4cc9f0; margin-left: 5px;"></i>
+                        NFC · بطاقة بلاستيكية عالية الجودة مع شريحة NFC
                     </p>
                     
-                    <button onclick="orderPhysicalCard()" class="physical-badge" style="border: none; cursor: pointer;">
-                        طلب البطاقات
+                    <button onclick="orderPhysicalCard()" class="physical-badge">
+                        <i class="fas fa-shopping-cart"></i>
+                        اطلب بطاقتك الآن
                     </button>
                 </div>
                 
                 <!-- النسخة الرقمية -->
                 <div class="profile-card">
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                        <i class="fas fa-link" style="font-size: 2em; color: #667eea;"></i>
-                        <h3 style="margin: 0;">النسخة الرقمية</h3>
+                    <div class="profile-header">
+                        <i class="fas fa-link"></i>
+                        <h3>النسخة الرقمية</h3>
                     </div>
                     
-                    <p style="color: #666; margin: 10px 0;">
-                        <i class="fas fa-globe"></i> رابط فريد يؤدي مباشرة إلى ملفك الشخصي
+                    <p style="color: rgba(255, 255, 255, 0.6); margin: 10px 0;">
+                        <i class="fas fa-globe" style="color: #4cc9f0; margin-left: 5px;"></i>
+                        رابط فريد يؤدي مباشرة إلى ملفك الشخصي
                     </p>
                     
                     <div class="profile-url">
-                        <span><%= profileUrl %></span>
-                        <button class="copy-btn" onclick="copyToClipboard('<%= profileUrl %>')">
+                        <span>https://nfc.pro/card/ahmed-123</span>
+                        <button class="copy-btn" onclick="copyToClipboard('https://nfc.pro/card/ahmed-123')">
                             <i class="fas fa-copy"></i> نسخ
                         </button>
                     </div>
                 </div>
                 
                 <!-- خيارات التصدير الإضافية -->
-                <h3 style="text-align: right; margin: 30px 0 20px;">خيارات التصدير الإضافية</h3>
+                <h3 style="color: white; text-align: right; margin: 40px 0 20px;">خيارات إضافية</h3>
                 
                 <div class="options-grid">
                     <div class="option-card" onclick="downloadQR()">
                         <i class="fas fa-qrcode"></i>
-                        <h3>تنزيل رمز QR</h3>
-                        <p>استخدمه في بطاقاتك، موقعك أو أي مكان آخر</p>
+                        <h3>رمز QR</h3>
+                        <p>استخدمه في بطاقاتك أو موقعك</p>
                     </div>
                     
                     <div class="option-card" onclick="downloadVCard()">
                         <i class="fas fa-address-card"></i>
-                        <h3>تصدير بطاقة الاتصال (vCard)</h3>
-                        <p>ملف vcf يمكنك مشاركته مع العملاء</p>
+                        <h3>vCard</h3>
+                        <p>ملف جهة اتصال للهاتف</p>
                     </div>
                     
                     <div class="option-card" onclick="shareProfile()">
                         <i class="fas fa-share-alt"></i>
-                        <h3>مشاركة ملف التعريف</h3>
-                        <p>شارك الرابط عبر وسائل التواصل الاجتماعي</p>
+                        <h3>مشاركة</h3>
+                        <p>عبر وسائل التواصل</p>
                     </div>
                 </div>
                 
                 <!-- ملاحظة -->
                 <div class="note-box">
                     <i class="fas fa-save"></i>
-                    حفظ الملف الشخصي - يمكنك تعديل ملفك في أي وقت من لوحة التحكم
+                    <p>يمكنك تعديل ملفك الشخصي في أي وقت من لوحة التحكم</p>
                 </div>
                 
                 <!-- أزرار الإجراءات -->
@@ -661,27 +1124,30 @@
         </div>
     </div>
     
-    <!-- نافذة منبثقة لتأكيد الطلب -->
+    <!-- نافذة منبثقة للطلب -->
     <div class="modal" id="orderModal">
         <div class="modal-content">
-            <h3><i class="fas fa-shopping-cart"></i> تأكيد طلب البطاقة</h3>
+            <h3>
+                <i class="fas fa-shopping-cart"></i>
+                طلب بطاقة NFC
+            </h3>
             
             <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 5px;">عدد البطاقات:</label>
+                <label>عدد البطاقات:</label>
                 <select id="cardQuantity">
-                    <option value="1">1 بطاقة - 99 ريال</option>
-                    <option value="5">5 بطاقات - 449 ريال (وفر 46 ريال)</option>
-                    <option value="10">10 بطاقات - 849 ريال (وفر 141 ريال)</option>
-                    <option value="25">25 بطاقة - 1999 ريال (وفر 476 ريال)</option>
+                    <option value="1">١ بطاقة - ٩٩ ر.س</option>
+                    <option value="5">٥ بطاقات - ٤٤٩ ر.س (وفر ٤٦ ر.س)</option>
+                    <option value="10">١٠ بطاقات - ٨٤٩ ر.س (وفر ١٤١ ر.س)</option>
+                    <option value="25">٢٥ بطاقة - ١٩٩٩ ر.س (وفر ٤٧٦ ر.س)</option>
                 </select>
             </div>
             
             <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 5px;">نوع البطاقة:</label>
+                <label>نوع البطاقة:</label>
                 <select id="cardType">
                     <option value="standard">قياسية (بلاستيك)</option>
-                    <option value="premium">بريميوم (معدن + تصميم خاص)</option>
-                    <option value="wood">خشبية (فخمة)</option>
+                    <option value="premium">بريميوم (معدن)</option>
+                    <option value="wood">خشبية فاخرة</option>
                 </select>
             </div>
             
@@ -692,13 +1158,44 @@
         </div>
     </div>
     
-    <!-- زر CTA عائم -->
+    <!-- زر عائم -->
     <div class="floating-cta" onclick="orderPhysicalCard()">
         <i class="fas fa-shopping-cart"></i>
         <span class="floating-tooltip">اطلب بطاقتك الآن</span>
     </div>
     
     <script>
+        // إنشاء الكونفيتي
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                piece.style.background = `linear-gradient(135deg, hsl(${Math.random() * 360}, 70%, 50%), hsl(${Math.random() * 360}, 70%, 50%))`;
+                confettiContainer.appendChild(piece);
+            }
+        }
+
+        // إظهار الإشعارات
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}" style="color: #4cc9f0;"></i>
+                ${message}
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'notificationSlide 0.3s ease reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
         // نسخ الرابط
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
@@ -707,7 +1204,7 @@
         }
         
         function copyProfileLink() {
-            copyToClipboard('<%= profileUrl %>');
+            copyToClipboard('https://nfc.pro/card/ahmed-123');
         }
         
         // طلب بطاقة مادية
@@ -725,28 +1222,24 @@
             const quantity = document.getElementById('cardQuantity').value;
             const cardType = document.getElementById('cardType').value;
             
-            // إظهار رسالة تأكيد
-            showNotification('✅ جاري تحويلك إلى واتساب...');
+            showNotification('📱 جاري تحويلك إلى واتساب...');
             
-            // تحويل إلى واتساب
             setTimeout(() => {
                 const message = encodeURIComponent(
                     `طلب بطاقة NFC:\n` +
                     `العدد: ${quantity}\n` +
                     `النوع: ${cardType}\n` +
-                    `الرابط: <%= profileUrl %>`
+                    `الرابط: https://nfc.pro/card/ahmed-123`
                 );
-                window.open(`https://wa.me/<%= whatsappNumber || '966500000000' %>?text=${message}`, '_blank');
+                window.open(`https://wa.me/966500000000?text=${message}`, '_blank');
                 closeModal();
             }, 1500);
         }
         
-        // تنزيل QR (مؤقتاً)
+        // تنزيل QR
         function downloadQR() {
             showNotification('📱 جاري إنشاء رمز QR...');
-            
-            // استخدام API خارجي لإنشاء QR
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=<%= encodeURIComponent(profileUrl) %>`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://nfc.pro/card/ahmed-123`;
             window.open(qrUrl, '_blank');
         }
         
@@ -754,13 +1247,13 @@
         function downloadVCard() {
             const vCardData = `BEGIN:VCARD
 VERSION:3.0
-FN:<%= formData?.name || '' %>
-TITLE:<%= formData?.title || '' %>
-ORG:<%= formData?.company || '' %>
-EMAIL:<%= formData?.email || '' %>
-TEL:<%= formData?.phone || '' %>
+FN:أحمد محمد
+TITLE:مطور برمجيات
+ORG:شركة التقنية
+EMAIL:ahmed@example.com
+TEL:+966500000000
 NOTE:هوية ذكية من نظام NFC
-URL:<%= profileUrl %>
+URL:https://nfc.pro/card/ahmed-123
 END:VCARD`;
             
             const blob = new Blob([vCardData], { type: 'text/vcard' });
@@ -782,35 +1275,11 @@ END:VCARD`;
                 navigator.share({
                     title: 'هويتي الذكية',
                     text: 'تفقد ملفي الشخصي',
-                    url: '<%= profileUrl %>'
+                    url: 'https://nfc.pro/card/ahmed-123'
                 });
             } else {
                 copyProfileLink();
             }
-        }
-        
-        // إظهار الإشعارات
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 100px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #28a745;
-                color: white;
-                padding: 15px 30px;
-                border-radius: 50px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                z-index: 1001;
-                animation: slideUp 0.3s ease;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
         }
         
         // إغلاق المودال عند النقر خارجه
@@ -820,6 +1289,22 @@ END:VCARD`;
                 modal.style.display = 'none';
             }
         }
+
+        // تشغيل الكونفيتي عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            createConfetti();
+            console.log('%c🎉 NFC Pro - تم إنشاء البطاقة بنجاح!', 'color: #4cc9f0; font-size: 14px; font-weight: bold;');
+            
+            // إزالة الكونفيتي بعد 5 ثوان
+            setTimeout(() => {
+                const confetti = document.getElementById('confetti');
+                confetti.style.opacity = '0';
+                confetti.style.transition = 'opacity 1s';
+                setTimeout(() => {
+                    confetti.innerHTML = '';
+                }, 1000);
+            }, 5000);
+        });
     </script>
 </body>
 </html>

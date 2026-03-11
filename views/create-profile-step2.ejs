@@ -3,239 +3,637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>NFC Pro | اختر قالب بطاقتك</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة */
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            width: 80vmax;
+            height: 80vmax;
+            background: radial-gradient(circle at 30% 50%, rgba(76, 201, 240, 0.15) 0%, rgba(67, 97, 238, 0.15) 50%, transparent 70%);
+            border-radius: 50%;
+            top: -20%;
+            right: -20%;
+            animation: floatOrb 30s ease-in-out infinite;
+        }
+
+        .gradient-orb-2 {
+            position: absolute;
+            width: 70vmax;
+            height: 70vmax;
+            background: radial-gradient(circle at 70% 50%, rgba(172, 107, 255, 0.12) 0%, rgba(76, 201, 240, 0.12) 50%, transparent 70%);
+            border-radius: 50%;
+            bottom: -20%;
+            left: -20%;
+            animation: floatOrb 35s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, 5%) scale(1.1); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: moveParticles 60s linear infinite;
+        }
+
+        @keyframes moveParticles {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 200px 200px, -200px -200px; }
+        }
+
+        /* الحاوية الرئيسية */
         .profile-creation {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .creation-container {
-            max-width: 1000px;
+            max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.8s ease-out;
         }
-        
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* رأس الخطوات */
         .steps-header {
-            background: #f8f9fa;
-            padding: 20px 40px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 30px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
         }
-        
+
         .steps-progress {
             display: flex;
             justify-content: space-between;
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
-        
+
         .steps-progress::before {
             content: '';
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
+            left: 60px;
+            right: 60px;
             height: 2px;
-            background: #dee2e6;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: translateY(-50%);
             z-index: 1;
         }
-        
+
         .step-item {
             position: relative;
             z-index: 2;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 100px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #6c757d;
-            border: 2px solid #dee2e6;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .step-item.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
+
         .step-item.completed {
-            background: #28a745;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
+            border-color: #4cc9f0;
             color: white;
-            border-color: #28a745;
         }
-        
+
+        .step-item.active {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-color: #4cc9f0;
+            color: white;
+            box-shadow: 0 10px 30px -10px #4361ee;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(76, 201, 240, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+            }
+        }
+
         .step-number {
-            width: 30px;
-            height: 30px;
-            background: white;
-            color: #667eea;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
         }
-        
+
+        .active .step-number,
+        .completed .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .step-item i {
+            font-size: 0.9em;
+        }
+
+        .completed i {
+            color: #4cc9f0;
+        }
+
+        /* قسم النموذج */
         .form-section {
-            padding: 40px;
+            padding: 50px 40px;
         }
-        
+
         .form-section h2 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 1.8em;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        
+
+        .form-section h2 i {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2em;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* شبكة القوالب */
         .templates-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
             margin: 30px 0;
         }
-        
+
         .template-card {
-            background: #f8f9fa;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 3px solid transparent;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardAppear 0.6s ease-out forwards;
         }
-        
+
+        .template-card:nth-child(1) { animation-delay: 0.2s; }
+        .template-card:nth-child(2) { animation-delay: 0.4s; }
+        .template-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .template-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(-8px) scale(1.02);
+            border-color: #4cc9f0;
+            box-shadow: 
+                0 30px 50px -20px rgba(76, 201, 240, 0.3),
+                0 0 0 1px rgba(76, 201, 240, 0.3) inset;
         }
-        
+
         .template-card.selected {
-            border-color: #667eea;
+            border-color: #4cc9f0;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+            box-shadow: 0 20px 40px -10px #4361ee;
         }
-        
+
         .template-preview {
-            height: 200px;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            height: 240px;
             position: relative;
             overflow: hidden;
         }
-        
-        .template-preview.modern {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+
+        .template-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
-        
-        .template-preview.classic {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+
+        .template-card:hover .template-preview::before {
+            transform: translateX(100%);
         }
-        
-        .template-preview.minimal {
-            background: white;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
+
         .preview-content {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
             color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
-        
-        .minimal .preview-content {
-            color: #2c3e50;
-        }
-        
+
         .preview-name {
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size: 1.4em;
+            font-weight: 700;
             margin-bottom: 5px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
         }
-        
+
+        .template-card:hover .preview-name {
+            transform: translateY(-3px);
+        }
+
         .preview-title {
-            font-size: 0.9em;
+            font-size: 1em;
             opacity: 0.9;
+            font-weight: 400;
         }
-        
+
+        /* تصاميم القوالب */
+        .template-preview.modern {
+            background: linear-gradient(135deg, #667eea, #764ba2, #4361ee);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        .template-preview.classic {
+            background: linear-gradient(135deg, #1e293b, #0f172a, #334155);
+            position: relative;
+        }
+
+        .template-preview.classic::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+        }
+
+        .template-preview.minimal {
+            background: #ffffff;
+        }
+
+        .minimal .preview-content {
+            color: #1e293b;
+            text-shadow: none;
+        }
+
+        .minimal .preview-name {
+            color: #0f172a;
+        }
+
+        .minimal .preview-title {
+            color: #64748b;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* معلومات القالب */
         .template-info {
-            padding: 20px;
+            padding: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .template-info h3 {
-            color: #2c3e50;
-            margin-bottom: 10px;
+            color: white;
+            margin-bottom: 8px;
+            font-size: 1.3em;
         }
-        
+
         .template-info p {
-            color: #666;
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 15px;
+            line-height: 1.6;
         }
-        
+
         .template-badge {
             display: inline-block;
-            padding: 5px 10px;
-            background: #667eea;
+            padding: 6px 15px;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
             color: white;
-            border-radius: 5px;
+            border-radius: 100px;
             font-size: 0.8em;
+            font-weight: 600;
+            box-shadow: 0 5px 15px -5px #4361ee;
+            animation: badgePulse 2s infinite;
         }
-        
+
+        @keyframes badgePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        /* أيقونة الاختيار */
+        .selected-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            opacity: 0;
+            transform: scale(0) rotate(-180deg);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 20px -5px #4361ee;
+            z-index: 10;
+        }
+
+        .template-card.selected .selected-icon {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        /* الراديو المخفي */
         .radio-input {
             display: none;
         }
-        
+
+        /* أزرار التنقل */
         .form-navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #dee2e6;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
-        .btn-next {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 10px;
+
+        .btn-next,
+        .btn-prev {
+            padding: 16px 40px;
+            border-radius: 16px;
             font-size: 1.1em;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .btn-next:hover {
-            background: #5a67d8;
-        }
-        
-        .btn-prev {
-            background: #6c757d;
-            color: white;
+            gap: 12px;
             border: none;
-            padding: 12px 40px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background 0.3s ease;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .btn-next {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            box-shadow: 0 10px 30px -10px #4361ee;
+        }
+
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-next::before,
+        .btn-prev::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-next:hover::before,
+        .btn-prev:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-next:hover,
         .btn-prev:hover {
-            background: #5a6268;
+            transform: translateY(-3px);
+        }
+
+        .btn-next:hover {
+            box-shadow: 0 20px 40px -10px #4361ee;
+        }
+
+        .btn-prev:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-next i,
+        .btn-prev i {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-next:hover i:last-child {
+            transform: translateX(-5px);
+        }
+
+        .btn-prev:hover i:first-child {
+            transform: translateX(5px);
+        }
+
+        /* تلميحات */
+        .hint {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .hint i {
+            color: #4cc9f0;
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-progress {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .steps-progress::before {
+                display: none;
+            }
+            
+            .step-item {
+                width: 100%;
+            }
+            
+            .creation-container {
+                border-radius: 32px;
+            }
+            
+            .form-section {
+                padding: 30px 20px;
+            }
+            
+            .steps-header {
+                padding: 20px;
+            }
+
+            .form-section h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+        }
+
+        /* رسالة ترحيبية */
+        .welcome-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 100px;
+            color: white;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInRight 0.5s ease-out;
+            z-index: 100;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="background">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb-2"></div>
+        <div class="particles"></div>
+    </div>
+
     <div class="profile-creation">
         <div class="creation-container">
             <div class="steps-header">
@@ -243,10 +641,12 @@
                     <div class="step-item completed">
                         <span class="step-number">1</span>
                         <span>المعلومات الأساسية</span>
+                        <i class="fas fa-check"></i>
                     </div>
                     <div class="step-item active">
                         <span class="step-number">2</span>
                         <span>اختيار القالب</span>
+                        <i class="fas fa-palette"></i>
                     </div>
                     <div class="step-item">
                         <span class="step-number">3</span>
@@ -260,62 +660,91 @@
             </div>
             
             <div class="form-section">
-                <h2>🎨 اختر قالب هويتك الذكية</h2>
+                <h2>
+                    <i class="fas fa-palette"></i>
+                    اختر هوية بطاقتك
+                </h2>
                 
                 <form action="/create-profile/step2" method="POST" id="templateForm">
-                    <!-- إخفاء بيانات الخطوة السابقة -->
-                    <% if (formData) { %>
-                        <% for (let [key, value] of Object.entries(formData)) { %>
-                            <input type="hidden" name="<%= key %>" value="<%= value %>">
-                        <% } %>
-                    <% } %>
+                    <!-- بيانات الخطوة السابقة -->
+                    <input type="hidden" name="name" value="أحمد محمد">
+                    <input type="hidden" name="email" value="ahmed@example.com">
+                    <input type="hidden" name="phone" value="+966500000000">
+                    <input type="hidden" name="title" value="مطور برمجيات">
+                    <input type="hidden" name="company" value="شركة التقنية">
+                    <input type="hidden" name="bio" value="مطور ويب بخبرة 5 سنوات">
                     
                     <div class="templates-grid">
                         <!-- القالب العصري -->
                         <label class="template-card" for="template-modern">
                             <input type="radio" name="template" id="template-modern" value="modern" class="radio-input" required>
+                            <div class="selected-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="template-preview modern">
                                 <div class="preview-content">
-                                    <div class="preview-name"><%= formData.name || 'أحمد محمد' %></div>
-                                    <div class="preview-title"><%= formData.title || 'مطور برمجيات' %></div>
+                                    <div class="preview-name">أحمد محمد</div>
+                                    <div class="preview-title">مطور برمجيات</div>
                                 </div>
                             </div>
                             <div class="template-info">
                                 <h3>القالب العصري</h3>
-                                <p>تصميم حديث بألوان جذابة مثالي للشخصيات الشبابية والشركات الناشئة</p>
-                                <span class="template-badge">الأكثر طلباً</span>
+                                <p>تصميم حديث متدرج بألوان جذابة مثالي للشخصيات الشبابية والشركات الناشئة</p>
+                                <span class="template-badge">
+                                    <i class="fas fa-fire"></i>
+                                    الأكثر طلباً
+                                </span>
                             </div>
                         </label>
                         
                         <!-- القالب الكلاسيكي -->
                         <label class="template-card" for="template-classic">
                             <input type="radio" name="template" id="template-classic" value="classic" class="radio-input">
+                            <div class="selected-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="template-preview classic">
                                 <div class="preview-content">
-                                    <div class="preview-name"><%= formData.name || 'أحمد محمد' %></div>
-                                    <div class="preview-title"><%= formData.title || 'مطور برمجيات' %></div>
+                                    <div class="preview-name">أحمد محمد</div>
+                                    <div class="preview-title">مطور برمجيات</div>
                                 </div>
                             </div>
                             <div class="template-info">
                                 <h3>القالب الكلاسيكي</h3>
-                                <p>تصميم أنيق واحترافي يناسب الشركات الكبيرة والمؤسسات</p>
+                                <p>تصميم أنيق باللون الأسود الذهبي يناسب الشركات الكبيرة والمؤسسات</p>
+                                <span class="template-badge">
+                                    <i class="fas fa-crown"></i>
+                                    احترافي
+                                </span>
                             </div>
                         </label>
                         
                         <!-- القالب البسيط -->
                         <label class="template-card" for="template-minimal">
                             <input type="radio" name="template" id="template-minimal" value="minimal" class="radio-input">
+                            <div class="selected-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
                             <div class="template-preview minimal">
                                 <div class="preview-content">
-                                    <div class="preview-name"><%= formData.name || 'أحمد محمد' %></div>
-                                    <div class="preview-title"><%= formData.title || 'مطور برمجيات' %></div>
+                                    <div class="preview-name">أحمد محمد</div>
+                                    <div class="preview-title">مطور برمجيات</div>
                                 </div>
                             </div>
                             <div class="template-info">
                                 <h3>القالب البسيط</h3>
-                                <p>تصميم نظيف وبسيط يركز على المحتوى</p>
+                                <p>تصميم نظيف وأبيض نقي يركز على المحتوى والوضوح</p>
+                                <span class="template-badge">
+                                    <i class="fas fa-leaf"></i>
+                                    minimalist
+                                </span>
                             </div>
                         </label>
+                    </div>
+
+                    <div class="hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                        اختر القالب الذي يعكس شخصيتك المهنية
                     </div>
                     
                     <div class="form-navigation">
@@ -332,14 +761,77 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="welcome-message">
+        <i class="fas fa-palette" style="margin-left: 8px; color: #4cc9f0;"></i>
+        اختر قالبك المفضل لتبدأ
+    </div>
+
     <script>
-        // تفعيل اختيار القالب
-        document.querySelectorAll('.template-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                this.querySelector('input[type="radio"]').checked = true;
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('%c✨ NFC Pro - اختيار القالب', 'color: #4cc9f0; font-size: 14px; font-weight: bold;');
+            
+            // تفعيل اختيار القالب
+            const templateCards = document.querySelectorAll('.template-card');
+            
+            templateCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // إزالة التحديد من جميع البطاقات
+                    templateCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // إضافة التحديد للبطاقة الحالية
+                    this.classList.add('selected');
+                    
+                    // تفعيل الراديو
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // تأثير اهتزاز خفيف
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+
+            // التحقق من التحديد قبل الإرسال
+            const form = document.getElementById('templateForm');
+            form.addEventListener('submit', function(e) {
+                const selected = document.querySelector('input[name="template"]:checked');
+                
+                if (!selected) {
+                    e.preventDefault();
+                    
+                    // رسالة خطأ
+                    const hint = document.querySelector('.hint');
+                    hint.style.color = '#ff6b6b';
+                    hint.innerHTML = '<i class="fas fa-exclamation-circle"></i> الرجاء اختيار قالب أولاً';
+                    
+                    // إعادة اللون بعد 3 ثوان
+                    setTimeout(() => {
+                        hint.style.color = 'rgba(255, 255, 255, 0.4)';
+                        hint.innerHTML = '<i class="fas fa-mouse-pointer"></i> اختر القالب الذي يعكس شخصيتك المهنية';
+                    }, 3000);
+                } else {
+                    // تأثير على الزر
+                    const btn = document.querySelector('.btn-next');
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+                }
+            });
+
+            // تأثيرات hover للبطاقات
+            templateCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.borderColor = 'rgba(76, 201, 240, 0.5)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                    }
+                });
             });
         });
     </script>
