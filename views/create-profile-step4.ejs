@@ -1053,8 +1053,8 @@
                     </div>
                     
                     <div class="profile-url">
-                        <span>https://nfc.pro/card/ahmed-123</span>
-                        <button class="copy-btn" onclick="copyToClipboard('https://nfc.pro/card/ahmed-123')">
+                        <span><%= profileUrl %></span>
+                        <button class="copy-btn" onclick="copyToClipboard('<%= profileUrl %>')">
                             <i class="fas fa-copy"></i> نسخ
                         </button>
                     </div>
@@ -1083,8 +1083,8 @@
                     </p>
                     
                     <div class="profile-url">
-                        <span>https://nfc.pro/card/ahmed-123</span>
-                        <button class="copy-btn" onclick="copyToClipboard('https://nfc.pro/card/ahmed-123')">
+                        <span><%= profileUrl %></span>
+                        <button class="copy-btn" onclick="copyToClipboard('<%= profileUrl %>')">
                             <i class="fas fa-copy"></i> نسخ
                         </button>
                     </div>
@@ -1175,6 +1175,19 @@
     </div>
     
     <script>
+        // استقبال المتغيرات من الخادم
+        const profileId = '<%= profileId %>';
+        const baseUrl = '<%= profileUrl.split('/p/')[0] %>';
+        const profileLink = '<%= profileUrl %>';
+        const whatsappNumber = '<%= whatsappNumber %>';
+        const profileName = '<%= formData.name %>';
+        const profileTitle = '<%= formData.title || "" %>';
+        const profileCompany = '<%= formData.company || "" %>';
+        const profileEmail = '<%= formData.email %>';
+        const profilePhone = '<%= formData.phone %>';
+
+        console.log('📌 بيانات البطاقة:', { profileId, profileLink, whatsappNumber });
+
         // إنشاء الكونفيتي
         function createConfetti() {
             const confettiContainer = document.getElementById('confetti');
@@ -1210,11 +1223,20 @@
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showNotification('✅ تم نسخ الرابط بنجاح!');
+            }).catch(() => {
+                // Fallback للنسخ
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showNotification('✅ تم نسخ الرابط بنجاح!');
             });
         }
         
         function copyProfileLink() {
-            copyToClipboard('https://nfc.pro/card/ahmed-123');
+            copyToClipboard(profileLink);
         }
         
         // طلب بطاقة مادية
@@ -1230,18 +1252,23 @@
         // تأكيد الطلب
         function confirmOrder() {
             const quantity = document.getElementById('cardQuantity').value;
-            const cardType = document.getElementById('cardType').value;
+            const cardTypeElement = document.getElementById('cardType');
+            const cardType = cardTypeElement.options[cardTypeElement.selectedIndex].text;
             
             showNotification('📱 جاري تحويلك إلى واتساب...');
             
             setTimeout(() => {
                 const message = encodeURIComponent(
                     `طلب بطاقة NFC:\n` +
+                    `----------------\n` +
                     `العدد: ${quantity}\n` +
                     `النوع: ${cardType}\n` +
-                    `الرابط: https://nfc.pro/card/ahmed-123`
+                    `الاسم: ${profileName}\n` +
+                    `الرابط: ${profileLink}\n` +
+                    `----------------\n` +
+                    `تاريخ الطلب: ${new Date().toLocaleDateString('ar-SA')}`
                 );
-                window.open(`https://wa.me/966500000000?text=${message}`, '_blank');
+                window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
                 closeModal();
             }, 1500);
         }
@@ -1249,7 +1276,7 @@
         // تنزيل QR
         function downloadQR() {
             showNotification('📱 جاري إنشاء رمز QR...');
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://nfc.pro/card/ahmed-123`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileLink)}`;
             window.open(qrUrl, '_blank');
         }
         
@@ -1257,20 +1284,20 @@
         function downloadVCard() {
             const vCardData = `BEGIN:VCARD
 VERSION:3.0
-FN:أحمد محمد
-TITLE:مطور برمجيات
-ORG:شركة التقنية
-EMAIL:ahmed@example.com
-TEL:+966500000000
+FN:${profileName}
+TITLE:${profileTitle}
+ORG:${profileCompany}
+EMAIL:${profileEmail}
+TEL:${profilePhone}
+URL:${profileLink}
 NOTE:هوية ذكية من نظام NFC
-URL:https://nfc.pro/card/ahmed-123
 END:VCARD`;
             
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'profile.vcf';
+            a.download = `${profileName}.vcf`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1283,9 +1310,11 @@ END:VCARD`;
         function shareProfile() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'هويتي الذكية',
+                    title: `هوية ${profileName} الذكية`,
                     text: 'تفقد ملفي الشخصي',
-                    url: 'https://nfc.pro/card/ahmed-123'
+                    url: profileLink
+                }).catch(() => {
+                    copyProfileLink();
                 });
             } else {
                 copyProfileLink();
@@ -1303,7 +1332,7 @@ END:VCARD`;
         // تشغيل الكونفيتي عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
             createConfetti();
-            console.log('🎉 NFC Pro - تم إنشاء البطاقة بنجاح! (تصميم فاتح)');
+            console.log('🎉 NFC Pro - تم إنشاء البطاقة بنجاح!');
             
             // إزالة الكونفيتي بعد 5 ثوان
             setTimeout(() => {

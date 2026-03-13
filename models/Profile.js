@@ -1,12 +1,66 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+// ============================================
+// ⚠️ تم تعطيل قاعدة البيانات PostgreSQL نهائياً
+// ============================================
+console.log('⚠️ قاعدة البيانات معطلة - استخدام الملفات المحلية فقط');
+
+// دوال وهمية للتعامل مع الملفات المحلية
+const mockFunctions = {
+    // دوال النماذج
+    sequelize: null,
+    Profile: null,
+    Visit: null,
+    Order: null,
+    
+    // دوال مساعدة
+    saveProfile: async (profileData) => {
+        console.log('📝 حفظ الملف الشخصي محلياً (محاكاة)');
+        return { success: true, data: profileData };
+    },
+    
+    findProfile: async (profileId) => {
+        console.log('🔍 البحث عن ملف محلياً (محاكاة)');
+        return null;
+    },
+    
+    createVisit: async (visitData) => {
+        console.log('👁️ تسجيل زيارة محلياً (محاكاة)');
+        return { success: true, data: visitData };
+    },
+    
+    createOrder: async (orderData) => {
+        console.log('📦 إنشاء طلب محلياً (محاكاة)');
+        return { success: true, data: orderData };
+    },
+    
+    getAllProfiles: async () => {
+        console.log('📋 جلب الملفات محلياً (محاكاة)');
+        return [];
+    },
+    
+    getAllVisits: async (limit = 100) => {
+        console.log('👀 جلب الزيارات محلياً (محاكاة)');
+        return [];
+    },
+    
+    updateProfileStats: async (profileId) => {
+        console.log('📊 تحديث إحصائيات محلياً (محاكاة)');
+        return { success: true };
+    }
+};
+
+// تصدير الدوال الوهمية
+module.exports = mockFunctions;
+
+// ============================================
+// الكود الأصلي معطل نهائياً (محذوف)
+// ============================================
+/*
 const { Sequelize, DataTypes } = require('sequelize');
 
-
 // تهيئة الاتصال بقاعدة البيانات
-// للتطوير المحلي: استخدم متغير البيئة DATABASE_URL
-// لـ Render: سيتم تعيين DATABASE_URL تلقائياً
 const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -122,7 +176,7 @@ const Profile = sequelize.define('Profile', {
     defaultValue: true
   }
 }, {
-  timestamps: true, // يضيف createdAt و updatedAt تلقائياً
+  timestamps: true,
   tableName: 'profiles'
 });
 
@@ -154,7 +208,7 @@ const Visit = sequelize.define('Visit', {
     }
   }
 }, {
-  timestamps: true, // سيستخدم createdAt كتاريخ الزيارة
+  timestamps: true,
   tableName: 'visits'
 });
 
@@ -221,8 +275,6 @@ Order.belongsTo(Profile, { foreignKey: 'profileId', targetKey: 'profileId' });
 // ============================================
 async function syncModels() {
   try {
-    // في الإنتاج، استخدم { alter: true } بدلاً من { force: true }
-    // { force: true } سيمسح الجداول ويعيد إنشاءها (للتطوير فقط)
     if (process.env.NODE_ENV === 'development') {
       await sequelize.sync({ alter: true });
       console.log('✅ تم مزامنة النماذج مع قاعدة البيانات');
@@ -235,16 +287,14 @@ async function syncModels() {
   }
 }
 
-// تشغيل المزامنة إذا لم نكن في بيئة اختبار
 if (process.env.NODE_ENV !== 'test') {
   syncModels();
 }
 
 // ============================================
-// دوال مساعدة للتعامل مع البيانات (مشابهة لـ Mongoose)
+// دوال مساعدة للتعامل مع البيانات
 // ============================================
 
-// حفظ ملف شخصي جديد
 async function saveProfile(profileData) {
   try {
     const profile = await Profile.create(profileData);
@@ -255,7 +305,6 @@ async function saveProfile(profileData) {
   }
 }
 
-// البحث عن ملف شخصي
 async function findProfile(profileId) {
   try {
     const profile = await Profile.findOne({ where: { profileId } });
@@ -266,7 +315,6 @@ async function findProfile(profileId) {
   }
 }
 
-// تحديث إحصائيات الزيارة
 async function updateProfileStats(profileId) {
   try {
     const profile = await Profile.findOne({ where: { profileId } });
@@ -281,7 +329,6 @@ async function updateProfileStats(profileId) {
   }
 }
 
-// تسجيل زيارة جديدة
 async function createVisit(visitData) {
   try {
     const visit = await Visit.create(visitData);
@@ -293,7 +340,6 @@ async function createVisit(visitData) {
   }
 }
 
-// إنشاء طلب جديد
 async function createOrder(orderData) {
   try {
     const order = await Order.create(orderData);
@@ -304,7 +350,6 @@ async function createOrder(orderData) {
   }
 }
 
-// جلب جميع الملفات الشخصية
 async function getAllProfiles() {
   try {
     const profiles = await Profile.findAll({
@@ -317,7 +362,6 @@ async function getAllProfiles() {
   }
 }
 
-// جلب جميع الزيارات مع بيانات الملف الشخصي
 async function getAllVisits(limit = 100) {
   try {
     const visits = await Visit.findAll({
@@ -350,3 +394,4 @@ module.exports = {
   getAllProfiles,
   getAllVisits
 };
+*/

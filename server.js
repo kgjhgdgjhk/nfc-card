@@ -93,8 +93,10 @@ app.use((req, res, next) => {
 });
 
 // ============================================
-// استيراد الموديلات من PostgreSQL
+// ⚠️ تم تعطيل قاعدة البيانات PostgreSQL تماماً
 // ============================================
+/*
+// استيراد الموديلات من PostgreSQL
 const { 
   sequelize, 
   Profile, 
@@ -107,12 +109,12 @@ const {
   getAllProfiles,
   getAllVisits 
 } = require('./models/Profile');
+*/
 
-// ============================================
-// الاتصال بقاعدة البيانات PostgreSQL
-// ============================================
+// متغير للتحقق من حالة الاتصال - مضبوط على false دائماً
 let isPostgresConnected = false;
 
+/*
 async function connectToDatabase() {
     try {
         console.log('📡 محاولة الاتصال بقاعدة البيانات...');
@@ -142,6 +144,9 @@ async function connectToDatabase() {
 }
 // محاولة الاتصال بقاعدة البيانات
 connectToDatabase();
+*/
+
+console.log('⚠️  تم تعطيل قاعدة البيانات PostgreSQL - استخدام الملفات المحلية فقط');
 
 // ============================================
 // إعدادات Lava Lamp
@@ -159,40 +164,35 @@ app.use((req, res, next) => {
 });
 
 // ============================================
-// دوال مساعدة للتعامل مع البيانات
+// دوال مساعدة للتعامل مع البيانات (ملفات محلية فقط)
 // ============================================
 
 // حفظ ملف شخصي جديد
 async function saveProfile(profileData) {
     try {
-        if (isPostgresConnected) {
-            // استخدام PostgreSQL
-            return await saveProfileToDB(profileData);
-        } else {
-            // استخدام الملف المحلي كبديل
-            const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
-            
-            // التأكد من وجود مجلد data
-            const dataDir = path.join(__dirname, 'data');
-            try {
-                await fs.access(dataDir);
-            } catch {
-                await fs.mkdir(dataDir, { recursive: true });
-            }
-            
-            let profiles = [];
-            try {
-                const data = await fs.readFile(DATA_FILE, 'utf8');
-                profiles = JSON.parse(data);
-            } catch {
-                profiles = [];
-            }
-            
-            profiles.push(profileData);
-            await fs.writeFile(DATA_FILE, JSON.stringify(profiles, null, 2));
-            
-            return { success: true, data: profileData };
+        // استخدام الملف المحلي فقط (تم تعطيل PostgreSQL)
+        const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
+        
+        // التأكد من وجود مجلد data
+        const dataDir = path.join(__dirname, 'data');
+        try {
+            await fs.access(dataDir);
+        } catch {
+            await fs.mkdir(dataDir, { recursive: true });
         }
+        
+        let profiles = [];
+        try {
+            const data = await fs.readFile(DATA_FILE, 'utf8');
+            profiles = JSON.parse(data);
+        } catch {
+            profiles = [];
+        }
+        
+        profiles.push(profileData);
+        await fs.writeFile(DATA_FILE, JSON.stringify(profiles, null, 2));
+        
+        return { success: true, data: profileData };
     } catch (error) {
         console.error('خطأ في حفظ الملف الشخصي:', error);
         return { success: false, error: error.message };
@@ -202,18 +202,14 @@ async function saveProfile(profileData) {
 // البحث عن ملف شخصي
 async function findProfile(profileId) {
     try {
-        if (isPostgresConnected) {
-            return await findProfileInDB(profileId);
-        } else {
-            const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
-            
-            try {
-                const data = await fs.readFile(DATA_FILE, 'utf8');
-                const profiles = JSON.parse(data);
-                return profiles.find(p => p.profileId === profileId) || null;
-            } catch {
-                return null;
-            }
+        const DATA_FILE = path.join(__dirname, 'data', 'profiles.json');
+        
+        try {
+            const data = await fs.readFile(DATA_FILE, 'utf8');
+            const profiles = JSON.parse(data);
+            return profiles.find(p => p.profileId === profileId) || null;
+        } catch {
+            return null;
         }
     } catch (error) {
         console.error('خطأ في البحث:', error);
@@ -243,7 +239,6 @@ async function updateProfileStatsLocally(profileId) {
     }
 }
 
-// تسجيل زيارة
 // تسجيل زيارة - نسخة محسنة
 async function logVisit(profileId, req) {
     try {
@@ -292,35 +287,30 @@ async function logVisit(profileId, req) {
             userAgent: userAgent.substring(0, 50) + '...'
         });
         
-        if (isPostgresConnected) {
-            // استخدام PostgreSQL
-            await createVisit(visitData);
-        } else {
-            // استخدام الملف المحلي
-            const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
-            
-            // التأكد من وجود مجلد data
-            const dataDir = path.join(__dirname, 'data');
-            try {
-                await fs.access(dataDir);
-            } catch {
-                await fs.mkdir(dataDir, { recursive: true });
-            }
-            
-            let visits = [];
-            try {
-                const data = await fs.readFile(VISITS_FILE, 'utf8');
-                visits = JSON.parse(data);
-            } catch {
-                visits = [];
-            }
-            
-            visits.push(visitData);
-            await fs.writeFile(VISITS_FILE, JSON.stringify(visits, null, 2));
-            
-            // تحديث إحصائيات الملف الشخصي
-            await updateProfileStatsLocally(profileId);
+        // استخدام الملف المحلي فقط
+        const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
+        
+        // التأكد من وجود مجلد data
+        const dataDir = path.join(__dirname, 'data');
+        try {
+            await fs.access(dataDir);
+        } catch {
+            await fs.mkdir(dataDir, { recursive: true });
         }
+        
+        let visits = [];
+        try {
+            const data = await fs.readFile(VISITS_FILE, 'utf8');
+            visits = JSON.parse(data);
+        } catch {
+            visits = [];
+        }
+        
+        visits.push(visitData);
+        await fs.writeFile(VISITS_FILE, JSON.stringify(visits, null, 2));
+        
+        // تحديث إحصائيات الملف الشخصي
+        await updateProfileStatsLocally(profileId);
         
         return true;
     } catch (error) {
@@ -390,14 +380,13 @@ app.post('/unlock-site', (req, res) => {
     }
 });
 
-// Route لإطالة المدة (للاستخدام الشخصي)
 // Route لإطالة المدة (للاستخدام الشخصي) - نسخة مصححة
 app.get('/extend-site/:days', (req, res) => {
     const { days } = req.params;
     
     // تأكد من أن days رقم صحيح
     const daysToAdd = parseInt(days);
-    if (isNaN(daysToAdd)) {  // شيلنا شرط <= 0
+    if (isNaN(daysToAdd)) {
         return res.status(400).json({ error: 'عدد الأيام غير صحيح' });
     }
     
@@ -417,19 +406,12 @@ app.get('/extend-site/:days', (req, res) => {
             newExpiryDate: expiryDate.toLocaleDateString('ar-SA')
         });
     } else {
-        // أرسل معلومات التصحيح
         res.status(403).json({ 
-            error: 'غير مصرح',
-            details: {
-                provided: providedSecret,
-                expected: "Albahri.com",
-                match: providedSecret === "Albahri.com",
-                length: providedSecret.length,
-                charCodes: providedSecret.split('').map(c => c.charCodeAt(0))
-            }
+            error: 'غير مصرح'
         });
     }
 });
+
 // الصفحة الرئيسية
 app.get('/', (req, res) => {
     res.render('index', {
@@ -449,6 +431,7 @@ app.get('/create-profile', (req, res) => {
 });
 
 // حفظ البيانات للخطوة 1
+// حفظ البيانات للخطوة 1
 app.post('/create-profile/step1', async (req, res) => {
     try {
         const { name, email, phone, title, company, bio } = req.body;
@@ -461,13 +444,18 @@ app.post('/create-profile/step1', async (req, res) => {
         // إنشاء معرف فريد
         const profileId = `profile-${uuidv4().substring(0, 8)}`;
         
-        // حفظ البيانات مؤقتاً
-        const queryString = new URLSearchParams({
+        // حفظ البيانات في الجلسة بدلاً من query string
+        req.session.profileData = {
             profileId,
-            name, email, phone, title, company, bio
-        }).toString();
+            name, 
+            email, 
+            phone, 
+            title, 
+            company, 
+            bio
+        };
         
-        res.redirect(`/create-profile/step2?${queryString}`);
+        res.redirect('/create-profile/step2');
         
     } catch (error) {
         console.error('خطأ:', error);
@@ -477,10 +465,15 @@ app.post('/create-profile/step1', async (req, res) => {
 
 // صفحة اختيار القالب (الخطوة 2)
 app.get('/create-profile/step2', (req, res) => {
+    // التحقق من وجود بيانات في الجلسة
+    if (!req.session.profileData) {
+        return res.redirect('/create-profile?error=الرجاء البدء من البداية');
+    }
+    
     res.render('create-profile-step2', {
         title: 'اختر قالب هويتك',
         step: 2,
-        formData: req.query,
+        formData: req.session.profileData,
         ctaText: 'اختر القالب واستمر',
         ctaColor: '#28a745'
     });
@@ -488,17 +481,30 @@ app.get('/create-profile/step2', (req, res) => {
 
 // حفظ اختيار القالب
 app.post('/create-profile/step2', (req, res) => {
-    const { template, ...formData } = req.body;
-    const queryString = new URLSearchParams({ ...formData, template }).toString();
-    res.redirect(`/create-profile/step3?${queryString}`);
+    const { template } = req.body;
+    
+    // التحقق من وجود بيانات في الجلسة
+    if (!req.session.profileData) {
+        return res.redirect('/create-profile?error=الرجاء البدء من البداية');
+    }
+    
+    // إضافة القالب إلى بيانات الجلسة
+    req.session.profileData.template = template;
+    
+    res.redirect('/create-profile/step3');
 });
 
 // صفحة إعدادات الحماية (الخطوة 3)
 app.get('/create-profile/step3', (req, res) => {
+    // التحقق من وجود بيانات في الجلسة
+    if (!req.session.profileData) {
+        return res.redirect('/create-profile?error=الرجاء البدء من البداية');
+    }
+    
     res.render('create-profile-step3', {
         title: 'حماية ملفك الشخصي',
         step: 3,
-        formData: req.query,
+        formData: req.session.profileData,
         ctaText: 'تأمين ملفي الشخصي',
         ctaColor: '#dc3545'
     });
@@ -506,24 +512,34 @@ app.get('/create-profile/step3', (req, res) => {
 
 // حفظ إعدادات الحماية
 app.post('/create-profile/step3', (req, res) => {
-    const { password, enableStats, allowVCard, ...formData } = req.body;
-    const queryString = new URLSearchParams({ 
-        ...formData, 
-        password: password || '',
-        enableStats: enableStats || 'off',
-        allowVCard: allowVCard || 'off'
-    }).toString();
-    res.redirect(`/create-profile/step4?${queryString}`);
+    const { password, enableStats, allowVCard } = req.body;
+    
+    // التحقق من وجود بيانات في الجلسة
+    if (!req.session.profileData) {
+        return res.redirect('/create-profile?error=الرجاء البدء من البداية');
+    }
+    
+    // إضافة إعدادات الحماية إلى بيانات الجلسة
+    req.session.profileData.password = password || '';
+    req.session.profileData.enableStats = enableStats || 'off';
+    req.session.profileData.allowVCard = allowVCard || 'off';
+    
+    res.redirect('/create-profile/step4');
 });
 
 // صفحة التأكيد والنتيجة (الخطوة 4)
 app.get('/create-profile/step4', async (req, res) => {
     try {
-        const formData = req.query;
-        const profileId = formData.profileId || `profile-${uuidv4().substring(0, 8)}`;
+        // التحقق من وجود بيانات في الجلسة
+        if (!req.session.profileData) {
+            return res.redirect('/create-profile?error=الرجاء البدء من البداية');
+        }
+        
+        const formData = req.session.profileData;
+        const profileId = formData.profileId;
         const profileUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profileId}`;
         
-        // حفظ الملف الشخصي في قاعدة البيانات
+        // حفظ الملف الشخصي في قاعدة البيانات (ملفات محلية)
         const profileData = {
             profileId,
             name: formData.name,
@@ -534,7 +550,7 @@ app.get('/create-profile/step4', async (req, res) => {
             bio: formData.bio,
             template: formData.template || 'modern',
             password: formData.password,
-            isPasswordProtected: !!formData.password,
+            isPasswordProtected: !!(formData.password && formData.password.trim() !== ''),
             enableStats: formData.enableStats === 'on',
             allowVCard: formData.allowVCard === 'on',
             stats: { views: 0 },
@@ -545,7 +561,10 @@ app.get('/create-profile/step4', async (req, res) => {
                 twitter: null,
                 github: null,
                 instagram: null
-            }
+            },
+            // إضافة حقول إضافية
+            website: formData.website || null,
+            address: formData.address || null
         };
         
         const result = await saveProfile(profileData);
@@ -553,6 +572,9 @@ app.get('/create-profile/step4', async (req, res) => {
         if (!result.success) {
             console.error('خطأ في الحفظ:', result.error);
         }
+        
+        // مسح بيانات الجلسة بعد الحفظ (اختياري)
+        // req.session.profileData = null;
         
         res.render('create-profile-step4', {
             title: 'هويتك الذكية جاهزة',
@@ -570,8 +592,6 @@ app.get('/create-profile/step4', async (req, res) => {
         res.redirect('/create-profile?error=حدث خطأ في حفظ البيانات');
     }
 });
-
-// صفحة عرض الملف الشخصي العام
 // صفحة عرض الملف الشخصي العام
 app.get('/p/:profileId', async (req, res) => {
     try {
@@ -592,7 +612,7 @@ app.get('/p/:profileId', async (req, res) => {
             return res.render('profile-password', {
                 title: 'ملف محمي',
                 profileId: req.params.profileId,
-                query: req.query || {}  // ✅ إضافة query
+                query: req.query || {}
             });
         }
         
@@ -603,7 +623,7 @@ app.get('/p/:profileId', async (req, res) => {
             allowVCard: profile.allowVCard,
             ctaText: 'احصل على بطاقتك NFC',
             ctaLink: '/create-profile',
-            query: req.query || {}  // ✅ إضافة query هنا أيضاً
+            query: req.query || {}
         });
         
     } catch (error) {
@@ -614,6 +634,7 @@ app.get('/p/:profileId', async (req, res) => {
         });
     }
 });
+
 // التحقق من كلمة المرور
 app.post('/p/:profileId/verify', async (req, res) => {
     try {
@@ -644,22 +665,18 @@ app.post('/api/create-order', async (req, res) => {
             createdAt: new Date()
         };
         
-        if (isPostgresConnected) {
-            await createOrder(orderData);
-        } else {
-            const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
-            
-            let orders = [];
-            try {
-                const data = await fs.readFile(ORDERS_FILE, 'utf8');
-                orders = JSON.parse(data);
-            } catch {
-                orders = [];
-            }
-            
-            orders.push(orderData);
-            await fs.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2));
+        const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
+        
+        let orders = [];
+        try {
+            const data = await fs.readFile(ORDERS_FILE, 'utf8');
+            orders = JSON.parse(data);
+        } catch {
+            orders = [];
         }
+        
+        orders.push(orderData);
+        await fs.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2));
         
         const whatsappMessage = `طلب جديد:\nالرقم: ${orderData.orderId}\nالنوع: ${cardType}\nالكمية: ${quantity}`;
         
@@ -687,52 +704,39 @@ app.get('/admin', async (req, res) => {
         let orders = [];
         let stats = {};
         
-        if (isPostgresConnected) {
-            profiles = await getAllProfiles();
-            visits = await getAllVisits(100);
-            
-            stats = {
-                totalProfiles: profiles.length,
-                totalVisits: visits.length,
-                todayVisits: visits.filter(v => 
-                    new Date(v.createdAt).toDateString() === new Date().toDateString()
-                ).length
-            };
-        } else {
-            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
-            const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
-            const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
-            
-            try {
-                const profilesData = await fs.readFile(PROFILES_FILE, 'utf8');
-                profiles = JSON.parse(profilesData);
-            } catch {
-                profiles = [];
-            }
-            
-            try {
-                const visitsData = await fs.readFile(VISITS_FILE, 'utf8');
-                visits = JSON.parse(visitsData).slice(-100);
-            } catch {
-                visits = [];
-            }
-            
-            try {
-                const ordersData = await fs.readFile(ORDERS_FILE, 'utf8');
-                orders = JSON.parse(ordersData);
-            } catch {
-                orders = [];
-            }
-            
-            stats = {
-                totalProfiles: profiles.length,
-                totalVisits: visits.length,
-                todayVisits: visits.filter(v => 
-                    new Date(v.timestamp).toDateString() === new Date().toDateString()
-                ).length,
-                totalOrders: orders.length
-            };
+        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+        const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
+        const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
+        
+        try {
+            const profilesData = await fs.readFile(PROFILES_FILE, 'utf8');
+            profiles = JSON.parse(profilesData);
+        } catch {
+            profiles = [];
         }
+        
+        try {
+            const visitsData = await fs.readFile(VISITS_FILE, 'utf8');
+            visits = JSON.parse(visitsData).slice(-100);
+        } catch {
+            visits = [];
+        }
+        
+        try {
+            const ordersData = await fs.readFile(ORDERS_FILE, 'utf8');
+            orders = JSON.parse(ordersData);
+        } catch {
+            orders = [];
+        }
+        
+        stats = {
+            totalProfiles: profiles.length,
+            totalVisits: visits.length,
+            todayVisits: visits.filter(v => 
+                new Date(v.timestamp).toDateString() === new Date().toDateString()
+            ).length,
+            totalOrders: orders.length
+        };
         
         res.render('admin', {
             title: 'لوحة التحكم',
@@ -741,7 +745,7 @@ app.get('/admin', async (req, res) => {
             orders,
             stats,
             query: req.query || {},
-            isPostgresConnected
+            isPostgresConnected: false
         });
         
     } catch (error) {
@@ -828,7 +832,6 @@ app.get('/disable-lava', (req, res) => {
 });
 
 // صفحة تعديل البطاقة
-// صفحة تعديل البطاقة - نسخة مصححة تبحث في profileId و cardId
 app.get('/admin/card/edit/:cardId', async (req, res) => {
     try {
         const cardId = req.params.cardId;
@@ -846,16 +849,7 @@ app.get('/admin/card/edit/:cardId', async (req, res) => {
             
             console.log('📊 عدد البطاقات في الملف:', profiles.length);
             
-            // طباعة أول بطاقة لمعرفة هيكل البيانات
-            if (profiles.length > 0) {
-                console.log('📌 مثال لبطاقة:', {
-                    id: profiles[0].profileId || profiles[0].cardId,
-                    name: profiles[0].name,
-                    الحقول_المتوفرة: Object.keys(profiles[0])
-                });
-            }
-            
-            // البحث في profileId أولاً (لأنك تستخدمه عند الحفظ)
+            // البحث في profileId أولاً
             card = profiles.find(p => p.profileId === cardId);
             
             // إذا لم يتم العثور، ابحث في cardId
@@ -863,7 +857,7 @@ app.get('/admin/card/edit/:cardId', async (req, res) => {
                 card = profiles.find(p => p.cardId === cardId);
             }
             
-            // إذا لم يتم العثور، ابحث في أي حقل آخر قد يحتوي على المعرف
+            // إذا لم يتم العثور، ابحث في أي حقل آخر
             if (!card) {
                 card = profiles.find(p => p.id === cardId || p._id === cardId);
             }
@@ -874,7 +868,6 @@ app.get('/admin/card/edit/:cardId', async (req, res) => {
         
         if (card) {
             console.log('✅ تم العثور على البطاقة:', card.name);
-            console.log('🔑 المعرف المستخدم:', card.profileId || card.cardId);
             
             res.render('edit-card', { 
                 card: card,
@@ -884,14 +877,6 @@ app.get('/admin/card/edit/:cardId', async (req, res) => {
             });
         } else {
             console.log('❌ البطاقة غير موجودة:', cardId);
-            
-            // للتصحيح: عرض جميع المعرفات المتاحة
-            console.log('📋 المعرفات المتوفرة:', profiles.map(p => ({ 
-                profileId: p.profileId, 
-                cardId: p.cardId,
-                name: p.name 
-            })));
-            
             res.redirect('/admin?error=البطاقة غير موجودة');
         }
         
@@ -902,55 +887,128 @@ app.get('/admin/card/edit/:cardId', async (req, res) => {
 });
 
 // تحديث بيانات البطاقة
-// تحديث بيانات البطاقة - نسخة مصححة تتعامل مع profileId و cardId
+// تحديث بيانات البطاقة - نسخة مصححة بالكامل
 app.post('/admin/card/update/:cardId', async (req, res) => {
     try {
         const cardId = req.params.cardId;
         const updatedData = req.body;
         
         console.log('📝 جاري تحديث البطاقة:', cardId);
-        console.log('📦 البيانات الجديدة:', updatedData);
+        console.log('📦 البيانات المرسلة:', updatedData);
         
         const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
         
+        // التأكد من وجود المجلد
+        const dataDir = path.join(__dirname, 'data');
+        try {
+            await fs.access(dataDir);
+        } catch {
+            await fs.mkdir(dataDir, { recursive: true });
+        }
+        
         // قراءة الملف
-        const data = await fs.readFile(PROFILES_FILE, 'utf8');
-        const profiles = JSON.parse(data);
+        let profiles = [];
+        try {
+            const data = await fs.readFile(PROFILES_FILE, 'utf8');
+            profiles = JSON.parse(data);
+            console.log('📊 عدد البطاقات قبل التحديث:', profiles.length);
+        } catch (error) {
+            console.log('⚠️ ملف البطاقات غير موجود أو فارغ');
+            profiles = [];
+            return res.redirect('/admin?error=ملف البطاقات غير موجود');
+        }
         
-        // البحث عن البطاقة في profileId أو cardId
+        // البحث عن البطاقة بطرق متعددة
         let index = profiles.findIndex(p => p.profileId === cardId);
-        
-        // إذا لم يتم العثور، ابحث في cardId
         if (index === -1) {
             index = profiles.findIndex(p => p.cardId === cardId);
         }
+        if (index === -1) {
+            index = profiles.findIndex(p => p.id === cardId);
+        }
         
         if (index !== -1) {
-            // الاحتفاظ بالبيانات القديمة المهمة
             const oldCard = profiles[index];
+            console.log('✅ تم العثور على البطاقة القديمة:', oldCard.name);
             
-            // تحديث البيانات مع الحفاظ على الحقول الأساسية
-            profiles[index] = {
-                ...oldCard,              // الاحتفاظ بجميع البيانات القديمة
-                ...updatedData,           // تحديث بالبيانات الجديدة
-                profileId: oldCard.profileId || oldCard.cardId, // الحفاظ على profileId
-                cardId: oldCard.cardId || oldCard.profileId,     // الحفاظ على cardId
-                updatedAt: new Date()     // تحديث وقت التعديل
+            // إنشاء كائن محدث بشكل صحيح
+            const updatedCard = {
+                // أولاً ننسخ كل البيانات القديمة
+                ...oldCard,
+                
+                // ثم نحدث بالبيانات الجديدة (هذا سيتجاوز القيم القديمة)
+                name: updatedData.name || oldCard.name,
+                email: updatedData.email || oldCard.email,
+                phone: updatedData.phone || oldCard.phone,
+                title: updatedData.title || oldCard.title,
+                company: updatedData.company || oldCard.company,
+                bio: updatedData.bio || oldCard.bio,
+                
+                // نحدث القوالب
+                template: updatedData.template || oldCard.template,
+                
+                // نحدث إعدادات الحماية
+                password: updatedData.password || oldCard.password,
+                isPasswordProtected: updatedData.password ? true : false,
+                
+                // نحدث الخيارات
+                enableStats: updatedData.enableStats === 'on' ? true : false,
+                allowVCard: updatedData.allowVCard === 'on' ? true : false,
+                
+                // نحدث الحسابات الاجتماعية (إذا كانت موجودة في النموذج)
+                social: {
+                    linkedin: updatedData.linkedin || oldCard.social?.linkedin || null,
+                    twitter: updatedData.twitter || oldCard.social?.twitter || null,
+                    github: updatedData.github || oldCard.social?.github || null,
+                    instagram: updatedData.instagram || oldCard.social?.instagram || null
+                },
+                
+                // تحديث التاريخ
+                updatedAt: new Date(),
+                
+                // الحفاظ على المعرفات
+                profileId: oldCard.profileId || cardId,
+                cardId: oldCard.cardId || cardId,
+                
+                // الحفاظ على الإحصائيات
+                stats: oldCard.stats || { views: 0 }
             };
             
-            // حفظ الملف
+            // تنظيف البيانات (إزالة الحقول الفارغة غير الضرورية)
+            if (updatedCard.password === '' || updatedCard.password === undefined) {
+                delete updatedCard.password;
+                updatedCard.isPasswordProtected = false;
+            }
+            
+            // تحديث المصفوفة
+            profiles[index] = updatedCard;
+            
+            // حفظ في الملف
             await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
             
-            console.log('✅ تم تحديث البطاقة بنجاح:', profiles[index].name);
-            res.redirect('/admin?success=تم تحديث البطاقة بنجاح');
+            console.log('✅ تم تحديث البطاقة بنجاح:', updatedCard.name);
+            
+            // التحقق من الحفظ
+            const verifyData = await fs.readFile(PROFILES_FILE, 'utf8');
+            const verifyProfiles = JSON.parse(verifyData);
+            const savedCard = verifyProfiles.find(p => p.profileId === updatedCard.profileId);
+            
+            if (savedCard) {
+                console.log('✅ تم التحقق: البيانات الجديدة:', savedCard.name);
+                res.redirect('/admin?success=تم تحديث البطاقة بنجاح');
+            } else {
+                console.log('⚠️ مشكلة في التحقق من الحفظ');
+                res.redirect('/admin?warning=تم التحديث ولكن لم نتمكن من التحقق');
+            }
+            
         } else {
-            console.log('❌ البطاقة غير موجودة:', cardId);
+            console.log('❌ البطاقة غير موجودة');
             res.redirect('/admin?error=البطاقة غير موجودة');
         }
         
     } catch (error) {
         console.error('❌ خطأ في تحديث البطاقة:', error);
-        res.redirect('/admin?error=حدث خطأ في تحديث البطاقة');
+        res.redirect('/admin?error=حدث خطأ في تحديث البطاقة: ' + error.message);
     }
 });
 // صفحة عرض جميع البطاقات
@@ -968,7 +1026,7 @@ app.get('/card', async (req, res) => {
         
         res.render('cards-list', {
             title: 'البطاقات المتاحة',
-            profiles: profiles.slice(0, 10) // آخر 10 بطاقات
+            profiles: profiles.slice(0, 10)
         });
     } catch (error) {
         res.redirect('/');
@@ -983,36 +1041,26 @@ app.post('/admin/card/delete/:cardId', async (req, res) => {
         
         const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
         
-        // قراءة الملف
         const data = await fs.readFile(PROFILES_FILE, 'utf8');
         let profiles = JSON.parse(data);
         
-        // البحث عن البطاقة في profileId أو cardId
         let index = profiles.findIndex(p => p.profileId === cardId);
-        
-        // إذا لم يتم العثور، ابحث في cardId
         if (index === -1) {
             index = profiles.findIndex(p => p.cardId === cardId);
         }
-        
-        // إذا لم يتم العثور، ابحث في id
         if (index === -1) {
             index = profiles.findIndex(p => p.id === cardId);
         }
         
         if (index !== -1) {
             const deletedCard = profiles[index];
-            
-            // حذف البطاقة
             profiles.splice(index, 1);
-            
-            // حفظ الملف بعد الحذف
             await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
             
             console.log('✅ تم حذف البطاقة بنجاح:', deletedCard.name);
             res.redirect('/admin?success=تم حذف البطاقة بنجاح');
         } else {
-            console.log('❌ البطاقة غير موجودة:', cardId);
+            console.log('❌ البطاقة غير موجودة');
             res.redirect('/admin?error=البطاقة غير موجودة');
         }
         
@@ -1022,41 +1070,11 @@ app.post('/admin/card/delete/:cardId', async (req, res) => {
     }
 });
 
-// أو يمكنك استخدام DELETE method إذا كنت تفضل
-app.delete('/api/admin/card/delete/:cardId', async (req, res) => {
-    try {
-        const cardId = req.params.cardId;
-        
-        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
-        const data = await fs.readFile(PROFILES_FILE, 'utf8');
-        let profiles = JSON.parse(data);
-        
-        const initialLength = profiles.length;
-        profiles = profiles.filter(p => 
-            p.profileId !== cardId && 
-            p.cardId !== cardId && 
-            p.id !== cardId
-        );
-        
-        if (profiles.length < initialLength) {
-            await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
-            res.json({ success: true, message: 'تم حذف البطاقة بنجاح' });
-        } else {
-            res.status(404).json({ success: false, message: 'البطاقة غير موجودة' });
-        }
-        
-    } catch (error) {
-        console.error('خطأ:', error);
-        res.status(500).json({ success: false, message: 'حدث خطأ في الحذف' });
-    }
-});
-
 // مسار لعرض محتوى ملف الزيارات (للتشخيص)
 app.get('/debug/visits', async (req, res) => {
     try {
         const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
         
-        // التأكد من وجود الملف
         try {
             await fs.access(VISITS_FILE);
         } catch {
@@ -1086,6 +1104,7 @@ app.get('/debug/visits', async (req, res) => {
         });
     }
 });
+
 // ============================================
 // تشغيل الخادم
 // ============================================
@@ -1099,7 +1118,7 @@ app.listen(PORT, () => {
     ║  لوحة التحكم: http://localhost:${PORT}/admin ║
     ║  فتح القفل: http://localhost:${PORT}/unlock ║
     ╠══════════════════════════════════════════╣
-    ║  قاعدة البيانات: ${isPostgresConnected ? '✅ PostgreSQL متصل' : '⚠️  ملفات محلية'} ║
+    ║  قاعدة البيانات: ⚠️  معطلة - ملفات محلية فقط ║
     ║  انتهاء الصلاحية: ${expiryDate.toLocaleDateString('ar-SA')} ║
     ╚══════════════════════════════════════════╝
     `);
