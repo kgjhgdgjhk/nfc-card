@@ -1,4 +1,6 @@
+// ============================================
 // استيراد المكتبات المطلوبة
+// ============================================
 const express = require('express');
 const path = require('path');
 const ejs = require('ejs');
@@ -7,6 +9,7 @@ const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 const fs = require('fs').promises;
+const session = require('express-session'); // ✅ الجلسات هنا في البداية
 
 // تحميل متغيرات البيئة
 dotenv.config();
@@ -15,16 +18,83 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// إعدادات middleware
+// ============================================
+// إعدادات middleware الأساسية
+// ============================================
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ============================================
+// إعدادات الجلسة - مهم تكون قبل أي استخدام للجلسات
+// ============================================
+app.use(session({
+    secret: 'your-secret-key-change-this-to-something-secure-123',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        maxAge: 24 * 60 * 60 * 1000, // يوم واحد
+        secure: false // غيرها إلى true لو عندك HTTPS
+    }
+}));
 
 // تعيين محرك العرض EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// ============================================
+// نظام انتهاء صلاحية الموقع (بعد أسبوع)
+// ============================================
+
+// تاريخ انتهاء الصلاحية (بعد أسبوع من الآن)
+const expiryDate = new Date();
+expiryDate.setDate(expiryDate.getDate() + 7); // +7 أيام
+
+// كلمة المرور للدخول بعد انتهاء الصلاحية
+const MASTER_PASSWORD = "Albahri.com"; // ⚠️ غيرها إلى كلمة سر قوية
+
+// وسيط التحقق من الصلاحية
+app.use((req, res, next) => {
+    // استثناء بعض المسارات المهمة
+    const allowedPaths = [
+        '/unlock', 
+        '/unlock-site',
+        '/extend-site', 
+        '/css', 
+        '/js', 
+        '/images',
+        '/favicon.ico'
+    ];
+    
+    // إذا كان المسار مسموح به حتى لو انتهت الصلاحية
+    if (allowedPaths.some(path => req.path.startsWith(path))) {
+        return next();
+    }
+
+    // التحقق من الجلسة (إذا كان المستخدم فتح القفل)
+    if (req.session && req.session.siteUnlocked) {
+        return next();
+    }
+
+    const now = new Date();
+    
+    // إذا انتهت الصلاحية
+    if (now > expiryDate) {
+        // عرض صفحة القفل
+        return res.render('site-locked', {
+            title: '⚠️ الموقع مغلق',
+            expiryDate: expiryDate.toLocaleDateString('ar-SA'),
+            error: null
+        });
+    }
+    
+    // الموقع لسه شغال
+    next();
+});
+
+// ============================================
 // استيراد الموديلات من PostgreSQL
+// ============================================
 const { 
   sequelize, 
   Profile, 
@@ -45,25 +115,51 @@ let isPostgresConnected = false;
 
 async function connectToDatabase() {
     try {
-        // اختبار الاتصال بقاعدة البيانات
+        console.log('📡 محاولة الاتصال بقاعدة البيانات...');
+        
+        // استخدام sequelize المستورد من ملف Profile
         await sequelize.authenticate();
         console.log('✅ تم الاتصال بقاعدة البيانات PostgreSQL بنجاح');
+        
+        // مزامنة النماذج مع قاعدة البيانات
+        await sequelize.sync({ alter: true });
+        console.log('✅ تم مزامنة النماذج مع قاعدة البيانات');
+        
         isPostgresConnected = true;
         return true;
     } catch (error) {
         console.error('❌ فشل الاتصال بقاعدة البيانات:');
         console.error('📌 رسالة الخطأ:', error.message);
-        console.log('💡 استخدام الملفات المحلية كبديل');
+        console.error('📌 تفاصيل إضافية:', error.parent?.message || 'لا توجد تفاصيل إضافية');
+        console.log('');
+        console.log('⚠️  استخدام الملفات المحلية كبديل');
+        console.log('📂 سيتم حفظ البيانات في مجلد data/');
+        console.log('');
+        
         isPostgresConnected = false;
         return false;
     }
 }
-
 // محاولة الاتصال بقاعدة البيانات
 connectToDatabase();
 
 // ============================================
-// دوال مساعدة للتعامل مع البيانات (مع دعم PostgreSQL والملفات المحلية)
+// إعدادات Lava Lamp
+// ============================================
+
+// وسيط لإضافة Lava Lamp للصفحات
+app.use((req, res, next) => {
+    res.locals.enableLavaLamp = true; // تفعيل Lava Lamp لجميع الصفحات
+    res.locals.lavaLampOptions = {
+        intensity: 'medium', // خفيف، متوسط، قوي
+        interactive: true, // تفاعل مع الماوس
+        autoColor: true // تغيير الألوان تلقائياً
+    };
+    next();
+});
+
+// ============================================
+// دوال مساعدة للتعامل مع البيانات
 // ============================================
 
 // حفظ ملف شخصي جديد
@@ -188,8 +284,82 @@ async function logVisit(profileId, req) {
 }
 
 // ============================================
-// نظام إنشاء الهوية الذكية (مع CTA buttons)
+// الصفحات والمسارات (Routes)
 // ============================================
+
+// صفحة فتح القفل
+app.get('/unlock', (req, res) => {
+    res.render('site-locked', {
+        title: 'فتح الموقع',
+        expiryDate: expiryDate.toLocaleDateString('ar-SA'),
+        error: null
+    });
+});
+
+// التحقق من كلمة المرور لفتح الموقع
+app.post('/unlock-site', (req, res) => {
+    const { password } = req.body;
+    
+    if (password === MASTER_PASSWORD) {
+        // تخزين في الجلسة أنه فتح القفل
+        req.session.siteUnlocked = true;
+        res.redirect('/');
+    } else {
+        res.render('site-locked', {
+            title: '⚠️ كلمة مرور خاطئة',
+            expiryDate: expiryDate.toLocaleDateString('ar-SA'),
+            error: 'كلمة المرور غير صحيحة'
+        });
+    }
+});
+
+// Route لإطالة المدة (للاستخدام الشخصي)
+// Route لإطالة المدة (للاستخدام الشخصي) - نسخة مصححة
+app.get('/extend-site/:days', (req, res) => {
+    const { days } = req.params;
+    
+    // تأكد من أن days رقم صحيح
+    const daysToAdd = parseInt(days);
+    if (isNaN(daysToAdd)) {  // شيلنا شرط <= 0
+        return res.status(400).json({ error: 'عدد الأيام غير صحيح' });
+    }
+    
+    // استقبل secret من query parameters
+    const providedSecret = req.query.secret || '';
+    
+    // قارن بدون مشاكل
+    if (providedSecret === "Albahri.com") {
+        // حدث التاريخ
+        const oldDate = new Date(expiryDate);
+        expiryDate.setDate(expiryDate.getDate() + daysToAdd);
+        
+        res.json({ 
+            success: true, 
+            message: `تم تمديد الموقع ${days} يوم`,
+            oldExpiryDate: oldDate.toLocaleDateString('ar-SA'),
+            newExpiryDate: expiryDate.toLocaleDateString('ar-SA')
+        });
+    } else {
+        // أرسل معلومات التصحيح
+        res.status(403).json({ 
+            error: 'غير مصرح',
+            details: {
+                provided: providedSecret,
+                expected: "Albahri.com",
+                match: providedSecret === "Albahri.com",
+                length: providedSecret.length,
+                charCodes: providedSecret.split('').map(c => c.charCodeAt(0))
+            }
+        });
+    }
+});
+// الصفحة الرئيسية
+app.get('/', (req, res) => {
+    res.render('index', {
+        title: 'نظام بطاقات NFC الذكية',
+        message: 'مرحباً بك في نظام بطاقات NFC الذكية'
+    });
+});
 
 // صفحة إنشاء الهوية الذكية
 app.get('/create-profile', (req, res) => {
@@ -214,7 +384,7 @@ app.post('/create-profile/step1', async (req, res) => {
         // إنشاء معرف فريد
         const profileId = `profile-${uuidv4().substring(0, 8)}`;
         
-        // حفظ البيانات مؤقتاً في الجلسة أو تمريرها
+        // حفظ البيانات مؤقتاً
         const queryString = new URLSearchParams({
             profileId,
             name, email, phone, title, company, bio
@@ -341,7 +511,6 @@ app.get('/p/:profileId', async (req, res) => {
         
         // التحقق من كلمة المرور إذا كانت مفعلة
         if (profile.isPasswordProtected && profile.password) {
-            // عرض صفحة إدخال كلمة المرور
             return res.render('profile-password', {
                 title: 'ملف محمي',
                 profileId: req.params.profileId
@@ -373,7 +542,6 @@ app.post('/p/:profileId/verify', async (req, res) => {
         const profile = await findProfile(req.params.profileId);
         
         if (profile && profile.password === password) {
-            // تخزين في الجلسة أنه تم التحقق
             res.redirect(`/p/${req.params.profileId}?verified=true`);
         } else {
             res.redirect(`/p/${req.params.profileId}?error=كلمة المرور غير صحيحة`);
@@ -400,7 +568,6 @@ app.post('/api/create-order', async (req, res) => {
         if (isPostgresConnected) {
             await createOrder(orderData);
         } else {
-            // حفظ في ملف محلي
             const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
             
             let orders = [];
@@ -415,7 +582,6 @@ app.post('/api/create-order', async (req, res) => {
             await fs.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2));
         }
         
-        // إرسال إشعار للواتساب
         const whatsappMessage = `طلب جديد:\nالرقم: ${orderData.orderId}\nالنوع: ${cardType}\nالكمية: ${quantity}`;
         
         res.json({
@@ -443,11 +609,9 @@ app.get('/admin', async (req, res) => {
         let stats = {};
         
         if (isPostgresConnected) {
-            // استخدام PostgreSQL
             profiles = await getAllProfiles();
             visits = await getAllVisits(100);
             
-            // إحصائيات إضافية
             stats = {
                 totalProfiles: profiles.length,
                 totalVisits: visits.length,
@@ -456,7 +620,6 @@ app.get('/admin', async (req, res) => {
                 ).length
             };
         } else {
-            // استخدام الملفات المحلية
             const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
             const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
             const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
@@ -508,39 +671,8 @@ app.get('/admin', async (req, res) => {
     }
 });
 
-// صفحة الخطأ
-app.get('/error', (req, res) => {
-    res.render('error', {
-        title: 'خطأ',
-        message: req.query.message || 'حدث خطأ غير متوقع'
-    });
-});
-// ============================================
-// الصفحة الرئيسية
-// ============================================
-app.get('/', (req, res) => {
-    res.render('index', {
-        title: 'نظام بطاقات NFC الذكية',
-        message: 'مرحباً بك في نظام بطاقات NFC الذكية'
-    });
-});
-
-// صفحة إنشاء الهوية الذكية
-app.get('/create-profile', (req, res) => {
-    res.render('create-profile', {
-        title: 'إنشاء هويتك الذكية',
-        step: 1,
-        ctaText: 'ابدأ الآن مجاناً',
-        ctaColor: '#667eea'
-    });
-});
-// ============================================
 // صفحة العرض التجريبي للبطاقة
-// ============================================
-// ============================================
-
 app.get('/card/card-nfc-001', (req, res) => {
-    // بيانات تجريبية للعرض
     const demoProfile = {
         profileId: 'nfc-001',
         name: 'أحمد محمد',
@@ -548,7 +680,7 @@ app.get('/card/card-nfc-001', (req, res) => {
         phone: '+966 50 123 4567',
         title: 'مطور برمجيات',
         company: 'تك المحدودة',
-        bio: 'مطور واجهات أمامية بخبرة 5 سنوات في تطوير تطبيقات الويب',
+        bio: 'مطور واجهات أمامية بخبرة 5 سنوات',
         template: 'modern',
         isPasswordProtected: false,
         enableStats: true,
@@ -563,7 +695,6 @@ app.get('/card/card-nfc-001', (req, res) => {
         createdAt: new Date()
     };
 
-    // عرض الملف الشخصي التجريبي
     res.render('templates/template-modern', {
         title: `ملف ${demoProfile.name} التجريبي`,
         profile: demoProfile,
@@ -573,6 +704,177 @@ app.get('/card/card-nfc-001', (req, res) => {
         ctaLink: '/create-profile'
     });
 });
+
+// صفحة الخطأ
+app.get('/error', (req, res) => {
+    res.render('error', {
+        title: 'خطأ',
+        message: req.query.message || 'حدث خطأ غير متوقع'
+    });
+});
+
+// صفحة تجريبية لعرض Lava Lamp
+app.get('/lava-demo', (req, res) => {
+    res.render('lava-demo', {
+        title: 'عرض تأثير Lava Lamp',
+        enableLavaLamp: true,
+        lavaLampOptions: {
+            intensity: 'high',
+            interactive: true,
+            autoColor: true
+        }
+    });
+});
+
+// API للتحكم في Lava Lamp
+app.post('/api/lava-lamp/settings', (req, res) => {
+    const { enabled, intensity, interactive, autoColor } = req.body;
+    
+    res.json({
+        success: true,
+        message: 'تم تحديث إعدادات Lava Lamp',
+        settings: { enabled, intensity, interactive, autoColor }
+    });
+});
+
+// مسارات تفعيل/إلغاء Lava Lamp
+app.get('/enable-lava', (req, res) => {
+    res.cookie('lavaLamp', 'enabled', { maxAge: 900000, httpOnly: true });
+    res.redirect(req.get('referer') || '/');
+});
+
+app.get('/disable-lava', (req, res) => {
+    res.clearCookie('lavaLamp');
+    res.redirect(req.get('referer') || '/');
+});
+
+// صفحة تعديل البطاقة
+// صفحة تعديل البطاقة - نسخة مصححة تبحث في profileId و cardId
+app.get('/admin/card/edit/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        console.log('🔍 جاري البحث عن بطاقة:', cardId);
+        
+        let card = null;
+        let profiles = [];
+        
+        // قراءة الملفات المحلية
+        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+        
+        try {
+            const data = await fs.readFile(PROFILES_FILE, 'utf8');
+            profiles = JSON.parse(data);
+            
+            console.log('📊 عدد البطاقات في الملف:', profiles.length);
+            
+            // طباعة أول بطاقة لمعرفة هيكل البيانات
+            if (profiles.length > 0) {
+                console.log('📌 مثال لبطاقة:', {
+                    id: profiles[0].profileId || profiles[0].cardId,
+                    name: profiles[0].name,
+                    الحقول_المتوفرة: Object.keys(profiles[0])
+                });
+            }
+            
+            // البحث في profileId أولاً (لأنك تستخدمه عند الحفظ)
+            card = profiles.find(p => p.profileId === cardId);
+            
+            // إذا لم يتم العثور، ابحث في cardId
+            if (!card) {
+                card = profiles.find(p => p.cardId === cardId);
+            }
+            
+            // إذا لم يتم العثور، ابحث في أي حقل آخر قد يحتوي على المعرف
+            if (!card) {
+                card = profiles.find(p => p.id === cardId || p._id === cardId);
+            }
+            
+        } catch (error) {
+            console.error('خطأ في قراءة الملف:', error);
+        }
+        
+        if (card) {
+            console.log('✅ تم العثور على البطاقة:', card.name);
+            console.log('🔑 المعرف المستخدم:', card.profileId || card.cardId);
+            
+            res.render('edit-card', { 
+                card: card,
+                query: req.query || {},
+                title: `تعديل بطاقة ${card.name}`,
+                enableLavaLamp: true
+            });
+        } else {
+            console.log('❌ البطاقة غير موجودة:', cardId);
+            
+            // للتصحيح: عرض جميع المعرفات المتاحة
+            console.log('📋 المعرفات المتوفرة:', profiles.map(p => ({ 
+                profileId: p.profileId, 
+                cardId: p.cardId,
+                name: p.name 
+            })));
+            
+            res.redirect('/admin?error=البطاقة غير موجودة');
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في صفحة التعديل:', error);
+        res.redirect('/admin?error=حدث خطأ في تحميل صفحة التعديل');
+    }
+});
+
+// تحديث بيانات البطاقة
+// تحديث بيانات البطاقة - نسخة مصححة تتعامل مع profileId و cardId
+app.post('/admin/card/update/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        const updatedData = req.body;
+        
+        console.log('📝 جاري تحديث البطاقة:', cardId);
+        console.log('📦 البيانات الجديدة:', updatedData);
+        
+        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+        
+        // قراءة الملف
+        const data = await fs.readFile(PROFILES_FILE, 'utf8');
+        const profiles = JSON.parse(data);
+        
+        // البحث عن البطاقة في profileId أو cardId
+        let index = profiles.findIndex(p => p.profileId === cardId);
+        
+        // إذا لم يتم العثور، ابحث في cardId
+        if (index === -1) {
+            index = profiles.findIndex(p => p.cardId === cardId);
+        }
+        
+        if (index !== -1) {
+            // الاحتفاظ بالبيانات القديمة المهمة
+            const oldCard = profiles[index];
+            
+            // تحديث البيانات مع الحفاظ على الحقول الأساسية
+            profiles[index] = {
+                ...oldCard,              // الاحتفاظ بجميع البيانات القديمة
+                ...updatedData,           // تحديث بالبيانات الجديدة
+                profileId: oldCard.profileId || oldCard.cardId, // الحفاظ على profileId
+                cardId: oldCard.cardId || oldCard.profileId,     // الحفاظ على cardId
+                updatedAt: new Date()     // تحديث وقت التعديل
+            };
+            
+            // حفظ الملف
+            await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
+            
+            console.log('✅ تم تحديث البطاقة بنجاح:', profiles[index].name);
+            res.redirect('/admin?success=تم تحديث البطاقة بنجاح');
+        } else {
+            console.log('❌ البطاقة غير موجودة:', cardId);
+            res.redirect('/admin?error=البطاقة غير موجودة');
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في تحديث البطاقة:', error);
+        res.redirect('/admin?error=حدث خطأ في تحديث البطاقة');
+    }
+});
+
 // ============================================
 // تشغيل الخادم
 // ============================================
@@ -584,8 +886,10 @@ app.listen(PORT, () => {
     ║  الخادم يعمل على: http://localhost:${PORT}  ║
     ║  إنشاء هوية: http://localhost:${PORT}/create-profile ║
     ║  لوحة التحكم: http://localhost:${PORT}/admin ║
+    ║  فتح القفل: http://localhost:${PORT}/unlock ║
     ╠══════════════════════════════════════════╣
     ║  قاعدة البيانات: ${isPostgresConnected ? '✅ PostgreSQL متصل' : '⚠️  ملفات محلية'} ║
+    ║  انتهاء الصلاحية: ${expiryDate.toLocaleDateString('ar-SA')} ║
     ╚══════════════════════════════════════════╝
     `);
 });

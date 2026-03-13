@@ -13,7 +13,8 @@
     "enableStats": true,
     "allowVCard": true,
     "stats": {
-      "views": 0
+      "views": 2,
+      "lastView": "2026-03-13T20:09:56.129Z"
     },
     "createdAt": "2026-03-11T21:20:23.656Z",
     "updatedAt": "2026-03-11T21:20:23.656Z",
@@ -67,6 +68,82 @@
     },
     "createdAt": "2026-03-11T21:24:50.312Z",
     "updatedAt": "2026-03-11T21:24:50.312Z",
+    "social": {
+      "linkedin": null,
+      "twitter": null,
+      "github": null,
+      "instagram": null
+    }
+  },
+  {
+    "profileId": "profile-e1e9f981",
+    "name": "أحمد محمد",
+    "email": "ahmed@example.com",
+    "phone": "+966500000000",
+    "title": "مطور برمجيات",
+    "company": "شركة التقنية",
+    "bio": "مطور ويب بخبرة 5 سنوات",
+    "template": "modern",
+    "password": "1234",
+    "isPasswordProtected": true,
+    "enableStats": true,
+    "allowVCard": true,
+    "stats": {
+      "views": 3,
+      "lastView": "2026-03-13T20:09:45.182Z"
+    },
+    "createdAt": "2026-03-13T19:17:53.560Z",
+    "updatedAt": "2026-03-13T19:17:53.560Z",
+    "social": {
+      "linkedin": null,
+      "twitter": null,
+      "github": null,
+      "instagram": null
+    }
+  },
+  {
+    "profileId": "profile-a472a88a",
+    "name": "أحمد محمد",
+    "email": "ahmed@example.com",
+    "phone": "+966500000000",
+    "title": "مطور برمجيات",
+    "company": "شركة التقنية",
+    "bio": "مطور ويب بخبرة 5 سنوات",
+    "template": "modern",
+    "password": "1234",
+    "isPasswordProtected": true,
+    "enableStats": true,
+    "allowVCard": true,
+    "stats": {
+      "views": 0
+    },
+    "createdAt": "2026-03-13T19:22:53.459Z",
+    "updatedAt": "2026-03-13T19:22:53.459Z",
+    "social": {
+      "linkedin": null,
+      "twitter": null,
+      "github": null,
+      "instagram": null
+    }
+  },
+  {
+    "profileId": "profile-fc182f4f",
+    "name": "أحمد محمد",
+    "email": "ahmed@example.com",
+    "phone": "+966500000000",
+    "title": "مطور برمجيات",
+    "company": "شركة التقنية",
+    "bio": "مطور ويب بخبرة 5 سنوات",
+    "template": "modern",
+    "password": "",
+    "isPasswordProtected": false,
+    "enableStats": true,
+    "allowVCard": true,
+    "stats": {
+      "views": 0
+    },
+    "createdAt": "2026-03-13T19:33:13.177Z",
+    "updatedAt": "2026-03-13T19:33:13.177Z",
     "social": {
       "linkedin": null,
       "twitter": null,

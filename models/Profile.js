@@ -1,18 +1,29 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const { Sequelize, DataTypes } = require('sequelize');
+
 
 // تهيئة الاتصال بقاعدة البيانات
 // للتطوير المحلي: استخدم متغير البيئة DATABASE_URL
 // لـ Render: سيتم تعيين DATABASE_URL تلقائياً
-const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/nfc_cards', {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: process.env.NODE_ENV === 'production' ? {
-      require: true,
-      rejectUnauthorized: false
-    } : false
-  },
-  logging: false // إيقاف تسجيل الاستعلامات في الكونسول
-});
+const sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        dialect: 'postgres',
+        logging: console.log,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
+    }
+);
 
 // اختبار الاتصال بقاعدة البيانات
 async function testConnection() {

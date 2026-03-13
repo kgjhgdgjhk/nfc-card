@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: rtl;
+        }
+        
+        .lock-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .lock-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .expiry-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            border-right: 5px solid #f5c6cb;
+        }
+        
+        .unlock-form {
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            border-right: 3px solid #f5c6cb;
+        }
+        
+        .note {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #777;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .countdown {
+            background: #e3f2fd;
+            color: #0d47a1;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="lock-container">
+        <div class="lock-icon">🔒</div>
+        
+        <% 
+        // تحويل التواريخ للمقارنة
+        const now = new Date();
+        const expiry = new Date(locals.expiryDate);
+        %>
+        
+        <% if (now > expiry) { %>
+            <h1>الموقع مغلق مؤقتاً</h1>
+            
+            <div class="expiry-message">
+                ⏰ انتهت صلاحية الموقع في:<br>
+                <strong><%= expiryDate %></strong>
+            </div>
+            
+            <div class="unlock-form">
+                <form method="POST" action="/unlock-site">
+                    <div class="form-group">
+                        <label>🔑 كلمة المرور الخاصة</label>
+                        <input type="password" name="password" placeholder="أدخل كلمة المرور" required>
+                    </div>
+                    
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="error-message">
+                            ❌ <%= error %>
+                        </div>
+                    <% } %>
+                    
+                    <button type="submit">فتح الموقع</button>
+                </form>
+                
+                <div class="note">
+                    <p>💡 هذا الموقع خاص للاستخدام الشخصي</p>
+                    <p>للتواصل: developer@example.com</p>
+                </div>
+            </div>
+        <% } else { %>
+            <h1>الموقع يعمل بشكل طبيعي</h1>
+            
+            <div class="countdown">
+                ✅ الموقع شغال لحد: <strong><%= expiryDate %></strong>
+            </div>
+            
+            <div class="note">
+                <p>⚠️ بعد هذا التاريخ راح تحتاج كلمة مرور للدخول</p>
+                <a href="/" style="color: #667eea; text-decoration: none;">العودة للرئيسية ←</a>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Pro | اختر قالب بطاقتك</title>
+    <title>NFC Pro | اختر قالب بطاقتك • تصميم فاتح</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,13 +17,14 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0a0a0f;
+            background: #f4f9fe;  /* خلفية فاتحة جداً */
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            color: #1e293b;
         }
 
-        /* خلفية متحركة */
+        /* خلفية متحركة فاتحة */
         .background {
             position: fixed;
             width: 100vw;
@@ -38,7 +39,7 @@
             position: absolute;
             width: 80vmax;
             height: 80vmax;
-            background: radial-gradient(circle at 30% 50%, rgba(76, 201, 240, 0.15) 0%, rgba(67, 97, 238, 0.15) 50%, transparent 70%);
+            background: radial-gradient(circle at 30% 50%, rgba(147, 197, 253, 0.5) 0%, rgba(165, 180, 252, 0.4) 50%, transparent 70%);
             border-radius: 50%;
             top: -20%;
             right: -20%;
@@ -49,7 +50,7 @@
             position: absolute;
             width: 70vmax;
             height: 70vmax;
-            background: radial-gradient(circle at 70% 50%, rgba(172, 107, 255, 0.12) 0%, rgba(76, 201, 240, 0.12) 50%, transparent 70%);
+            background: radial-gradient(circle at 70% 50%, rgba(216, 180, 254, 0.4) 0%, rgba(187, 222, 252, 0.4) 50%, transparent 70%);
             border-radius: 50%;
             bottom: -20%;
             left: -20%;
@@ -58,7 +59,7 @@
 
         @keyframes floatOrb {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-5%, 5%) scale(1.1); }
+            50% { transform: translate(-5%, 5%) scale(1.05); }
         }
 
         .particles {
@@ -66,15 +67,17 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 100px 100px;
-            animation: moveParticles 60s linear infinite;
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 1px, transparent 1px),
+                radial-gradient(circle at 40% 80%, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+            background-size: 130px 130px;
+            animation: moveParticles 50s linear infinite;
+            opacity: 0.5;
         }
 
         @keyframes moveParticles {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 200px 200px, -200px -200px; }
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 200px 200px, -150px 100px, 100px -200px; }
         }
 
         /* الحاوية الرئيسية */
@@ -92,21 +95,21 @@
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(18px);
             border-radius: 48px;
             overflow: hidden;
             box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            animation: slideUp 0.8s ease-out;
+                0 30px 60px -20px rgba(0, 80, 120, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(255,255,255,0.7);
+            animation: slideUp 0.8s cubic-bezier(0.2,0.9,0.3,1);
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -117,8 +120,8 @@
         /* رأس الخطوات */
         .steps-header {
             padding: 30px 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255,255,255,0.3);
         }
 
         .steps-progress {
@@ -135,7 +138,7 @@
             left: 60px;
             right: 60px;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
             transform: translateY(-50%);
             z-index: 1;
         }
@@ -143,69 +146,73 @@
         .step-item {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.03);
+            background: white;
             backdrop-filter: blur(10px);
-            padding: 12px 24px;
+            padding: 12px 28px;
             border-radius: 100px;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #64748b;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            font-weight: 500;
         }
 
         .step-item.completed {
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
-            border-color: #4cc9f0;
-            color: white;
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
         }
 
         .step-item.active {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
-            border-color: #4cc9f0;
-            color: white;
-            box-shadow: 0 10px 30px -10px #4361ee;
+            background: linear-gradient(145deg, #ffffff, #f0f9ff);
+            border-color: #3b82f6;
+            color: #1e293b;
+            box-shadow: 0 10px 25px -8px #90caf9;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.4);
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3);
             }
             70% {
-                box-shadow: 0 0 0 15px rgba(76, 201, 240, 0);
+                box-shadow: 0 0 0 12px rgba(59, 130, 246, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
             }
         }
 
         .step-number {
             width: 32px;
             height: 32px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.9em;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
+            color: #334155;
         }
 
         .active .step-number,
         .completed .step-number {
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
         }
 
         .step-item i {
-            font-size: 0.9em;
+            font-size: 0.9rem;
         }
 
         .completed i {
-            color: #4cc9f0;
+            color: #22c55e;
         }
 
         /* قسم النموذج */
@@ -214,9 +221,9 @@
         }
 
         .form-section h2 {
-            color: white;
+            color: #0f172a;
             margin-bottom: 40px;
-            font-size: 2.2em;
+            font-size: 2.2rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -224,10 +231,10 @@
         }
 
         .form-section h2 i {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #2563eb, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.2em;
+            font-size: 1.2rem;
             animation: rotate 3s linear infinite;
         }
 
@@ -247,8 +254,8 @@
         }
 
         .template-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #e2e8f0;
             border-radius: 32px;
             overflow: hidden;
             cursor: pointer;
@@ -257,6 +264,7 @@
             opacity: 0;
             transform: translateY(30px);
             animation: cardAppear 0.6s ease-out forwards;
+            box-shadow: 0 10px 25px -12px rgba(0,0,0,0.1);
         }
 
         .template-card:nth-child(1) { animation-delay: 0.2s; }
@@ -272,16 +280,16 @@
 
         .template-card:hover {
             transform: translateY(-8px) scale(1.02);
-            border-color: #4cc9f0;
+            border-color: #3b82f6;
             box-shadow: 
-                0 30px 50px -20px rgba(76, 201, 240, 0.3),
-                0 0 0 1px rgba(76, 201, 240, 0.3) inset;
+                0 30px 40px -20px #3b82f6,
+                0 0 0 1px #a5b4fc inset;
         }
 
         .template-card.selected {
-            border-color: #4cc9f0;
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
-            box-shadow: 0 20px 40px -10px #4361ee;
+            border-color: #3b82f6;
+            background: linear-gradient(145deg, #ffffff, #f0f9ff);
+            box-shadow: 0 20px 40px -10px #3b82f6;
         }
 
         .template-preview {
@@ -297,7 +305,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
         }
@@ -312,11 +320,11 @@
             left: 30px;
             right: 30px;
             color: white;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .preview-name {
-            font-size: 1.4em;
+            font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 5px;
             transform: translateY(0);
@@ -328,20 +336,20 @@
         }
 
         .preview-title {
-            font-size: 1em;
+            font-size: 1rem;
             opacity: 0.9;
             font-weight: 400;
         }
 
         /* تصاميم القوالب */
         .template-preview.modern {
-            background: linear-gradient(135deg, #667eea, #764ba2, #4361ee);
+            background: linear-gradient(135deg, #667eea, #764ba2, #3b82f6);
             background-size: 200% 200%;
             animation: gradientShift 8s ease infinite;
         }
 
         .template-preview.classic {
-            background: linear-gradient(135deg, #1e293b, #0f172a, #334155);
+            background: linear-gradient(135deg, #d4d4d8, #a1a1aa, #71717a);
             position: relative;
         }
 
@@ -352,7 +360,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
         }
 
         .template-preview.minimal {
@@ -381,17 +389,17 @@
         /* معلومات القالب */
         .template-info {
             padding: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid #e2e8f0;
         }
 
         .template-info h3 {
-            color: white;
+            color: #0f172a;
             margin-bottom: 8px;
-            font-size: 1.3em;
+            font-size: 1.3rem;
         }
 
         .template-info p {
-            color: rgba(255, 255, 255, 0.6);
+            color: #64748b;
             margin-bottom: 15px;
             line-height: 1.6;
         }
@@ -399,12 +407,12 @@
         .template-badge {
             display: inline-block;
             padding: 6px 15px;
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
             border-radius: 100px;
-            font-size: 0.8em;
+            font-size: 0.8rem;
             font-weight: 600;
-            box-shadow: 0 5px 15px -5px #4361ee;
+            box-shadow: 0 5px 15px -5px #3b82f6;
             animation: badgePulse 2s infinite;
         }
 
@@ -420,17 +428,17 @@
             left: 20px;
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2em;
+            font-size: 1.2rem;
             opacity: 0;
             transform: scale(0) rotate(-180deg);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 10px 20px -5px #4361ee;
+            box-shadow: 0 10px 20px -5px #3b82f6;
             z-index: 10;
         }
 
@@ -450,17 +458,17 @@
             justify-content: space-between;
             margin-top: 50px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
 
         .btn-next,
         .btn-prev {
-            padding: 16px 40px;
-            border-radius: 16px;
-            font-size: 1.1em;
+            padding: 14px 42px;
+            border-radius: 40px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -471,15 +479,15 @@
         }
 
         .btn-next {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
-            box-shadow: 0 10px 30px -10px #4361ee;
+            box-shadow: 0 12px 28px -10px #3b82f6;
         }
 
         .btn-prev {
-            background: rgba(255, 255, 255, 0.03);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            color: #334155;
+            border: 1px solid #e2e8f0;
         }
 
         .btn-next::before,
@@ -491,7 +499,7 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.3);
             transform: translate(-50%, -50%);
             transition: width 0.6s ease, height 0.6s ease;
         }
@@ -502,38 +510,35 @@
             height: 300px;
         }
 
-        .btn-next:hover,
-        .btn-prev:hover {
-            transform: translateY(-3px);
-        }
-
         .btn-next:hover {
-            box-shadow: 0 20px 40px -10px #4361ee;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px -8px #3b82f6;
         }
 
         .btn-prev:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
 
         .btn-next i,
         .btn-prev i {
-            font-size: 1.1em;
+            font-size: 1.2rem;
             transition: transform 0.3s ease;
         }
 
         .btn-next:hover i:last-child {
-            transform: translateX(-5px);
+            transform: translateX(-6px);
         }
 
         .btn-prev:hover i:first-child {
-            transform: translateX(5px);
+            transform: translateX(6px);
         }
 
         /* تلميحات */
         .hint {
-            font-size: 0.9em;
-            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.95rem;
+            color: #64748b;
             margin-top: 20px;
             display: flex;
             align-items: center;
@@ -542,7 +547,7 @@
         }
 
         .hint i {
-            color: #4cc9f0;
+            color: #3b82f6;
         }
 
         /* تصميم متجاوب */
@@ -565,7 +570,7 @@
             }
             
             .creation-container {
-                border-radius: 32px;
+                border-radius: 36px;
             }
             
             .form-section {
@@ -577,7 +582,7 @@
             }
 
             .form-section h2 {
-                font-size: 1.8em;
+                font-size: 1.8rem;
             }
         }
 
@@ -587,16 +592,12 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0f;
+            background: #e2e8f0;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            background: linear-gradient(145deg, #a5b4fc, #bae6fd);
+            border-radius: 10px;
         }
 
         /* رسالة ترحيبية */
@@ -604,15 +605,16 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            background: white;
             backdrop-filter: blur(10px);
             padding: 12px 24px;
             border-radius: 100px;
-            color: white;
-            font-size: 0.9em;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #1e293b;
+            font-size: 0.95rem;
+            border: 1px solid #e2e8f0;
             animation: slideInRight 0.5s ease-out;
             z-index: 100;
+            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.1);
         }
 
         @keyframes slideInRight {
@@ -711,7 +713,7 @@
                             </div>
                             <div class="template-info">
                                 <h3>القالب الكلاسيكي</h3>
-                                <p>تصميم أنيق باللون الأسود الذهبي يناسب الشركات الكبيرة والمؤسسات</p>
+                                <p>تصميم أنيق باللون الرمادي الماسي يناسب الشركات الكبيرة والمؤسسات</p>
                                 <span class="template-badge">
                                     <i class="fas fa-crown"></i>
                                     احترافي
@@ -763,13 +765,13 @@
     </div>
 
     <div class="welcome-message">
-        <i class="fas fa-palette" style="margin-left: 8px; color: #4cc9f0;"></i>
+        <i class="fas fa-palette" style="margin-left: 8px; color: #3b82f6;"></i>
         اختر قالبك المفضل لتبدأ
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('%c✨ NFC Pro - اختيار القالب', 'color: #4cc9f0; font-size: 14px; font-weight: bold;');
+            console.log('✨ NFC Pro - اختيار القالب (تصميم فاتح)');
             
             // تفعيل اختيار القالب
             const templateCards = document.querySelectorAll('.template-card');
@@ -786,7 +788,7 @@
                     const radio = this.querySelector('input[type="radio"]');
                     radio.checked = true;
                     
-                    // تأثير اهتزاز خفيف
+                    // تأثير تكبير/تصغير خفيف
                     this.style.transform = 'scale(0.98)';
                     setTimeout(() => {
                         this.style.transform = '';
@@ -804,12 +806,12 @@
                     
                     // رسالة خطأ
                     const hint = document.querySelector('.hint');
-                    hint.style.color = '#ff6b6b';
+                    hint.style.color = '#ef4444';
                     hint.innerHTML = '<i class="fas fa-exclamation-circle"></i> الرجاء اختيار قالب أولاً';
                     
                     // إعادة اللون بعد 3 ثوان
                     setTimeout(() => {
-                        hint.style.color = 'rgba(255, 255, 255, 0.4)';
+                        hint.style.color = '#64748b';
                         hint.innerHTML = '<i class="fas fa-mouse-pointer"></i> اختر القالب الذي يعكس شخصيتك المهنية';
                     }, 3000);
                 } else {
@@ -823,13 +825,13 @@
             templateCards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     if (!this.classList.contains('selected')) {
-                        this.style.borderColor = 'rgba(76, 201, 240, 0.5)';
+                        this.style.borderColor = '#a5b4fc';
                     }
                 });
                 
                 card.addEventListener('mouseleave', function() {
                     if (!this.classList.contains('selected')) {
-                        this.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                        this.style.borderColor = '#e2e8f0';
                     }
                 });
             });

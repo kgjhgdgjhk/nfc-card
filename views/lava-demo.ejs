@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/lava-lamp.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            min-width: 120px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: white;
+            display: block;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- سيتم إضافة Lava Lamp تلقائياً بواسطة JavaScript -->
+    
+    <div class="demo-container lava-content">
+        <h1 class="lava-text">🎨 تأثير Lava Lamp</h1>
+        <p class="lava-text">
+            هذا عرض توضيحي لتأثير Lava Lamp الديناميكي. يمكنك التحكم في الإعدادات أدناه
+            وتجربة التأثيرات المختلفة.
+        </p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number" id="blobCount">5</span>
+                <span class="stat-label">عدد الفقاعات</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="fps">60</span>
+                <span class="stat-label">إطار/ثانية</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="activeSince">0s</span>
+                <span class="stat-label">مدة التشغيل</span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="toggleLavaLamp()">
+                ⚡ تشغيل/إيقاف
+            </button>
+            <button class="control-btn" onclick="setLavaSpeed(0.5)">
+                🐢 سرعة بطيئة
+            </button>
+            <button class="control-btn" onclick="setLavaSpeed(1)">
+                ⚡ سرعة عادية
+            </button>
+            <button class="control-btn" onclick="setLavaSpeed(2)">
+                🚀 سرعة سريعة
+            </button>
+            <button class="control-btn" onclick="window.location.href='/create-profile'">
+                📱 جرب البطاقة الذكية
+            </button>
+        </div>
+        
+        <div style="margin-top: 40px; text-align: center;">
+            <a href="/" class="lava-button">العودة للرئيسية</a>
+        </div>
+    </div>
+    
+    <script src="/js/lava-lamp.js"></script>
+    <script>
+        // إحصائيات بسيطة
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            document.getElementById('activeSince').textContent = seconds + 's';
+        }, 1000);
+        
+        // تغيير عدد الفقاعات عشوائياً (للعرض فقط)
+        setInterval(() => {
+            const count = Math.floor(Math.random() * 3) + 4;
+            document.getElementById('blobCount').textContent = count;
+        }, 3000);
+    </script>
+</body>
+</html>

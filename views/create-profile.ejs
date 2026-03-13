@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Pro | إنشاء بطاقة ذكية</title>
+    <title>NFC Pro | إنشاء بطاقة ذكية • تصميم فاتح</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,13 +17,14 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0a0a0f;
+            background: #f5faff;  /* خلفية فاتحة جداً */
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            color: #1e293b;
         }
 
-        /* خلفية متحركة */
+        /* خلفية متحركة فاتحة ونقية */
         .background {
             position: fixed;
             width: 100vw;
@@ -38,7 +39,7 @@
             position: absolute;
             width: 80vmax;
             height: 80vmax;
-            background: radial-gradient(circle at 30% 50%, rgba(76, 201, 240, 0.15) 0%, rgba(67, 97, 238, 0.15) 50%, transparent 70%);
+            background: radial-gradient(circle at 30% 50%, rgba(147, 197, 253, 0.5) 0%, rgba(165, 180, 252, 0.4) 50%, transparent 70%);
             border-radius: 50%;
             top: -20%;
             right: -20%;
@@ -49,7 +50,7 @@
             position: absolute;
             width: 70vmax;
             height: 70vmax;
-            background: radial-gradient(circle at 70% 50%, rgba(172, 107, 255, 0.12) 0%, rgba(76, 201, 240, 0.12) 50%, transparent 70%);
+            background: radial-gradient(circle at 70% 50%, rgba(216, 180, 254, 0.4) 0%, rgba(187, 222, 252, 0.4) 50%, transparent 70%);
             border-radius: 50%;
             bottom: -20%;
             left: -20%;
@@ -58,7 +59,7 @@
 
         @keyframes floatOrb {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-5%, 5%) scale(1.1); }
+            50% { transform: translate(-5%, 5%) scale(1.05); }
         }
 
         .particles {
@@ -66,15 +67,17 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 100px 100px;
-            animation: moveParticles 60s linear infinite;
+                radial-gradient(circle at 20% 30%, rgba(0, 100, 200, 0.08) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 80% 70%, rgba(150, 100, 255, 0.06) 1px, transparent 1px),
+                radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
+            background-size: 130px 130px;
+            animation: moveParticles 50s linear infinite;
+            opacity: 0.5;
         }
 
         @keyframes moveParticles {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 200px 200px, -200px -200px; }
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 200px 200px, -150px 100px, 100px -200px; }
         }
 
         /* الحاوية الرئيسية */
@@ -92,21 +95,21 @@
             max-width: 900px;
             width: 100%;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(18px);
             border-radius: 48px;
             overflow: hidden;
             box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            animation: slideUp 0.8s ease-out;
+                0 30px 60px -20px rgba(0, 80, 120, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(255,255,255,0.7);
+            animation: slideUp 0.8s cubic-bezier(0.2,0.9,0.3,1);
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -117,8 +120,8 @@
         /* رأس الخطوات */
         .steps-header {
             padding: 30px 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255,255,255,0.3);
         }
 
         .steps-progress {
@@ -135,7 +138,7 @@
             left: 60px;
             right: 60px;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
             transform: translateY(-50%);
             z-index: 1;
         }
@@ -143,58 +146,62 @@
         .step-item {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.03);
+            background: white;
             backdrop-filter: blur(10px);
-            padding: 12px 24px;
+            padding: 12px 28px;
             border-radius: 100px;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #64748b;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            font-weight: 500;
         }
 
         .step-item:hover {
-            border-color: rgba(76, 201, 240, 0.3);
+            border-color: #a5b4fc;
             transform: translateY(-2px);
+            box-shadow: 0 12px 24px -10px #cbd5e1;
         }
 
         .step-item.active {
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
-            border-color: #4cc9f0;
-            color: white;
-            box-shadow: 0 10px 30px -10px #4361ee;
+            background: linear-gradient(145deg, #ffffff, #f0f9ff);
+            border-color: #3b82f6;
+            color: #1e293b;
+            box-shadow: 0 10px 25px -8px #90caf9;
         }
 
         .step-item.completed {
-            background: rgba(40, 167, 69, 0.1);
-            border-color: #28a745;
-            color: white;
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
         }
 
         .step-number {
             width: 32px;
             height: 32px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.9em;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
+            color: #334155;
         }
 
         .active .step-number {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .step-item i {
-            font-size: 0.9em;
+            font-size: 0.9rem;
             opacity: 0;
             transform: scale(0);
             transition: all 0.3s ease;
@@ -203,6 +210,7 @@
         .step-item.completed i {
             opacity: 1;
             transform: scale(1);
+            color: #22c55e;
         }
 
         /* قسم النموذج */
@@ -211,9 +219,9 @@
         }
 
         .form-section h2 {
-            color: white;
+            color: #0f172a;
             margin-bottom: 40px;
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -221,10 +229,10 @@
         }
 
         .form-section h2 i {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #2563eb, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.2em;
+            font-size: 1.3rem;
         }
 
         .form-grid {
@@ -264,9 +272,9 @@
         .form-group label {
             display: block;
             margin-bottom: 10px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-            font-size: 0.95em;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .input-icon {
@@ -278,8 +286,8 @@
             right: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #4cc9f0;
-            font-size: 1.1em;
+            color: #3b82f6;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             z-index: 2;
         }
@@ -290,13 +298,14 @@
             width: 100%;
             padding: 16px 20px;
             padding-right: 50px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            font-size: 1em;
-            color: white;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            font-size: 1rem;
+            color: #0f172a;
             transition: all 0.3s ease;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
         .form-group textarea {
@@ -308,7 +317,7 @@
         .form-group select {
             padding-right: 20px;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234cc9f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: left 16px center;
             background-size: 16px;
@@ -318,20 +327,21 @@
         .input-icon textarea:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #4cc9f0;
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 30px rgba(76, 201, 240, 0.1);
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.15);
         }
 
         .input-icon input:focus + i,
         .input-icon textarea:focus + i {
-            color: #4361ee;
+            color: #7c3aed;
             transform: translateY(-50%) scale(1.1);
         }
 
         .input-icon input::placeholder,
         .input-icon textarea::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: #94a3b8;
+            font-weight: 300;
         }
 
         /* أزرار التنقل */
@@ -340,17 +350,17 @@
             justify-content: space-between;
             margin-top: 50px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
 
         .btn-next,
         .btn-prev {
-            padding: 16px 40px;
-            border-radius: 16px;
-            font-size: 1.1em;
+            padding: 14px 42px;
+            border-radius: 40px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -361,15 +371,15 @@
         }
 
         .btn-next {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
-            box-shadow: 0 10px 30px -10px #4361ee;
+            box-shadow: 0 12px 28px -10px #3b82f6;
         }
 
         .btn-prev {
-            background: rgba(255, 255, 255, 0.03);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            color: #334155;
+            border: 1px solid #e2e8f0;
         }
 
         .btn-next::before,
@@ -381,7 +391,7 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.3);
             transform: translate(-50%, -50%);
             transition: width 0.6s ease, height 0.6s ease;
         }
@@ -392,55 +402,58 @@
             height: 300px;
         }
 
-        .btn-next:hover,
-        .btn-prev:hover {
-            transform: translateY(-3px);
-        }
-
         .btn-next:hover {
-            box-shadow: 0 20px 40px -10px #4361ee;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px -8px #3b82f6;
         }
 
         .btn-prev:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
 
         .btn-next i,
         .btn-prev i {
-            font-size: 1.1em;
+            font-size: 1.2rem;
             transition: transform 0.3s ease;
         }
 
         .btn-next:hover i:last-child {
-            transform: translateX(-5px);
+            transform: translateX(-6px);
         }
 
         .btn-prev:hover i:first-child {
-            transform: translateX(5px);
+            transform: translateX(6px);
         }
 
-        /* تأثيرات إضافية */
-        .glow {
-            position: relative;
+        /* تلميحات المساعدة */
+        .hint {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .glow::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .hint i {
+            color: #3b82f6;
+            font-size: 0.9rem;
         }
 
-        .glow:hover::after {
-            opacity: 0.3;
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, #a5b4fc, #bae6fd);
+            border-radius: 10px;
         }
 
         /* تصميم متجاوب */
@@ -467,7 +480,7 @@
             }
             
             .creation-container {
-                border-radius: 32px;
+                border-radius: 36px;
             }
             
             .form-section {
@@ -477,56 +490,6 @@
             .steps-header {
                 padding: 20px;
             }
-        }
-
-        /* تخصيص شريط التمرير */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0a0a0f;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #4361ee, #4cc9f0);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #4cc9f0, #4361ee);
-        }
-
-        /* تأثير النبض للخطوات النشطة */
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(76, 201, 240, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
-            }
-        }
-
-        /* تلميحات المساعدة */
-        .hint {
-            font-size: 0.85em;
-            color: rgba(255, 255, 255, 0.4);
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .hint i {
-            color: #4cc9f0;
-            font-size: 0.9em;
         }
     </style>
 </head>
@@ -570,7 +533,7 @@
                     أنشئ بطاقتك الذكية
                 </h2>
                 
-                <form action="/create-profile/step1" method="POST">
+                <form id="nfcForm" action="/create-profile/step1" method="POST">
                     <div class="form-grid">
                         <div class="form-group full-width">
                             <label>الاسم الكامل</label>
@@ -595,7 +558,7 @@
                         <div class="form-group">
                             <label>رقم الجوال</label>
                             <div class="input-icon">
-                                <i class="fas fa-phone"></i>
+                                <i class="fas fa-phone-alt"></i>
                                 <input type="tel" name="phone" placeholder="+966 50 000 0000" required>
                             </div>
                         </div>
@@ -619,7 +582,7 @@
                         <div class="form-group full-width">
                             <label>نبذة تعريفية (اختياري)</label>
                             <div class="input-icon">
-                                <i class="fas fa-pen"></i>
+                                <i class="fas fa-feather"></i>
                                 <textarea name="bio" rows="4" placeholder="اكتب نبذة مختصرة عن نفسك..."></textarea>
                             </div>
                             <div class="hint">
@@ -645,25 +608,24 @@
     </div>
 
     <script>
-        // تأثيرات تفاعلية عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('%c✨ NFC Pro - إنشاء بطاقة احترافية', 'color: #4cc9f0; font-size: 14px; font-weight: bold;');
+            console.log('✨ NFC Pro - إنشاء بطاقة (تصميم فاتح)');
             
-            // إضافة تأثير التركيز على الحقول
+            // تأثيرات عند التركيز على الحقول
             const inputs = document.querySelectorAll('input, textarea, select');
             inputs.forEach(input => {
                 input.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
+                    this.parentElement.style.transform = 'scale(1.01)';
                 });
                 
                 input.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
+                    this.parentElement.style.transform = 'scale(1)';
                 });
             });
 
-            // تأثير عند تحريك الماوس على الخطوات
+            // حركة الخطوات
             const steps = document.querySelectorAll('.step-item');
-            steps.forEach((step, index) => {
+            steps.forEach(step => {
                 step.addEventListener('mouseenter', () => {
                     if (!step.classList.contains('active')) {
                         step.style.transform = 'translateY(-3px)';
@@ -675,50 +637,29 @@
                 });
             });
 
-            // التحقق من المدخلات
-            const form = document.querySelector('form');
+            // منع الإرسال الفارغ + رسالة لطيفة
+            const form = document.getElementById('nfcForm');
             form.addEventListener('submit', function(e) {
-                // التحقق من الحقول المطلوبة
                 const name = document.querySelector('input[name="name"]').value;
                 const email = document.querySelector('input[name="email"]').value;
                 const phone = document.querySelector('input[name="phone"]').value;
                 
                 if (!name || !email || !phone) {
-                    alert('الرجاء إدخال جميع الحقول المطلوبة');
+                    e.preventDefault();
+                    alert('الرجاء إدخال جميع الحقول المطلوبة (الاسم، البريد، الجوال)');
                     return;
                 }
-                
-                // تأثير نقر على زر التالي
-                const nextBtn = document.querySelector('.btn-next');
-                nextBtn.style.transform = 'scale(0.95)';
+
+                // تأثير ناعم على الزر
+                const btn = document.querySelector('.btn-next');
+                btn.style.transform = 'scale(0.97)';
                 setTimeout(() => {
-                    nextBtn.style.transform = 'scale(1)';
+                    btn.style.transform = 'scale(1)';
                 }, 200);
-                
-                // تغيير نص الزر
-                const buttonText = nextBtn.innerHTML;
-                nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-                
-                // السماح بإرسال النموذج للخادم
-                // سيتم التوجيه للخطوة التالية من قبل الخادم
+
+                // يمكن إضافة مؤقت أو تغيير النص لمحاكاة الإرسال
+                // (هنا سيتم الإرسال الفعلي للخادم حسب الـ action)
             });
-
-            // تأثير الكتابة للحقول
-            const nameField = document.querySelector('input[name="name"]');
-            if (nameField) {
-                nameField.addEventListener('input', function() {
-                    if (this.value.length > 0) {
-                        this.style.borderColor = '#4cc9f0';
-                    }
-                });
-            }
-        });
-
-        // تأثير تغيير لون الأيقونات عند التمرير
-        window.addEventListener('scroll', function() {
-            const scrolled = window.scrollY;
-            const opacity = 0.95 + (scrolled / 1000);
-            document.querySelector('.creation-container').style.opacity = Math.min(opacity, 1);
         });
     </script>
 </body>

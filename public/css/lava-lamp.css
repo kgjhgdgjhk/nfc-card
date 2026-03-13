@@ -1,0 +1,129 @@
+/* تأثير Lava Lamp (لافا لامب) */
+.lava-lamp-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(125deg, #1a1a2e, #16213e, #0f3460);
+}
+
+.lava-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.6;
+    animation: float 20s infinite ease-in-out;
+}
+
+.blob1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+    top: -100px;
+    left: -100px;
+    animation: float1 25s infinite alternate;
+}
+
+.blob2 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle at 70% 70%, #4ecdc4, #2c7a7b);
+    bottom: -200px;
+    right: -100px;
+    animation: float2 30s infinite alternate;
+}
+
+.blob3 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle at 40% 60%, #a8e6cf, #3b9e8e);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float3 35s infinite alternate;
+}
+
+.blob4 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle at 60% 40%, #ffd93d, #ff8c42);
+    top: 70%;
+    left: 20%;
+    animation: float4 22s infinite alternate;
+}
+
+@keyframes float1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(200px, 100px) scale(1.2); }
+}
+
+@keyframes float2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-200px, -150px) scale(1.3); }
+}
+
+@keyframes float3 {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    100% { transform: translate(-40%, -40%) scale(1.4); }
+}
+
+@keyframes float4 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(100px, -100px) scale(0.8); }
+}
+
+/* أنماط إضافية للصفحات */
+.lava-content {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px;
+    color: white;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* تأثير للبطاقات */
+.lava-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.lava-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* نص مع تأثير الزجاج */
+.lava-text {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* أزرار مع تأثير */
+.lava-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.lava-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}

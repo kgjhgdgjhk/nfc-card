@@ -1,0 +1,37 @@
+[
+  {
+    "profileId": "profile-e1e9f981",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "referer": "http://localhost:3000/admin",
+    "timestamp": "2026-03-13T20:08:28.911Z"
+  },
+  {
+    "profileId": "profile-e1e9f981",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "referer": "http://localhost:3000/admin",
+    "timestamp": "2026-03-13T20:08:40.088Z"
+  },
+  {
+    "profileId": "profile-e1e9f981",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "referer": "http://localhost:3000/admin",
+    "timestamp": "2026-03-13T20:09:45.181Z"
+  },
+  {
+    "profileId": "profile-3fc2005e",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "referer": "http://localhost:3000/admin",
+    "timestamp": "2026-03-13T20:09:50.357Z"
+  },
+  {
+    "profileId": "profile-3fc2005e",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "referer": "http://localhost:3000/admin",
+    "timestamp": "2026-03-13T20:09:56.125Z"
+  }
+]
