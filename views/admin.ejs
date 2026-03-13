@@ -705,12 +705,15 @@
                             <a href="/admin/card/edit/<%= card.cardId || card.profileId %>" class="btn-edit">
                                 <i class="fas fa-edit"></i> تعديل
                             </a>
-                            <form action="/admin/card/delete/<%= card.cardId %>" method="POST" style="display:inline;" 
-                                  onsubmit="return confirm('هل أنت متأكد من حذف هذه البطاقة؟')">
-                                <button type="submit" class="btn-delete">
-                                    <i class="fas fa-trash"></i> حذف
-                                </button>
-                            </form>
+                            <form action="/admin/card/delete/<%= card.cardId || card.profileId %>" 
+      method="POST" 
+      style="display:inline;"
+      onsubmit="return confirm('هل أنت متأكد من حذف هذه البطاقة؟');">
+    
+    <button type="submit" class="btn-delete">
+        <i class="fas fa-trash"></i> حذف
+    </button>
+</form>
                         </div>
                     </div>
                     <% }) %>
@@ -720,38 +723,98 @@
             </div>
         </div>
 
-        <!-- سجل الزيارات -->
-        <div class="admin-section">
-            <h2><i class="fas fa-chart-line"></i> سجل الزيارات</h2>
-            <div class="visits-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>البطاقة</th>
-                            <th>التاريخ والوقت</th>
-                            <th>IP العنوان</th>
-                            <th>المتصفح</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (visits && visits.length > 0) { %>
-                            <% visits.slice(0, 20).forEach(visit => { %>
-                            <tr>
-                                <td><%= visit.cardId %></td>
-                                <td><%= new Date(visit.timestamp).toLocaleString('ar-SA') %></td>
-                                <td><%= visit.ip %></td>
-                                <td><%= visit.userAgent ? visit.userAgent.substring(0, 50) + '...' : 'غير معروف' %></td>
-                            </tr>
-                            <% }) %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: #64748b;">لا توجد زيارات بعد</td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      <!-- سجل الزيارات -->
+<div class="admin-section">
+    <h2><i class="fas fa-chart-line"></i> سجل الزيارات</h2>
+    <div class="visits-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>البطاقة</th>
+                    <th>التاريخ والوقت</th>
+                    <th>IP العنوان</th>
+                    <th>المتصفح</th>
+                    <th>نظام التشغيل</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (visits && visits.length > 0) { %>
+                    <% 
+                    // عرض آخر 20 زيارة
+                    const recentVisits = visits.slice(0, 20);
+                    recentVisits.forEach(visit => { 
+                        // تحديد معرف البطاقة
+                        const cardIdentifier = visit.cardId || visit.profileId || 'غير معروف';
+                        
+                        // تحديد التاريخ
+                        let visitDate = 'تاريخ غير معروف';
+                        const dateValue = visit.timestamp || visit.createdAt;
+                        if (dateValue) {
+                            try {
+                                visitDate = new Date(dateValue).toLocaleString('ar-SA', {
+                                    year: 'numeric',
+                                    month: 'numeric',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit'
+                                });
+                            } catch(e) {
+                                visitDate = 'تاريخ غير صالح';
+                            }
+                        }
+                        
+                        // تحديد عنوان IP - تحويل ::1 إلى 127.0.0.1
+                        let ipAddress = visit.ip || visit.ipAddress || 'غير معروف';
+                        if (ipAddress === '::1' || ipAddress === '::ffff:127.0.0.1') {
+                            ipAddress = '127.0.0.1 (محلي)';
+                        } else if (ipAddress.includes('::ffff:')) {
+                            ipAddress = ipAddress.replace('::ffff:', '');
+                        }
+                        
+                        // تحديد المتصفح - استخراج اسم المتصفح فقط
+                        let browser = 'غير معروف';
+                        const ua = visit.userAgent || '';
+                        
+                        if (ua.includes('Chrome') && !ua.includes('Edg')) browser = 'Google Chrome';
+                        else if (ua.includes('Firefox')) browser = 'Mozilla Firefox';
+                        else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Apple Safari';
+                        else if (ua.includes('Edg')) browser = 'Microsoft Edge';
+                        else if (ua.includes('OPR') || ua.includes('Opera')) browser = 'Opera';
+                        else if (ua.includes('MSIE') || ua.includes('Trident')) browser = 'Internet Explorer';
+                        else if (ua) browser = ua.split(' ')[0].substring(0, 20);
+                        
+                        // تحديد نظام التشغيل
+                        let os = 'غير معروف';
+                        if (ua.includes('Windows NT 10.0')) os = 'Windows 10/11';
+                        else if (ua.includes('Windows NT 6.3')) os = 'Windows 8.1';
+                        else if (ua.includes('Windows NT 6.2')) os = 'Windows 8';
+                        else if (ua.includes('Windows NT 6.1')) os = 'Windows 7';
+                        else if (ua.includes('Mac OS X')) os = 'macOS';
+                        else if (ua.includes('iPhone')) os = 'iOS (iPhone)';
+                        else if (ua.includes('iPad')) os = 'iOS (iPad)';
+                        else if (ua.includes('Android')) os = 'Android';
+                        else if (ua.includes('Linux')) os = 'Linux';
+                    %>
+                    <tr>
+                        <td><%= cardIdentifier %></td>
+                        <td><%= visitDate %></td>
+                        <td><%= ipAddress %></td>
+                        <td><%= browser %></td>
+                        <td><%= os %></td>
+                    </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #64748b; padding: 40px;">
+                            <i class="fas fa-info-circle"></i> لا توجد زيارات بعد
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
 
         <!-- قسم التحكم في Lava Lamp -->
         <div class="admin-section">

@@ -244,15 +244,53 @@ async function updateProfileStatsLocally(profileId) {
 }
 
 // تسجيل زيارة
+// تسجيل زيارة - نسخة محسنة
 async function logVisit(profileId, req) {
     try {
+        // استخراج IP الحقيقي (مهم للخوادم التي تستخدم Proxy)
+        let ip = req.headers['x-forwarded-for'] || 
+                 req.headers['x-real-ip'] ||
+                 req.connection.remoteAddress || 
+                 req.socket.remoteAddress || 
+                 req.ip ||
+                 'unknown';
+        
+        // تنظيف الـ IP (إزالة بادئة IPv6 إذا وجدت)
+        if (ip && ip.includes('::ffff:')) {
+            ip = ip.split('::ffff:')[1];
+        }
+        
+        // إذا كان IP طويل (عدة عناوين) خذ أول واحد
+        if (ip && ip.includes(',')) {
+            ip = ip.split(',')[0].trim();
+        }
+        
+        // استخراج User Agent كامل
+        const userAgent = req.headers['user-agent'] || 'غير معروف';
+        
+        // استخراج Referer
+        const referer = req.headers['referer'] || req.headers['referrer'] || 'مباشر';
+        
+        // تجهيز بيانات الزيارة بشكل كامل
         const visitData = {
-            profileId,
-            ip: req.ip || req.connection.remoteAddress,
-            userAgent: req.get('User-Agent'),
-            referer: req.get('Referer') || 'direct',
-            timestamp: new Date()
+            profileId: profileId,
+            cardId: profileId, // إضافة cardId للتطابق مع الواجهة
+            ip: ip,
+            userAgent: userAgent,
+            browser: getBrowserInfo(userAgent), // استخراج معلومات المتصفح
+            os: getOSInfo(userAgent), // استخراج معلومات نظام التشغيل
+            referer: referer,
+            timestamp: new Date(),
+            createdAt: new Date() // إضافة createdAt للتطابق
         };
+        
+        console.log('📝 تسجيل زيارة:', {
+            profileId,
+            ip,
+            browser: visitData.browser,
+            os: visitData.os,
+            userAgent: userAgent.substring(0, 50) + '...'
+        });
         
         if (isPostgresConnected) {
             // استخدام PostgreSQL
@@ -260,6 +298,14 @@ async function logVisit(profileId, req) {
         } else {
             // استخدام الملف المحلي
             const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
+            
+            // التأكد من وجود مجلد data
+            const dataDir = path.join(__dirname, 'data');
+            try {
+                await fs.access(dataDir);
+            } catch {
+                await fs.mkdir(dataDir, { recursive: true });
+            }
             
             let visits = [];
             try {
@@ -278,9 +324,40 @@ async function logVisit(profileId, req) {
         
         return true;
     } catch (error) {
-        console.error('خطأ في تسجيل الزيارة:', error);
+        console.error('❌ خطأ في تسجيل الزيارة:', error);
         return false;
     }
+}
+
+// دالة مساعدة لاستخراج معلومات المتصفح
+function getBrowserInfo(userAgent) {
+    if (!userAgent) return 'غير معروف';
+    
+    if (userAgent.includes('Chrome') && !userAgent.includes('Edg')) return 'Google Chrome';
+    if (userAgent.includes('Firefox')) return 'Mozilla Firefox';
+    if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) return 'Apple Safari';
+    if (userAgent.includes('Edg')) return 'Microsoft Edge';
+    if (userAgent.includes('OPR') || userAgent.includes('Opera')) return 'Opera';
+    if (userAgent.includes('MSIE') || userAgent.includes('Trident')) return 'Internet Explorer';
+    
+    return 'متصفح آخر';
+}
+
+// دالة مساعدة لاستخراج معلومات نظام التشغيل
+function getOSInfo(userAgent) {
+    if (!userAgent) return 'غير معروف';
+    
+    if (userAgent.includes('Windows NT 10.0')) return 'Windows 10/11';
+    if (userAgent.includes('Windows NT 6.3')) return 'Windows 8.1';
+    if (userAgent.includes('Windows NT 6.2')) return 'Windows 8';
+    if (userAgent.includes('Windows NT 6.1')) return 'Windows 7';
+    if (userAgent.includes('Mac OS X')) return 'macOS';
+    if (userAgent.includes('iPhone')) return 'iOS (iPhone)';
+    if (userAgent.includes('iPad')) return 'iOS (iPad)';
+    if (userAgent.includes('Android')) return 'Android';
+    if (userAgent.includes('Linux')) return 'Linux';
+    
+    return 'نظام تشغيل آخر';
 }
 
 // ============================================
@@ -874,7 +951,139 @@ app.post('/admin/card/update/:cardId', async (req, res) => {
         res.redirect('/admin?error=حدث خطأ في تحديث البطاقة');
     }
 });
+// صفحة عرض جميع البطاقات
+app.get('/card', async (req, res) => {
+    try {
+        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+        let profiles = [];
+        
+        try {
+            const data = await fs.readFile(PROFILES_FILE, 'utf8');
+            profiles = JSON.parse(data);
+        } catch {
+            profiles = [];
+        }
+        
+        res.render('cards-list', {
+            title: 'البطاقات المتاحة',
+            profiles: profiles.slice(0, 10) // آخر 10 بطاقات
+        });
+    } catch (error) {
+        res.redirect('/');
+    }
+});
 
+// حذف بطاقة
+app.post('/admin/card/delete/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        console.log('🗑️ جاري حذف البطاقة:', cardId);
+        
+        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+        
+        // قراءة الملف
+        const data = await fs.readFile(PROFILES_FILE, 'utf8');
+        let profiles = JSON.parse(data);
+        
+        // البحث عن البطاقة في profileId أو cardId
+        let index = profiles.findIndex(p => p.profileId === cardId);
+        
+        // إذا لم يتم العثور، ابحث في cardId
+        if (index === -1) {
+            index = profiles.findIndex(p => p.cardId === cardId);
+        }
+        
+        // إذا لم يتم العثور، ابحث في id
+        if (index === -1) {
+            index = profiles.findIndex(p => p.id === cardId);
+        }
+        
+        if (index !== -1) {
+            const deletedCard = profiles[index];
+            
+            // حذف البطاقة
+            profiles.splice(index, 1);
+            
+            // حفظ الملف بعد الحذف
+            await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
+            
+            console.log('✅ تم حذف البطاقة بنجاح:', deletedCard.name);
+            res.redirect('/admin?success=تم حذف البطاقة بنجاح');
+        } else {
+            console.log('❌ البطاقة غير موجودة:', cardId);
+            res.redirect('/admin?error=البطاقة غير موجودة');
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في حذف البطاقة:', error);
+        res.redirect('/admin?error=حدث خطأ في حذف البطاقة');
+    }
+});
+
+// أو يمكنك استخدام DELETE method إذا كنت تفضل
+app.delete('/api/admin/card/delete/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        
+        const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+        const data = await fs.readFile(PROFILES_FILE, 'utf8');
+        let profiles = JSON.parse(data);
+        
+        const initialLength = profiles.length;
+        profiles = profiles.filter(p => 
+            p.profileId !== cardId && 
+            p.cardId !== cardId && 
+            p.id !== cardId
+        );
+        
+        if (profiles.length < initialLength) {
+            await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
+            res.json({ success: true, message: 'تم حذف البطاقة بنجاح' });
+        } else {
+            res.status(404).json({ success: false, message: 'البطاقة غير موجودة' });
+        }
+        
+    } catch (error) {
+        console.error('خطأ:', error);
+        res.status(500).json({ success: false, message: 'حدث خطأ في الحذف' });
+    }
+});
+
+// مسار لعرض محتوى ملف الزيارات (للتشخيص)
+app.get('/debug/visits', async (req, res) => {
+    try {
+        const VISITS_FILE = path.join(__dirname, 'data', 'visits.json');
+        
+        // التأكد من وجود الملف
+        try {
+            await fs.access(VISITS_FILE);
+        } catch {
+            return res.json({ 
+                message: 'ملف الزيارات غير موجود بعد',
+                path: VISITS_FILE 
+            });
+        }
+        
+        const data = await fs.readFile(VISITS_FILE, 'utf8');
+        const visits = JSON.parse(data);
+        
+        res.json({
+            total: visits.length,
+            lastVisit: visits[visits.length - 1] || null,
+            recentVisits: visits.slice(-5).map(v => ({
+                profileId: v.profileId,
+                ip: v.ip,
+                browser: v.browser || v.userAgent?.substring(0, 30),
+                timestamp: v.timestamp
+            }))
+        });
+    } catch (error) {
+        res.json({ 
+            error: error.message,
+            stack: error.stack 
+        });
+    }
+});
 // ============================================
 // تشغيل الخادم
 // ============================================
