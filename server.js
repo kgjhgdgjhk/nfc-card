@@ -572,6 +572,7 @@ app.get('/create-profile/step4', async (req, res) => {
 });
 
 // صفحة عرض الملف الشخصي العام
+// صفحة عرض الملف الشخصي العام
 app.get('/p/:profileId', async (req, res) => {
     try {
         const profile = await findProfile(req.params.profileId);
@@ -590,7 +591,8 @@ app.get('/p/:profileId', async (req, res) => {
         if (profile.isPasswordProtected && profile.password) {
             return res.render('profile-password', {
                 title: 'ملف محمي',
-                profileId: req.params.profileId
+                profileId: req.params.profileId,
+                query: req.query || {}  // ✅ إضافة query
             });
         }
         
@@ -600,7 +602,8 @@ app.get('/p/:profileId', async (req, res) => {
             profile,
             allowVCard: profile.allowVCard,
             ctaText: 'احصل على بطاقتك NFC',
-            ctaLink: '/create-profile'
+            ctaLink: '/create-profile',
+            query: req.query || {}  // ✅ إضافة query هنا أيضاً
         });
         
     } catch (error) {
@@ -611,7 +614,6 @@ app.get('/p/:profileId', async (req, res) => {
         });
     }
 });
-
 // التحقق من كلمة المرور
 app.post('/p/:profileId/verify', async (req, res) => {
     try {

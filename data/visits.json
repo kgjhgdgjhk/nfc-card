@@ -47,5 +47,49 @@
     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
     "referer": "http://localhost:3000/card/",
     "timestamp": "2026-03-13T21:01:22.149Z"
+  },
+  {
+    "profileId": "profile-a472a88a",
+    "cardId": "profile-a472a88a",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "http://localhost:3000/card/",
+    "timestamp": "2026-03-13T21:20:55.635Z",
+    "createdAt": "2026-03-13T21:20:55.635Z"
+  },
+  {
+    "profileId": "profile-a472a88a",
+    "cardId": "profile-a472a88a",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "http://localhost:3000/card/",
+    "timestamp": "2026-03-13T21:22:00.294Z",
+    "createdAt": "2026-03-13T21:22:00.294Z"
+  },
+  {
+    "profileId": "profile-a472a88a",
+    "cardId": "profile-a472a88a",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "http://localhost:3000/card/",
+    "timestamp": "2026-03-13T21:22:03.402Z",
+    "createdAt": "2026-03-13T21:22:03.402Z"
+  },
+  {
+    "profileId": "profile-a472a88a",
+    "cardId": "profile-a472a88a",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "http://localhost:3000/card/",
+    "timestamp": "2026-03-13T21:22:24.931Z",
+    "createdAt": "2026-03-13T21:22:24.931Z"
   }
 ]
