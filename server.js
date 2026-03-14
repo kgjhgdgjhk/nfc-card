@@ -28,14 +28,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ============================================
 // إعدادات الجلسة
 // ============================================
+// ============================================
+// إعدادات الجلسة - محسنة للإنتاج
+// ============================================
 app.use(session({
     secret: process.env.SESSION_SECRET || 'your-secret-key-change-this-to-something-secure-123',
-    resave: false,
-    saveUninitialized: false,
+    resave: true, // غير إلى true
+    saveUninitialized: true, // غير إلى true
     cookie: { 
         maxAge: 24 * 60 * 60 * 1000, // يوم واحد
-        secure: process.env.NODE_ENV === 'production' // true في الإنتاج مع HTTPS
-    }
+        secure: process.env.NODE_ENV === 'production', // true في الإنتاج مع HTTPS
+        httpOnly: true,
+        sameSite: 'lax' // مهم للـ redirects
+    },
+    proxy: true // مهم لـ Render
 }));
 
 // ============================================
