@@ -1,83 +1,23 @@
 const dotenv = require('dotenv');
+const { Sequelize, DataTypes } = require('sequelize');
 dotenv.config();
 
 // ============================================
-// ⚠️ تم تعطيل قاعدة البيانات PostgreSQL نهائياً
+// ✅ تفعيل الاتصال بقاعدة البيانات PostgreSQL
 // ============================================
-console.log('⚠️ قاعدة البيانات معطلة - استخدام الملفات المحلية فقط');
+console.log('📡 جاري الاتصال بقاعدة البيانات PostgreSQL...');
 
-// دوال وهمية للتعامل مع الملفات المحلية
-const mockFunctions = {
-    // دوال النماذج
-    sequelize: null,
-    Profile: null,
-    Visit: null,
-    Order: null,
-    
-    // دوال مساعدة
-    saveProfile: async (profileData) => {
-        console.log('📝 حفظ الملف الشخصي محلياً (محاكاة)');
-        return { success: true, data: profileData };
-    },
-    
-    findProfile: async (profileId) => {
-        console.log('🔍 البحث عن ملف محلياً (محاكاة)');
-        return null;
-    },
-    
-    createVisit: async (visitData) => {
-        console.log('👁️ تسجيل زيارة محلياً (محاكاة)');
-        return { success: true, data: visitData };
-    },
-    
-    createOrder: async (orderData) => {
-        console.log('📦 إنشاء طلب محلياً (محاكاة)');
-        return { success: true, data: orderData };
-    },
-    
-    getAllProfiles: async () => {
-        console.log('📋 جلب الملفات محلياً (محاكاة)');
-        return [];
-    },
-    
-    getAllVisits: async (limit = 100) => {
-        console.log('👀 جلب الزيارات محلياً (محاكاة)');
-        return [];
-    },
-    
-    updateProfileStats: async (profileId) => {
-        console.log('📊 تحديث إحصائيات محلياً (محاكاة)');
-        return { success: true };
-    }
-};
-
-// تصدير الدوال الوهمية
-module.exports = mockFunctions;
-
-// ============================================
-// الكود الأصلي معطل نهائياً (محذوف)
-// ============================================
-/*
-const { Sequelize, DataTypes } = require('sequelize');
-
-// تهيئة الاتصال بقاعدة البيانات
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
-    {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        dialect: 'postgres',
-        logging: console.log,
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
+// تهيئة الاتصال بقاعدة البيانات باستخدام DATABASE_URL
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false // مهم لـ Render
         }
-    }
-);
+    },
+    logging: false // إيقاف تسجيل الاستعلامات (يمكن تفعيله للتصحيح)
+});
 
 // اختبار الاتصال بقاعدة البيانات
 async function testConnection() {
@@ -85,7 +25,9 @@ async function testConnection() {
     await sequelize.authenticate();
     console.log('✅ تم الاتصال بقاعدة البيانات PostgreSQL بنجاح');
   } catch (error) {
-    console.error('❌ فشل الاتصال بقاعدة البيانات:', error);
+    console.error('❌ فشل الاتصال بقاعدة البيانات:');
+    console.error('📌 رسالة الخطأ:', error.message);
+    console.error('📌 تأكد من صحة DATABASE_URL في متغيرات البيئة');
   }
 }
 testConnection();
@@ -126,9 +68,13 @@ const Profile = sequelize.define('Profile', {
   company: DataTypes.STRING,
   bio: DataTypes.TEXT,
   
+  // ✅ حقول إضافية (العنوان والموقع)
+  website: DataTypes.STRING,
+  address: DataTypes.STRING,
+  
   // القالب
   template: {
-    type: DataTypes.ENUM('modern', 'classic', 'minimal'),
+    type: DataTypes.STRING,
     defaultValue: 'modern'
   },
   
@@ -156,7 +102,8 @@ const Profile = sequelize.define('Profile', {
       linkedin: null,
       twitter: null,
       github: null,
-      instagram: null
+      instagram: null,
+      facebook: null
     }
   },
   
@@ -197,8 +144,11 @@ const Visit = sequelize.define('Visit', {
       key: 'profileId'
     }
   },
+  cardId: DataTypes.STRING,
   ip: DataTypes.STRING,
   userAgent: DataTypes.TEXT,
+  browser: DataTypes.STRING,
+  os: DataTypes.STRING,
   referer: DataTypes.STRING,
   location: {
     type: DataTypes.JSONB,
@@ -236,26 +186,18 @@ const Order = sequelize.define('Order', {
       key: 'profileId'
     }
   },
-  customerName: DataTypes.STRING,
-  customerEmail: DataTypes.STRING,
-  customerPhone: DataTypes.STRING,
   cardType: {
-    type: DataTypes.ENUM('physical', 'digital', 'both'),
+    type: DataTypes.STRING,
     defaultValue: 'physical'
   },
   quantity: {
     type: DataTypes.INTEGER,
-    defaultValue: 1,
-    validate: {
-      min: 1,
-      max: 1000
-    }
+    defaultValue: 1
   },
   status: {
-    type: DataTypes.ENUM('pending', 'processing', 'completed', 'cancelled'),
+    type: DataTypes.STRING,
     defaultValue: 'pending'
-  },
-  notes: DataTypes.TEXT
+  }
 }, {
   timestamps: true,
   tableName: 'orders'
@@ -275,21 +217,17 @@ Order.belongsTo(Profile, { foreignKey: 'profileId', targetKey: 'profileId' });
 // ============================================
 async function syncModels() {
   try {
-    if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: true });
-      console.log('✅ تم مزامنة النماذج مع قاعدة البيانات');
-    } else {
-      await sequelize.sync();
-      console.log('✅ تم التحقق من النماذج');
-    }
+    await sequelize.sync({ alter: true });
+    console.log('✅ تم مزامنة النماذج مع قاعدة البيانات');
   } catch (error) {
-    console.error('❌ خطأ في مزامنة النماذج:', error);
+    console.error('❌ خطأ في مزامنة النماذج:', error.message);
   }
 }
 
-if (process.env.NODE_ENV !== 'test') {
+// تشغيل المزامنة بعد التأكد من الاتصال
+setTimeout(() => {
   syncModels();
-}
+}, 2000);
 
 // ============================================
 // دوال مساعدة للتعامل مع البيانات
@@ -298,9 +236,10 @@ if (process.env.NODE_ENV !== 'test') {
 async function saveProfile(profileData) {
   try {
     const profile = await Profile.create(profileData);
+    console.log('✅ تم حفظ الملف الشخصي في PostgreSQL:', profile.profileId);
     return { success: true, data: profile.toJSON() };
   } catch (error) {
-    console.error('خطأ في حفظ الملف الشخصي:', error);
+    console.error('❌ خطأ في حفظ الملف الشخصي:', error.message);
     return { success: false, error: error.message };
   }
 }
@@ -310,7 +249,7 @@ async function findProfile(profileId) {
     const profile = await Profile.findOne({ where: { profileId } });
     return profile ? profile.toJSON() : null;
   } catch (error) {
-    console.error('خطأ في البحث:', error);
+    console.error('❌ خطأ في البحث:', error.message);
     return null;
   }
 }
@@ -325,7 +264,7 @@ async function updateProfileStats(profileId) {
       await profile.update({ stats });
     }
   } catch (error) {
-    console.error('خطأ في تحديث الإحصائيات:', error);
+    console.error('❌ خطأ في تحديث الإحصائيات:', error.message);
   }
 }
 
@@ -335,7 +274,7 @@ async function createVisit(visitData) {
     await updateProfileStats(visitData.profileId);
     return { success: true, data: visit.toJSON() };
   } catch (error) {
-    console.error('خطأ في تسجيل الزيارة:', error);
+    console.error('❌ خطأ في تسجيل الزيارة:', error.message);
     return { success: false, error: error.message };
   }
 }
@@ -345,7 +284,7 @@ async function createOrder(orderData) {
     const order = await Order.create(orderData);
     return { success: true, data: order.toJSON() };
   } catch (error) {
-    console.error('خطأ في إنشاء الطلب:', error);
+    console.error('❌ خطأ في إنشاء الطلب:', error.message);
     return { success: false, error: error.message };
   }
 }
@@ -357,7 +296,7 @@ async function getAllProfiles() {
     });
     return profiles.map(p => p.toJSON());
   } catch (error) {
-    console.error('خطأ في جلب الملفات:', error);
+    console.error('❌ خطأ في جلب الملفات:', error.message);
     return [];
   }
 }
@@ -374,7 +313,7 @@ async function getAllVisits(limit = 100) {
     });
     return visits.map(v => v.toJSON());
   } catch (error) {
-    console.error('خطأ في جلب الزيارات:', error);
+    console.error('❌ خطأ في جلب الزيارات:', error.message);
     return [];
   }
 }
@@ -394,4 +333,3 @@ module.exports = {
   getAllProfiles,
   getAllVisits
 };
-*/
