@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ف<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -503,19 +503,25 @@
                             </div>
                             <% } %>
 
-                            <% if (profile.title) { %>
-                            <div class="card-detail">
-                                <i class="fas fa-briefcase"></i>
-                                <strong>المسمى:</strong>
-                                <span><%= profile.title %></span>
-                            </div>
-                            <% } %>
+<div class="card-detail">
+    <i class="fas fa-briefcase"></i>
+    <strong>المسمى:</strong>
+    <span><%= profile.title || 'غير محدد' %></span>
+</div>
 
                             <% if (profile.company) { %>
                             <div class="card-detail">
                                 <i class="fas fa-building"></i>
                                 <strong>الشركة:</strong>
                                 <span><%= profile.company %></span>
+                            </div>
+                            <% } %>
+
+                            <% if (profile.website) { %>
+                            <div class="card-detail">
+                                <i class="fas fa-globe"></i>
+                                <strong>الموقع:</strong>
+                                <a href="<%= profile.website %>" target="_blank" style="color: #3b82f6; text-decoration: none;"><%= new URL(profile.website).hostname %></a>
                             </div>
                             <% } %>
 

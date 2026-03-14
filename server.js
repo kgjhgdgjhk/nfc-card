@@ -432,9 +432,19 @@ app.get('/create-profile', (req, res) => {
 
 // حفظ البيانات للخطوة 1
 // حفظ البيانات للخطوة 1
+// حفظ البيانات للخطوة 1 - مع إضافة العنوان والموقع فقط
 app.post('/create-profile/step1', async (req, res) => {
     try {
-        const { name, email, phone, title, company, bio } = req.body;
+        const { 
+            name, 
+            email, 
+            phone, 
+            title, 
+            company, 
+            bio,
+            website,        // ✅ إضافة الموقع الإلكتروني
+            address,        // ✅ إضافة العنوان          
+  } = req.body;
         
         // التحقق من البيانات
         if (!name || !email || !phone) {
@@ -444,7 +454,7 @@ app.post('/create-profile/step1', async (req, res) => {
         // إنشاء معرف فريد
         const profileId = `profile-${uuidv4().substring(0, 8)}`;
         
-        // حفظ البيانات في الجلسة بدلاً من query string
+        // حفظ البيانات في الجلسة
         req.session.profileData = {
             profileId,
             name, 
@@ -452,8 +462,17 @@ app.post('/create-profile/step1', async (req, res) => {
             phone, 
             title, 
             company, 
-            bio
+            bio,
+            website,        // ✅ تمت الإضافة
+            address,        // ✅ تمت الإضافة
+                    // ✅ موجود
         };
+        
+        console.log('✅ بيانات تم حفظها:', {
+            name,
+            website: website || 'لم يتم الإدخال',
+            address: address || 'لم يتم الإدخال'
+        });
         
         res.redirect('/create-profile/step2');
         
@@ -526,7 +545,6 @@ app.post('/create-profile/step3', (req, res) => {
     
     res.redirect('/create-profile/step4');
 });
-
 // صفحة التأكيد والنتيجة (الخطوة 4)
 app.get('/create-profile/step4', async (req, res) => {
     try {
@@ -539,7 +557,7 @@ app.get('/create-profile/step4', async (req, res) => {
         const profileId = formData.profileId;
         const profileUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profileId}`;
         
-        // حفظ الملف الشخصي في قاعدة البيانات (ملفات محلية)
+        // حفظ الملف الشخصي مع جميع البيانات
         const profileData = {
             profileId,
             name: formData.name,
@@ -548,6 +566,8 @@ app.get('/create-profile/step4', async (req, res) => {
             title: formData.title,
             company: formData.company,
             bio: formData.bio,
+            website: formData.website,        // ✅ العنوان
+            address: formData.address,        // ✅ الموقع
             template: formData.template || 'modern',
             password: formData.password,
             isPasswordProtected: !!(formData.password && formData.password.trim() !== ''),
@@ -555,16 +575,7 @@ app.get('/create-profile/step4', async (req, res) => {
             allowVCard: formData.allowVCard === 'on',
             stats: { views: 0 },
             createdAt: new Date(),
-            updatedAt: new Date(),
-            social: {
-                linkedin: null,
-                twitter: null,
-                github: null,
-                instagram: null
-            },
-            // إضافة حقول إضافية
-            website: formData.website || null,
-            address: formData.address || null
+            updatedAt: new Date()
         };
         
         const result = await saveProfile(profileData);
@@ -573,13 +584,19 @@ app.get('/create-profile/step4', async (req, res) => {
             console.error('خطأ في الحفظ:', result.error);
         }
         
-        // مسح بيانات الجلسة بعد الحفظ (اختياري)
-        // req.session.profileData = null;
+        console.log('✅ تم حفظ الملف الشخصي مع البيانات:', {
+            name: profileData.name,
+            website: profileData.website,
+            address: profileData.address,
+            facebook: profileData.facebook ? 'موجود' : 'غير موجود',
+            instagram: profileData.instagram ? 'موجود' : 'غير موجود',
+            twitter: profileData.twitter ? 'موجود' : 'غير موجود'
+        });
         
         res.render('create-profile-step4', {
             title: 'هويتك الذكية جاهزة',
             step: 4,
-            formData,
+            formData: profileData,
             profileId,
             profileUrl,
             ctaText: 'اطلب بطاقتك المادية الآن',
@@ -593,6 +610,7 @@ app.get('/create-profile/step4', async (req, res) => {
     }
 });
 // صفحة عرض الملف الشخصي العام
+// صفحة عرض الملف الشخصي العام - تعرض الثري دي مباشرة
 app.get('/p/:profileId', async (req, res) => {
     try {
         const profile = await findProfile(req.params.profileId);
@@ -607,23 +625,15 @@ app.get('/p/:profileId', async (req, res) => {
         // تسجيل الزيارة
         await logVisit(req.params.profileId, req);
         
-        // التحقق من كلمة المرور إذا كانت مفعلة
-        if (profile.isPasswordProtected && profile.password) {
-            return res.render('profile-password', {
-                title: 'ملف محمي',
-                profileId: req.params.profileId,
-                query: req.query || {}
-            });
-        }
-        
-        // عرض الملف الشخصي حسب القالب المختار
-        res.render(`templates/template-${profile.template}`, {
-            title: `ملف ${profile.name} الشخصي`,
-            profile,
-            allowVCard: profile.allowVCard,
-            ctaText: 'احصل على بطاقتك NFC',
-            ctaLink: '/create-profile',
-            query: req.query || {}
+        // ✅ عرض العرض الثلاثي الأبعاد مباشرة بدون أي تحقق
+        res.render('profile-3d', {
+            title: `ملف ${profile.name} الشخصي | عرض ثلاثي الأبعاد`,
+            profileId: profile.profileId,
+            formData: profile,
+            profileUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profile.profileId}`,
+            whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000',
+            query: req.query || {},
+            enableLavaLamp: false
         });
         
     } catch (error) {
@@ -635,6 +645,44 @@ app.get('/p/:profileId', async (req, res) => {
     }
 });
 
+// ============================================
+// رابط مخصص للعرض الثلاثي الأبعاد (3D)
+// ============================================
+app.get('/3d/:profileId', async (req, res) => {
+    try {
+        const profile = await findProfile(req.params.profileId);
+        
+        if (!profile) {
+            return res.render('error', {
+                title: 'الملف غير موجود',
+                message: 'عذراً، الملف الشخصي غير موجود'
+            });
+        }
+        
+        // تسجيل الزيارة
+        await logVisit(req.params.profileId, req);
+        
+        console.log('🎮 عرض ثلاثي الأبعاد للملف:', profile.name);
+        
+        // عرض العرض الثلاثي الأبعاد مباشرة بدون أي تحقق
+        res.render('profile-3d', {
+            title: `ملف ${profile.name} الشخصي | عرض ثلاثي الأبعاد`,
+            profileId: profile.profileId,
+            formData: profile,
+            profileUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profile.profileId}`,
+            whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000',
+            query: req.query || {},
+            enableLavaLamp: false
+        });
+        
+    } catch (error) {
+        console.error('خطأ في العرض الثلاثي الأبعاد:', error);
+        res.status(500).render('error', {
+            title: 'خطأ',
+            message: 'حدث خطأ في تحميل العرض الثلاثي الأبعاد'
+        });
+    }
+});
 // التحقق من كلمة المرور
 app.post('/p/:profileId/verify', async (req, res) => {
     try {

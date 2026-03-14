@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Pro | إنشاء بطاقة ذكية • تصميم فاتح</title>
+    <title>NFC Pro | إنشاء بطاقة ذكية • </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #f5faff;  /* خلفية فاتحة جداً */
+            background: #f5faff;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -579,6 +579,28 @@
                             </div>
                         </div>
                         
+                        <div class="form-group">
+                            <label>الموقع الإلكتروني</label>
+                            <div class="input-icon">
+                                <i class="fas fa-globe"></i>
+                                <input type="url" name="website" placeholder="https://example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>العنوان</label>
+                            <div class="input-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" name="address" placeholder="المدينة، الشارع">
+                            </div>
+                        </div>
+                        
+                      
+                        
+                        
+                        
+                        
+                        
                         <div class="form-group full-width">
                             <label>نبذة تعريفية (اختياري)</label>
                             <div class="input-icon">
@@ -656,9 +678,6 @@
                 setTimeout(() => {
                     btn.style.transform = 'scale(1)';
                 }, 200);
-
-                // يمكن إضافة مؤقت أو تغيير النص لمحاكاة الإرسال
-                // (هنا سيتم الإرسال الفعلي للخادم حسب الـ action)
             });
         });
     </script>

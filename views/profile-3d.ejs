@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطاقة العمل الذكية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #d0d9e0 0%, #eef2f7 100%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .cards-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 1200px;
+        }
+
+        /* البطاقة الأساسية */
+        .business-card {
+            width: 750px;
+            height: 420px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: #ffffff;
+            box-shadow: 0 30px 50px -15px rgba(0, 50, 80, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* الجهة الملونة (الخلفية) */
+        .card-panel {
+            position: absolute;
+            top: 0;
+            width: 45%;
+            height: 100%;
+            padding: 35px 25px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        /* الجهة المقابلة (النصية) */
+        .card-panel-text {
+            position: absolute;
+            top: 0;
+            width: 55%;
+            height: 100%;
+            padding: 30px 25px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: transparent;
+            box-sizing: border-box;
+        }
+
+        /* تحديد مواقع البانيلات حسب البطاقة */
+        .card-primary .panel-colored {
+            left: 0;
+            background: #1e1e2a;
+            color: white;
+        }
+
+        .card-primary .panel-text {
+            right: 0;
+            color: #1e1e2a;
+        }
+
+        .card-secondary .panel-colored {
+            right: 0;
+            background: #1e1e2a;
+            color: white;
+        }
+
+        .card-secondary .panel-text {
+            left: 0;
+            color: #1e1e2a;
+        }
+
+        /* الموجة الزخرفية */
+        .wave-divider {
+            position: absolute;
+            top: 0;
+            width: 130px;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .card-primary .wave-divider {
+            left: 42%;
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .card-secondary .wave-divider {
+            right: 42%;
+            transform: translateX(50%) scaleX(-1);
+        }
+
+        .wave-divider svg {
+            width: 100%;
+            height: 100%;
+            fill: #ffffff;
+        }
+
+        /* المحتوى داخل البانل الملون */
+        .brand-content {
+            width: 100%;
+        }
+
+        .job-title-display {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .company-name-display {
+            font-size: 20px;
+            opacity: 0.85;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* المحتوى داخل البانل النصي */
+        .info-content {
+            width: 100%;
+        }
+
+        .personal-name {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            line-height: 1.1;
+            color: #121212;
+        }
+
+        /* توزيع بيانات الاتصال في عمودين */
+        .contact-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 10px;
+            margin-bottom: 15px;
+        }
+
+        /* تعريف موحد للحقول مع تكبير الرقم والايميل والموقع */
+        .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;
+    color: #1f3a4f;
+    background: rgba(0, 100, 180, 0.03);
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 140, 255, 0.08);
+    white-space: normal; /* تغيير من nowrap إلى normal */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+        .detail-item i {
+            width: 24px; /* تكبير الأيقونة */
+            color: #0077be;
+            font-size: 20px; /* تكبير حجم الأيقونة */
+            flex-shrink: 0;
+        }
+
+        .detail-item span {
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+             /* زيادة عرض النص المسموح به */
+        }
+
+        /* تخصيصات إضافية لحقول محددة - اختياري */
+        .detail-item:nth-child(1) span { /* حقل الرقم */
+            font-weight: 600;
+        }
+        
+        .detail-item:nth-child(2) span { /* حقل الايميل */
+            font-weight: 600;
+        }
+        
+        .detail-item:nth-child(3) span { /* حقل الموقع */
+            font-weight: 600;
+        }
+
+        /* القسم السفلي للكرت الثاني */
+        .social-qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .social-links i {
+            font-size: 30px;
+            color: #1a3246;
+            background: #f0f5fd;
+            padding: 10px;
+            border-radius: 50%;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .social-links i:hover {
+            background: #d4e4ff;
+            transform: scale(1.1);
+        }
+
+        .qr-code {
+            width: 110px;
+            height: 110px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border: 2px solid #1e2f3f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .scan-code-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f4970;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        /* تعديلات للكرت الثاني */
+        .card-secondary .wave-divider svg {
+            fill: #ffffff;
+        }
+
+        /* تصغير النصوص */
+        @media (max-width: 800px) {
+            .business-card { width: 600px; height: 350px; }
+            .job-title-display { font-size: 28px; }
+            .personal-name { font-size: 30px; }
+            .detail-item { font-size: 16px; padding: 8px 15px; }
+            .social-links i { font-size: 26px; }
+        }
+
+        @media (max-width: 650px) {
+            .business-card { width: 500px; height: 450px; }
+        }
+
+        /* رابط البطاقة */
+        .profile-link {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #3a4c62;
+            direction: ltr;
+            text-align: left;
+            background: rgba(255,255,255,0.7);
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-link span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 250px;
+        }
+
+        .copy-link-btn {
+            background: none;
+            border: none;
+            color: #0077be;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0 5px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="cards-wrapper">
+
+    <!-- ========== الكرت الأول (المسمى الوظيفي يسار + البيانات يمين) ========== -->
+    <div class="business-card card-primary">
+        <!-- البانل الملون (أسود) - الجهة اليسرى: المسمى الوظيفي واسم الشركة -->
+        <div class="card-panel panel-colored">
+            <div class="brand-content">
+                <div class="job-title-display" id="jobTitle1"><%= formData.title || 'Job Title' %></div>
+                <div class="company-name-display" id="companyName1"><%= formData.company || 'Company Name' %></div>
+            </div>
+        </div>
+
+        <!-- البانل النصي (أبيض) - الجهة اليمنى: الاسم وبيانات الاتصال -->
+        <div class="card-panel panel-text">
+            <div class="info-content">
+                <div class="personal-name" id="personalName1"><%= formData.name || 'H. SERISA' %></div>
+                
+                <div class="contact-details">
+                    <div class="detail-item"><i class="fa fa-phone-alt"></i> <span id="phone1"><%= formData.phone || '+123 456 789' %></span></div>
+                    <div class="detail-item"><i class="fa fa-envelope"></i> <span id="email1"><%= formData.email || 'your@mail.com' %></span></div>
+                    <div class="detail-item"><i class="fa fa-globe"></i> <span id="website1"><%= formData.website || 'www.mail.com' %></span></div>
+                    <div class="detail-item"><i class="fa fa-map-marker-alt"></i> <span id="address1"><%= formData.address || 'your street here' %></span></div>
+                </div>
+                
+                <!-- رابط البطاقة الرقمية -->
+                <div class="profile-link">
+                    <span id="profileLink1"><%= profileUrl || 'https://nfc.pro/p/username' %></span>
+                    <button class="copy-link-btn" onclick="copyProfileLink()"><i class="fa-regular fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- الموجة الفاصلة -->
+        <div class="wave-divider">
+            <svg preserveAspectRatio="none" viewBox="0 0 120 420">
+                <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- ========== الكرت الثاني (المسمى الوظيفي يمين + باركود وأيقونات يسار) ========== -->
+    <div class="business-card card-secondary">
+        <!-- البانل الملون (أسود) - الجهة اليمنى: المسمى الوظيفي واسم الشركة -->
+        <div class="card-panel panel-colored">
+            <div class="brand-content">
+                <div class="job-title-display" id="jobTitle2"><%= formData.title || 'Job Title' %></div>
+                <div class="company-name-display" id="companyName2"><%= formData.company || 'Company Name' %></div>
+            </div>
+        </div>
+
+        <!-- البانل النصي (أبيض) - الجهة اليسرى: أيقونات وباركود -->
+        <div class="card-panel panel-text">
+            <div class="social-qr-section">
+                <div class="social-links">
+                    <% if (formData.facebook) { %>
+                        <a href="<%= formData.facebook %>" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <% } else { %>
+                        <i class="fab fa-facebook-f"></i>
+                    <% } %>
+                    
+                    <% if (formData.instagram) { %>
+                        <a href="<%= formData.instagram %>" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <% } else { %>
+                        <i class="fab fa-instagram"></i>
+                    <% } %>
+                    
+                    <% if (formData.twitter) { %>
+                        <a href="<%= formData.twitter %>" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                    <% } else { %>
+                        <i class="fab fa-x-twitter"></i>
+                    <% } %>
+                </div>
+                
+                <div class="qr-code" id="qrCodeContainer">
+                    <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=<%= encodeURIComponent(profileUrl || 'https://nfc.pro') %>" alt="QR Code">
+                </div>
+                
+                <div class="scan-code-text" onclick="downloadQR()">
+                    <i class="fa-solid fa-download"></i> Scan Code
+                </div>
+                
+                <!-- رابط البطاقة الرقمية -->
+                <div class="profile-link" style="margin-top: 10px;">
+                    <span id="profileLink2"><%= profileUrl || 'https://nfc.pro/p/username' %></span>
+                    <button class="copy-link-btn" onclick="copyProfileLink()"><i class="fa-regular fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- الموجة الفاصلة -->
+        <div class="wave-divider">
+            <svg preserveAspectRatio="none" viewBox="0 0 120 420">
+                <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // استقبال المتغيرات من الخادم (نفس المتغيرات من الصفحة الثانية)
+    const profileId = '<%= profileId %>';
+    const profileUrl = '<%= profileUrl %>';
+    const whatsappNumber = '<%= whatsappNumber %>';
+    const profileName = '<%= formData.name %>';
+    const profileTitle = '<%= formData.title || "" %>';
+    const profileCompany = '<%= formData.company || "" %>';
+    const profileEmail = '<%= formData.email %>';
+    const profilePhone = '<%= formData.phone %>';
+    const profileAddress = '<%= formData.address || "" %>';
+    const profileWebsite = '<%= formData.website || "" %>';
+
+    console.log('📌 بيانات البطاقة:', { profileId, profileUrl, profileName });
+
+    // تحديث البطاقات بالبيانات (تأكيد إضافي)
+    document.addEventListener('DOMContentLoaded', function() {
+        // تحديث الكرت الأول
+        document.getElementById('jobTitle1').textContent = profileTitle || 'Job Title';
+        document.getElementById('companyName1').textContent = profileCompany || 'Company Name';
+        document.getElementById('personalName1').textContent = profileName || 'H. SERISA';
+        document.getElementById('phone1').textContent = profilePhone || '+123 456 789';
+        document.getElementById('email1').textContent = profileEmail || 'your@mail.com';
+        document.getElementById('website1').textContent = profileWebsite || 'www.mail.com';
+        document.getElementById('address1').textContent = profileAddress || 'your street here';
+        document.getElementById('profileLink1').textContent = profileUrl || 'https://nfc.pro/p/username';
+        
+        // تحديث الكرت الثاني
+        document.getElementById('jobTitle2').textContent = profileTitle || 'Job Title';
+        document.getElementById('companyName2').textContent = profileCompany || 'Company Name';
+        document.getElementById('profileLink2').textContent = profileUrl || 'https://nfc.pro/p/username';
+        
+        // تحديث QR code
+        if (profileUrl) {
+            document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${encodeURIComponent(profileUrl)}`;
+        }
+    });
+
+    // نسخ الرابط
+    function copyProfileLink() {
+        const text = profileUrl || document.getElementById('profileLink1').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('✅ تم نسخ الرابط: ' + text);
+        }).catch(() => {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('✅ تم نسخ الرابط');
+        });
+    }
+
+    // تنزيل QR code
+    function downloadQR() {
+        const qrUrl = document.getElementById('qrImage').src;
+        window.open(qrUrl, '_blank');
+    }
+
+    // نسخ بيانات الاتصال عند النقر
+    document.querySelectorAll('.detail-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            let text = this.innerText.replace(/[^0-9a-zA-Z@.:/]/g, '').trim();
+            if (text) {
+                navigator.clipboard?.writeText(text).then(() => {
+                    alert('✅ تم النسخ: ' + text);
+                });
+            }
+        });
+    });
+
+    // فتح روابط التواصل عند النقر على الأيقونات
+    document.querySelectorAll('.social-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+</script>
+
+</body>
+</html>
