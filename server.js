@@ -555,7 +555,7 @@ app.get('/create-profile/step4', async (req, res) => {
         
         const formData = req.session.profileData;
         const profileId = formData.profileId;
-        const profileUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profileId}`;
+        const profileUrl = `${req.baseUrlFull}/p/${profileId}`;
         
         // حفظ الملف الشخصي مع جميع البيانات
         const profileData = {
@@ -609,6 +609,15 @@ app.get('/create-profile/step4', async (req, res) => {
         res.redirect('/create-profile?error=حدث خطأ في حفظ البيانات');
     }
 });
+
+// بعد تعريف app مباشرة
+app.use((req, res, next) => {
+    // تحديد BASE_URL تلقائياً بناءً على الطلب الحالي
+    const protocol = req.get('x-forwarded-proto') || req.protocol;
+    const host = req.get('host');
+    req.baseUrlFull = `${protocol}://${host}`;
+    next();
+});
 // صفحة عرض الملف الشخصي العام
 // صفحة عرض الملف الشخصي العام - تعرض الثري دي مباشرة
 app.get('/p/:profileId', async (req, res) => {
@@ -630,7 +639,7 @@ app.get('/p/:profileId', async (req, res) => {
             title: `ملف ${profile.name} الشخصي | عرض ثلاثي الأبعاد`,
             profileId: profile.profileId,
             formData: profile,
-            profileUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profile.profileId}`,
+            profileUrl: `${req.baseUrlFull}/p/${profile.profileId}`,
             whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000',
             query: req.query || {},
             enableLavaLamp: false
@@ -669,7 +678,7 @@ app.get('/3d/:profileId', async (req, res) => {
             title: `ملف ${profile.name} الشخصي | عرض ثلاثي الأبعاد`,
             profileId: profile.profileId,
             formData: profile,
-            profileUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/p/${profile.profileId}`,
+            profileUrl: `${req.baseUrlFull}/p/${profile.profileId}`,
             whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000',
             query: req.query || {},
             enableLavaLamp: false

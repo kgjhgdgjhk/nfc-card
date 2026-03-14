@@ -167,33 +167,42 @@
         .detail-item {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
     font-size: 18px;
     color: #1f3a4f;
     background: rgba(0, 100, 180, 0.03);
-    padding: 12px 20px;
+    padding: 12px 15px;
     border-radius: 50px;
     border: 1px solid rgba(0, 140, 255, 0.08);
-    white-space: normal; /* تغيير من nowrap إلى normal */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    white-space: nowrap;
     overflow: hidden;
+    width: 100%; /* جعل العرض ثابتاً */
+    min-width: 0; /* السماح بالتصغير إذا لزم الأمر */
 }
 
-        .detail-item i {
-            width: 24px; /* تكبير الأيقونة */
-            color: #0077be;
-            font-size: 20px; /* تكبير حجم الأيقونة */
-            flex-shrink: 0;
-        }
+.detail-item i {
+    width: 24px;
+    color: #0077be;
+    font-size: 20px;
+    flex-shrink: 0;
+}
 
-        .detail-item span {
-            font-weight: 500;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-             /* زيادة عرض النص المسموح به */
-        }
+.detail-item span {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1; /* أخذ المساحة المتبقية */
+    min-width: 0; /* السماح بالتصغير */
+}
+
+/* تعديل شبكة العرض */
+.contact-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+}
 
         /* تخصيصات إضافية لحقول محددة - اختياري */
         .detail-item:nth-child(1) span { /* حقل الرقم */

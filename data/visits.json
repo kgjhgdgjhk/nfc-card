@@ -1631,5 +1631,27 @@
     "referer": "مباشر",
     "timestamp": "2026-03-14T21:31:42.786Z",
     "createdAt": "2026-03-14T21:31:42.786Z"
+  },
+  {
+    "profileId": "profile-8a861579",
+    "cardId": "profile-8a861579",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-14T21:32:57.007Z",
+    "createdAt": "2026-03-14T21:32:57.007Z"
+  },
+  {
+    "profileId": "profile-8a861579",
+    "cardId": "profile-8a861579",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-14T21:33:55.045Z",
+    "createdAt": "2026-03-14T21:33:55.045Z"
   }
 ]
