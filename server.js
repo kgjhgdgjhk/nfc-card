@@ -807,6 +807,193 @@ app.get('/admin', async (req, res) => {
     }
 });
 
+// ============================================
+// المسارات المفقودة للتعديل والحذف
+// ============================================
+
+// صفحة تعديل البطاقة
+app.get('/admin/card/edit/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        console.log('🔍 جاري البحث عن بطاقة:', cardId);
+        
+        let card = null;
+        let profiles = [];
+        
+        if (isPostgresConnected) {
+            // البحث في PostgreSQL
+            card = await findProfile(cardId);
+        } else {
+            // البحث في الملفات المحلية
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            
+            try {
+                const data = await fs.readFile(PROFILES_FILE, 'utf8');
+                profiles = JSON.parse(data);
+                
+                // البحث في profileId
+                card = profiles.find(p => p.profileId === cardId);
+                
+            } catch (error) {
+                console.error('خطأ في قراءة الملف:', error);
+            }
+        }
+        
+        if (card) {
+            console.log('✅ تم العثور على البطاقة:', card.name);
+            
+            res.render('edit-card', { 
+                card: card,
+                query: req.query || {},
+                title: `تعديل بطاقة ${card.name}`,
+                enableLavaLamp: true
+            });
+        } else {
+            console.log('❌ البطاقة غير موجودة:', cardId);
+            res.redirect('/admin?error=البطاقة غير موجودة');
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في صفحة التعديل:', error);
+        res.redirect('/admin?error=حدث خطأ في تحميل صفحة التعديل');
+    }
+});
+
+// تحديث بيانات البطاقة
+app.post('/admin/card/update/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        const updatedData = req.body;
+        
+        console.log('📝 جاري تحديث البطاقة:', cardId);
+        console.log('📦 البيانات المرسلة:', updatedData);
+        
+        if (isPostgresConnected) {
+            // تحديث في PostgreSQL
+            // هذا يحتاج دالة updateProfile في ملف Profile.js
+            // للتبسيط، سنستخدم الملفات المحلية أولاً
+            console.log('⚠️ التحديث في PostgreSQL غير مفعل حالياً');
+            return res.redirect('/admin?error=التحديث في PostgreSQL غير مفعل');
+        } else {
+            // تحديث في الملف المحلي
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            
+            // قراءة الملف
+            let profiles = [];
+            try {
+                const data = await fs.readFile(PROFILES_FILE, 'utf8');
+                profiles = JSON.parse(data);
+            } catch (error) {
+                console.log('⚠️ ملف البطاقات غير موجود');
+                return res.redirect('/admin?error=ملف البطاقات غير موجود');
+            }
+            
+            // البحث عن البطاقة
+            let index = profiles.findIndex(p => p.profileId === cardId);
+            
+            if (index !== -1) {
+                const oldCard = profiles[index];
+                
+                // إنشاء كائن محدث
+                const updatedCard = {
+                    ...oldCard,
+                    name: updatedData.name || oldCard.name,
+                    email: updatedData.email || oldCard.email,
+                    phone: updatedData.phone || oldCard.phone,
+                    title: updatedData.title || oldCard.title,
+                    company: updatedData.company || oldCard.company,
+                    bio: updatedData.bio || oldCard.bio,
+                    website: updatedData.website || oldCard.website,
+                    address: updatedData.address || oldCard.address,
+                    template: updatedData.template || oldCard.template,
+                    updatedAt: new Date()
+                };
+                
+                // تحديث المصفوفة
+                profiles[index] = updatedCard;
+                
+                // حفظ في الملف
+                await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
+                
+                console.log('✅ تم تحديث البطاقة بنجاح:', updatedCard.name);
+                res.redirect('/admin?success=تم تحديث البطاقة بنجاح');
+                
+            } else {
+                console.log('❌ البطاقة غير موجودة');
+                res.redirect('/admin?error=البطاقة غير موجودة');
+            }
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في تحديث البطاقة:', error);
+        res.redirect('/admin?error=حدث خطأ في تحديث البطاقة: ' + error.message);
+    }
+});
+
+// حذف بطاقة
+app.post('/admin/card/delete/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        console.log('🗑️ جاري حذف البطاقة:', cardId);
+        
+        if (isPostgresConnected) {
+            // حذف من PostgreSQL
+            console.log('⚠️ الحذف في PostgreSQL غير مفعل حالياً');
+            return res.redirect('/admin?error=الحذف في PostgreSQL غير مفعل');
+        } else {
+            // حذف من الملف المحلي
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            
+            const data = await fs.readFile(PROFILES_FILE, 'utf8');
+            let profiles = JSON.parse(data);
+            
+            let index = profiles.findIndex(p => p.profileId === cardId);
+            
+            if (index !== -1) {
+                const deletedCard = profiles[index];
+                profiles.splice(index, 1);
+                await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
+                
+                console.log('✅ تم حذف البطاقة بنجاح:', deletedCard.name);
+                res.redirect('/admin?success=تم حذف البطاقة بنجاح');
+            } else {
+                console.log('❌ البطاقة غير موجودة');
+                res.redirect('/admin?error=البطاقة غير موجودة');
+            }
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في حذف البطاقة:', error);
+        res.redirect('/admin?error=حدث خطأ في حذف البطاقة');
+    }
+});
+
+// صفحة عرض جميع البطاقات
+app.get('/card', async (req, res) => {
+    try {
+        let profiles = [];
+        
+        if (isPostgresConnected) {
+            profiles = await getAllProfiles();
+        } else {
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            try {
+                const data = await fs.readFile(PROFILES_FILE, 'utf8');
+                profiles = JSON.parse(data);
+            } catch {
+                profiles = [];
+            }
+        }
+        
+        res.render('cards-list', {
+            title: 'البطاقات المتاحة',
+            profiles: profiles.slice(0, 10)
+        });
+    } catch (error) {
+        res.redirect('/');
+    }
+});
+
 // باقي المسارات (نفس الكود السابق) - card, edit, delete, debug, etc.
 
 // ============================================
