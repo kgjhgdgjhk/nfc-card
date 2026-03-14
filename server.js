@@ -38,6 +38,14 @@ app.use(session({
     }
 }));
 
+app.use((req, res, next) => {
+    const protocol = req.get('x-forwarded-proto') || req.protocol;
+    const host = req.get('host');
+    req.baseUrlFull = `${protocol}://${host}`;
+    console.log('🌐 baseUrlFull:', req.baseUrlFull); // للتأكد
+    next();
+});
+
 // تعيين محرك العرض EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -611,13 +619,7 @@ app.get('/create-profile/step4', async (req, res) => {
 });
 
 // بعد تعريف app مباشرة
-app.use((req, res, next) => {
-    // تحديد BASE_URL تلقائياً بناءً على الطلب الحالي
-    const protocol = req.get('x-forwarded-proto') || req.protocol;
-    const host = req.get('host');
-    req.baseUrlFull = `${protocol}://${host}`;
-    next();
-});
+
 // صفحة عرض الملف الشخصي العام
 // صفحة عرض الملف الشخصي العام - تعرض الثري دي مباشرة
 app.get('/p/:profileId', async (req, res) => {
