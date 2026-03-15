@@ -11,6 +11,7 @@ const axios = require('axios');
 const fs = require('fs').promises;
 const session = require('express-session');
 
+
 // تحميل متغيرات البيئة
 dotenv.config();
 
@@ -439,8 +440,15 @@ app.get('/create-profile', (req, res) => {
     });
 });
 
-// حفظ البيانات للخطوة 1
-app.post('/create-profile/step1', async (req, res) => {
+// حفظ البيانات للخطوة 1 - مع رفع الصور
+const multer = require('multer');
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+});
+
+app.post('/create-profile/step1', upload.single('profileImage'), async (req, res) => {
     try {
         const { 
             name, 
@@ -452,13 +460,17 @@ app.post('/create-profile/step1', async (req, res) => {
             website,
             address          
         } = req.body;
-        
+
+        console.log("📦 DATA المستلمة:", req.body);
+        console.log("🖼️ IMAGE:", req.file ? `مستلم (${req.file.size} بايت)` : 'لا يوجد صورة');
+
         if (!name || !email || !phone) {
+            console.log('❌ حقول ناقصة:', { name, email, phone });
             return res.redirect('/create-profile?error=الرجاء إدخال جميع البيانات المطلوبة');
         }
-        
+
         const profileId = `profile-${uuidv4().substring(0, 8)}`;
-        
+
         req.session.profileData = {
             profileId,
             name, 
@@ -470,13 +482,14 @@ app.post('/create-profile/step1', async (req, res) => {
             website,
             address
         };
+
+        console.log('✅ بيانات تم حفظها في الجلسة:', { name, website, address, profileId });
         
-        console.log('✅ بيانات تم حفظها في الجلسة:', { name, website, address });
-        
-        res.redirect('/create-profile/step2');
-        
+        // ✅ التوجيه إلى الخطوة الثانية
+        res.redirect('http://localhost:3000/create-profile/step2');
+
     } catch (error) {
-        console.error('خطأ:', error);
+        console.error('❌ خطأ في /create-profile/step1:', error);
         res.redirect('/create-profile?error=حدث خطأ، الرجاء المحاولة مرة أخرى');
     }
 });
@@ -1299,6 +1312,7 @@ app.get('/debug-all', async (req, res) => {
         res.json({ error: error.message });
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`
