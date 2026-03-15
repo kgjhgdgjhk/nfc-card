@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بطاقة العمل الذكية</title>
+    <title>بطاقة العمل الذكية - <%= template === 'classic' ? 'كلاسيكي' : template === 'modern' ? 'عصري' : template === 'minimal' ? 'بسيط' : template === 'dark' ? 'داكن' : template === 'tech' ? 'تقني' : template === 'elegant' ? 'أنيق' : template === 'corporate' ? 'مؤسسي' : template === 'creative' ? 'إبداعي' : template === '3d' ? 'ثلاثي الأبعاد' : template === 'neon' ? 'نيون' : 'مميز' %></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -77,24 +77,126 @@
         /* تحديد مواقع البانيلات حسب البطاقة */
         .card-primary .panel-colored {
             left: 0;
-            background: #1e1e2a;
             color: white;
         }
 
         .card-primary .panel-text {
             right: 0;
-            color: #1e1e2a;
         }
 
         .card-secondary .panel-colored {
             right: 0;
-            background: #1e1e2a;
             color: white;
         }
 
         .card-secondary .panel-text {
             left: 0;
-            color: #1e1e2a;
+        }
+
+        /* أنماط القوالب المختلفة */
+        
+        /* 1. القالب العصري - modern */
+        .template-modern .card-primary .panel-colored,
+        .template-modern .card-secondary .panel-colored {
+            background: linear-gradient(135deg, #667eea, #764ba2, #3b82f6);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+        .template-modern .panel-text {
+            color: #1e293b;
+        }
+        
+        /* 2. القالب الكلاسيكي - classic */
+        .template-classic .card-primary .panel-colored,
+        .template-classic .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #2d3748, #1e293b);
+        }
+        .template-classic .panel-text {
+            color: #1e293b;
+        }
+        
+        /* 3. القالب البسيط - minimal */
+        .template-minimal .card-primary .panel-colored,
+        .template-minimal .card-secondary .panel-colored {
+            background: #f8fafc;
+            color: #0f172a;
+            border-left: 4px solid #94a3b8;
+        }
+        .template-minimal .panel-text {
+            color: #0f172a;
+        }
+        
+        /* 4. القالب الداكن - dark */
+        .template-dark .card-primary .panel-colored,
+        .template-dark .card-secondary .panel-colored {
+            background: #0f172a;
+        }
+        .template-dark .panel-text {
+            color: #e2e8f0;
+        }
+        .template-dark .personal-name,
+        .template-dark .detail-item span {
+            color: #f1f5f9;
+        }
+        
+        /* 5. القالب التقني - tech */
+        .template-tech .card-primary .panel-colored,
+        .template-tech .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+        }
+        .template-tech .panel-text {
+            color: #e0f2fe;
+        }
+        
+        /* 6. القالب الأنيق - elegant */
+        .template-elegant .card-primary .panel-colored,
+        .template-elegant .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #42275a, #734b6d);
+        }
+        .template-elegant .panel-text {
+            color: #f8f0fc;
+        }
+        
+        /* 7. القالب المؤسسي - corporate */
+        .template-corporate .card-primary .panel-colored,
+        .template-corporate .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #1e3c72, #2a5298);
+        }
+        .template-corporate .panel-text {
+            color: #1e293b;
+        }
+        
+        /* 8. القالب الإبداعي - creative */
+        .template-creative .card-primary .panel-colored,
+        .template-creative .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #f12711, #f5af19);
+        }
+        .template-creative .panel-text {
+            color: #1e293b;
+        }
+        
+        /* 9. القالب ثلاثي الأبعاد - 3d */
+        .template-3d .card-primary .panel-colored,
+        .template-3d .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #0b0c10, #1f2833, #0b0c10);
+        }
+        .template-3d .panel-text {
+            color: #66fcf1;
+        }
+        
+        /* 10. القالب النيون - neon */
+        .template-neon .card-primary .panel-colored,
+        .template-neon .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
+        }
+        .template-neon .panel-text {
+            color: #fff;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* الموجة الزخرفية */
@@ -152,7 +254,6 @@
             font-weight: 900;
             margin-bottom: 5px;
             line-height: 1.1;
-            color: #121212;
         }
 
         /* توزيع بيانات الاتصال في عمودين */
@@ -163,58 +264,34 @@
             margin-bottom: 15px;
         }
 
-        /* تعريف موحد للحقول مع تكبير الرقم والايميل والموقع */
         .detail-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 18px;
-    color: #1f3a4f;
-    background: rgba(0, 100, 180, 0.03);
-    padding: 12px 15px;
-    border-radius: 50px;
-    border: 1px solid rgba(0, 140, 255, 0.08);
-    white-space: nowrap;
-    overflow: hidden;
-    width: 100%; /* جعل العرض ثابتاً */
-    min-width: 0; /* السماح بالتصغير إذا لزم الأمر */
-}
-
-.detail-item i {
-    width: 24px;
-    color: #0077be;
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.detail-item span {
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 1; /* أخذ المساحة المتبقية */
-    min-width: 0; /* السماح بالتصغير */
-}
-
-/* تعديل شبكة العرض */
-.contact-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    width: 100%;
-}
-
-        /* تخصيصات إضافية لحقول محددة - اختياري */
-        .detail-item:nth-child(1) span { /* حقل الرقم */
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            background: rgba(0, 100, 180, 0.03);
+            padding: 12px 15px;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 140, 255, 0.08);
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+            min-width: 0;
         }
-        
-        .detail-item:nth-child(2) span { /* حقل الايميل */
-            font-weight: 600;
+
+        .detail-item i {
+            width: 24px;
+            font-size: 20px;
+            flex-shrink: 0;
         }
-        
-        .detail-item:nth-child(3) span { /* حقل الموقع */
-            font-weight: 600;
+
+        .detail-item span {
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
         }
 
         /* القسم السفلي للكرت الثاني */
@@ -234,7 +311,6 @@
 
         .social-links i {
             font-size: 30px;
-            color: #1a3246;
             background: #f0f5fd;
             padding: 10px;
             border-radius: 50%;
@@ -273,29 +349,10 @@
             cursor: pointer;
         }
 
-        /* تعديلات للكرت الثاني */
-        .card-secondary .wave-divider svg {
-            fill: #ffffff;
-        }
-
-        /* تصغير النصوص */
-        @media (max-width: 800px) {
-            .business-card { width: 600px; height: 350px; }
-            .job-title-display { font-size: 28px; }
-            .personal-name { font-size: 30px; }
-            .detail-item { font-size: 16px; padding: 8px 15px; }
-            .social-links i { font-size: 26px; }
-        }
-
-        @media (max-width: 650px) {
-            .business-card { width: 500px; height: 450px; }
-        }
-
         /* رابط البطاقة */
         .profile-link {
             margin-top: 20px;
             font-size: 12px;
-            color: #3a4c62;
             direction: ltr;
             text-align: left;
             background: rgba(255,255,255,0.7);
@@ -323,15 +380,40 @@
             padding: 0 5px;
             flex-shrink: 0;
         }
+
+        /* تصغير النصوص */
+        @media (max-width: 800px) {
+            .business-card { width: 600px; height: 350px; }
+            .job-title-display { font-size: 28px; }
+            .personal-name { font-size: 30px; }
+            .detail-item { font-size: 16px; padding: 8px 15px; }
+            .social-links i { font-size: 26px; }
+        }
+
+        @media (max-width: 650px) {
+            .business-card { width: 500px; height: 450px; }
+        }
+
+        /* لون الأيقونات حسب القالب */
+        .template-modern .detail-item i { color: #667eea; }
+        .template-classic .detail-item i { color: #94a3b8; }
+        .template-minimal .detail-item i { color: #64748b; }
+        .template-dark .detail-item i { color: #60a5fa; }
+        .template-tech .detail-item i { color: #2dd4bf; }
+        .template-elegant .detail-item i { color: #c084fc; }
+        .template-corporate .detail-item i { color: #3b82f6; }
+        .template-creative .detail-item i { color: #f97316; }
+        .template-3d .detail-item i { color: #66fcf1; }
+        .template-neon .detail-item i { color: #a78bfa; }
     </style>
 </head>
-<body>
+<body class="template-<%= template || 'modern' %>">
 
 <div class="cards-wrapper">
 
     <!-- ========== الكرت الأول (المسمى الوظيفي يسار + البيانات يمين) ========== -->
     <div class="business-card card-primary">
-        <!-- البانل الملون (أسود) - الجهة اليسرى: المسمى الوظيفي واسم الشركة -->
+        <!-- البانل الملون - الجهة اليسرى: المسمى الوظيفي واسم الشركة -->
         <div class="card-panel panel-colored">
             <div class="brand-content">
                 <div class="job-title-display" id="jobTitle1"><%= formData.title || 'Job Title' %></div>
@@ -339,7 +421,7 @@
             </div>
         </div>
 
-        <!-- البانل النصي (أبيض) - الجهة اليمنى: الاسم وبيانات الاتصال -->
+        <!-- البانل النصي - الجهة اليمنى: الاسم وبيانات الاتصال -->
         <div class="card-panel panel-text">
             <div class="info-content">
                 <div class="personal-name" id="personalName1"><%= formData.name || 'H. SERISA' %></div>
@@ -369,7 +451,7 @@
 
     <!-- ========== الكرت الثاني (المسمى الوظيفي يمين + باركود وأيقونات يسار) ========== -->
     <div class="business-card card-secondary">
-        <!-- البانل الملون (أسود) - الجهة اليمنى: المسمى الوظيفي واسم الشركة -->
+        <!-- البانل الملون - الجهة اليمنى: المسمى الوظيفي واسم الشركة -->
         <div class="card-panel panel-colored">
             <div class="brand-content">
                 <div class="job-title-display" id="jobTitle2"><%= formData.title || 'Job Title' %></div>
@@ -377,7 +459,7 @@
             </div>
         </div>
 
-        <!-- البانل النصي (أبيض) - الجهة اليسرى: أيقونات وباركود -->
+        <!-- البانل النصي - الجهة اليسرى: أيقونات وباركود -->
         <div class="card-panel panel-text">
             <div class="social-qr-section">
                 <div class="social-links">
@@ -427,7 +509,7 @@
 </div>
 
 <script>
-    // استقبال المتغيرات من الخادم (نفس المتغيرات من الصفحة الثانية)
+    // استقبال المتغيرات من الخادم
     const profileId = '<%= profileId %>';
     const profileUrl = '<%= profileUrl %>';
     const whatsappNumber = '<%= whatsappNumber %>';
@@ -438,10 +520,11 @@
     const profilePhone = '<%= formData.phone %>';
     const profileAddress = '<%= formData.address || "" %>';
     const profileWebsite = '<%= formData.website || "" %>';
+    const template = '<%= template || "modern" %>';
 
-    console.log('📌 بيانات البطاقة:', { profileId, profileUrl, profileName });
+    console.log('📌 بيانات البطاقة:', { profileId, profileUrl, profileName, template });
 
-    // تحديث البطاقات بالبيانات (تأكيد إضافي)
+    // تحديث البطاقات بالبيانات
     document.addEventListener('DOMContentLoaded', function() {
         // تحديث الكرت الأول
         document.getElementById('jobTitle1').textContent = profileTitle || 'Job Title';
@@ -470,7 +553,6 @@
         navigator.clipboard.writeText(text).then(() => {
             alert('✅ تم نسخ الرابط: ' + text);
         }).catch(() => {
-            // Fallback
             const textarea = document.createElement('textarea');
             textarea.value = text;
             document.body.appendChild(textarea);

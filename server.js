@@ -497,6 +497,7 @@ app.get('/create-profile/step2', (req, res) => {
 });
 
 // حفظ اختيار القالب
+// حفظ اختيار القالب - مع التوجيه إلى معاينة البطاقة
 app.post('/create-profile/step2', (req, res) => {
     const { template } = req.body;
     
@@ -504,8 +505,14 @@ app.post('/create-profile/step2', (req, res) => {
         return res.redirect('/create-profile?error=الرجاء البدء من البداية');
     }
     
+    // حفظ القالب في الجلسة
     req.session.profileData.template = template;
-    res.redirect('/create-profile/step3');
+    
+    // ✅ التوجيه إلى صفحة معاينة البطاقة بدلاً من الخطوة 3
+    res.redirect(`/template-preview/${template}`);
+    
+    // إذا أردت الاستمرار إلى الخطوة 3 لاحقاً، علق السطر أعلاه واستخدم هذا:
+    // res.redirect('/create-profile/step3');
 });
 
 // صفحة إعدادات الحماية (الخطوة 3)
@@ -599,6 +606,7 @@ app.get('/create-profile/step4', async (req, res) => {
 });
 
 // صفحة عرض الملف الشخصي العام
+// صفحة عرض الملف الشخصي العام - مع تمرير template
 app.get('/p/:profileId', async (req, res) => {
     try {
         const profile = await findProfile(req.params.profileId);
@@ -612,6 +620,11 @@ app.get('/p/:profileId', async (req, res) => {
         
         await logVisit(req.params.profileId, req);
         
+        // ✅ استخراج القالب من البيانات المحفوظة
+        const template = profile.template || 'modern';
+        
+        console.log('🎨 عرض البطاقة بالقالب:', template, 'للمستخدم:', profile.name);
+        
         res.render('profile-3d', {
             title: `ملف ${profile.name} الشخصي | عرض ثلاثي الأبعاد`,
             profileId: profile.profileId,
@@ -619,7 +632,8 @@ app.get('/p/:profileId', async (req, res) => {
             profileUrl: `${req.baseUrlFull}/p/${profile.profileId}`,
             whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000',
             query: req.query || {},
-            enableLavaLamp: false
+            enableLavaLamp: false,
+            template: template // ✅ هذا هو المهم
         });
         
     } catch (error) {
@@ -645,7 +659,10 @@ app.get('/3d/:profileId', async (req, res) => {
         
         await logVisit(req.params.profileId, req);
         
-        console.log('🎮 عرض ثلاثي الأبعاد للملف:', profile.name);
+        // ✅ استخراج القالب
+        const template = profile.template || 'modern';
+        
+        console.log('🎮 عرض ثلاثي الأبعاد بالقالب:', template, 'للمستخدم:', profile.name);
         
         res.render('profile-3d', {
             title: `ملف ${profile.name} الشخصي | عرض ثلاثي الأبعاد`,
@@ -654,7 +671,8 @@ app.get('/3d/:profileId', async (req, res) => {
             profileUrl: `${req.baseUrlFull}/p/${profile.profileId}`,
             whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000',
             query: req.query || {},
-            enableLavaLamp: false
+            enableLavaLamp: false,
+            template: template // ✅ هذا هو المهم
         });
         
     } catch (error) {
@@ -665,7 +683,6 @@ app.get('/3d/:profileId', async (req, res) => {
         });
     }
 });
-
 // التحقق من كلمة المرور
 app.post('/p/:profileId/verify', async (req, res) => {
     try {
@@ -994,11 +1011,295 @@ app.get('/card', async (req, res) => {
     }
 });
 
+
+// ============================================
+// صفحات عرض القوالب - NEW
+// ============================================
+
+// صفحة معاينة القالب (عرض البطاقة)
+app.get('/template-preview/:template', async (req, res) => {
+    try {
+        const template = req.params.template;
+        
+        // إذا كان هناك بيانات في الجلسة، استخدمها، وإلا استخدم بيانات تجريبية
+        let formData = req.session.profileData || {
+            name: 'أحمد محمد',
+            title: 'مطور برمجيات',
+            company: 'شركة التقنية',
+            email: 'ahmed@example.com',
+            phone: '+966 50 123 4567',
+            website: 'www.ahmed.com',
+            address: 'الرياض، السعودية',
+            bio: 'مطور ويب بخبرة 5 سنوات في تطوير التطبيقات'
+        };
+        
+        const profileId = formData.profileId || `demo-${Date.now()}`;
+        const profileUrl = `${req.baseUrlFull}/p/${profileId}`;
+        
+        res.render('template-preview', {
+            formData: formData,
+            profileId: profileId,
+            profileUrl: profileUrl,
+            template: template,
+            whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000'
+        });
+        
+    } catch (error) {
+        console.error('خطأ في معاينة القالب:', error);
+        res.redirect('/');
+    }
+});
+
+// عرض البطاقة المحفوظة
+app.get('/card/:cardId', async (req, res) => {
+    try {
+        const cardId = req.params.cardId;
+        console.log('🔍 جاري عرض البطاقة:', cardId);
+        
+        let card = null;
+        
+        if (isPostgresConnected) {
+            card = await findProfile(cardId);
+        } else {
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            try {
+                const data = await fs.readFile(PROFILES_FILE, 'utf8');
+                const profiles = JSON.parse(data);
+                card = profiles.find(p => p.profileId === cardId || p.cardId === cardId);
+            } catch (error) {
+                console.log('⚠️ ملف البطاقات غير موجود');
+            }
+        }
+        
+        if (!card) {
+            return res.render('error', {
+                title: 'البطاقة غير موجودة',
+                message: 'عذراً، البطاقة المطلوبة غير موجودة'
+            });
+        }
+        
+        // تسجيل الزيارة
+        await logVisit(card.profileId || cardId, req);
+        
+        const profileUrl = `${req.baseUrlFull}/p/${card.profileId || cardId}`;
+        const template = card.template || 'modern';
+        
+        res.render('template-preview', {
+            formData: card,
+            profileId: card.profileId || cardId,
+            profileUrl: profileUrl,
+            template: template,
+            whatsappNumber: process.env.WHATSAPP_NUMBER || '966500000000'
+        });
+        
+    } catch (error) {
+        console.error('خطأ في عرض البطاقة:', error);
+        res.status(500).render('error', {
+            title: 'خطأ',
+            message: 'حدث خطأ في تحميل البطاقة'
+        });
+    }
+});
+
+// تحديث مسار step2 ليشمل التوجيه إلى معاينة القالب (اختياري)
+// يمكنك تعديل هذا إذا أردت الانتقال مباشرة إلى المعاينة بعد الاختيار
+/*
+app.post('/create-profile/step2', (req, res) => {
+    const { template } = req.body;
+    
+    if (!req.session.profileData) {
+        return res.redirect('/create-profile?error=الرجاء البدء من البداية');
+    }
+    
+    req.session.profileData.template = template;
+    
+    // للتجربة: اذهب إلى معاينة القالب مباشرة
+    res.redirect(`/template-preview/${template}`);
+    
+    // أو استمر للخطوة التالية:
+    // res.redirect('/create-profile/step3');
+});
+*/
+
 // باقي المسارات (نفس الكود السابق) - card, edit, delete, debug, etc.
 
 // ============================================
 // تشغيل الخادم
 // ============================================
+
+// ============================================
+// Routes للتشخيص وإصلاح القوالب
+// ============================================
+
+// Route للتشخيص - اعرض بيانات البطاقة بصيغة JSON
+app.get('/debug/:profileId', async (req, res) => {
+    try {
+        const profileId = req.params.profileId;
+        console.log('🔍 تشخيص البطاقة:', profileId);
+        
+        const profile = await findProfile(profileId);
+        
+        if (!profile) {
+            return res.json({ 
+                success: false, 
+                error: 'الملف غير موجود',
+                profileId: profileId 
+            });
+        }
+        
+        // عرض البيانات كاملة
+        res.json({
+            success: true,
+            profileId: profile.profileId,
+            name: profile.name,
+            template: profile.template || 'غير موجود (سيكون القيمة الافتراضية modern)',
+            allData: profile
+        });
+        
+    } catch (error) {
+        res.json({ 
+            success: false, 
+            error: error.message 
+        });
+    }
+});
+
+// Route لتحديث القالب يدوياً
+app.get('/fix-template/:profileId/:template', async (req, res) => {
+    try {
+        const { profileId, template } = req.params;
+        
+        // التحقق من أن القالب موجود في القائمة
+        const validTemplates = ['modern', 'classic', 'minimal', 'dark', 'tech', 'elegant', 'corporate', 'creative', '3d', 'neon'];
+        
+        if (!validTemplates.includes(template)) {
+            return res.json({ 
+                success: false, 
+                error: 'قالب غير صالح. القوالب المتاحة: ' + validTemplates.join(', ') 
+            });
+        }
+        
+        console.log('🔧 جاري تحديث القالب:', { profileId, template });
+        
+        if (isPostgresConnected) {
+            // تحديث في PostgreSQL
+            const profile = await Profile.findOne({ where: { profileId } });
+            
+            if (profile) {
+                await profile.update({ template: template });
+                console.log('✅ تم تحديث القالب في PostgreSQL');
+                
+                // جلب البيانات المحدثة
+                const updatedProfile = await Profile.findOne({ where: { profileId } });
+                
+                res.json({ 
+                    success: true, 
+                    message: `✅ تم تحديث القالب إلى ${template}`,
+                    profileId: profileId,
+                    newTemplate: updatedProfile.template,
+                    database: 'PostgreSQL'
+                });
+            } else {
+                res.json({ 
+                    success: false, 
+                    error: 'الملف غير موجود في PostgreSQL',
+                    profileId: profileId 
+                });
+            }
+            
+        } else {
+            // تحديث في الملف المحلي
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            
+            // التأكد من وجود الملف
+            try {
+                await fs.access(PROFILES_FILE);
+            } catch {
+                return res.json({ 
+                    success: false, 
+                    error: 'ملف البيانات غير موجود' 
+                });
+            }
+            
+            // قراءة الملف
+            const data = await fs.readFile(PROFILES_FILE, 'utf8');
+            let profiles = JSON.parse(data);
+            
+            // البحث عن البطاقة
+            const index = profiles.findIndex(p => p.profileId === profileId);
+            
+            if (index !== -1) {
+                // تحديث القالب
+                profiles[index].template = template;
+                profiles[index].updatedAt = new Date();
+                
+                // حفظ الملف
+                await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
+                
+                console.log('✅ تم تحديث القالب في الملف المحلي');
+                
+                res.json({ 
+                    success: true, 
+                    message: `✅ تم تحديث القالب إلى ${template}`,
+                    profileId: profileId,
+                    name: profiles[index].name,
+                    newTemplate: profiles[index].template,
+                    database: 'ملف محلي'
+                });
+            } else {
+                res.json({ 
+                    success: false, 
+                    error: 'الملف غير موجود في الملف المحلي',
+                    profileId: profileId 
+                });
+            }
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ:', error);
+        res.json({ 
+            success: false, 
+            error: error.message 
+        });
+    }
+});
+
+// Route لعرض جميع البطاقات ومعرفة القوالب
+app.get('/debug-all', async (req, res) => {
+    try {
+        let profiles = [];
+        let result = [];
+        
+        if (isPostgresConnected) {
+            profiles = await getAllProfiles();
+        } else {
+            const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
+            try {
+                const data = await fs.readFile(PROFILES_FILE, 'utf8');
+                profiles = JSON.parse(data);
+            } catch {
+                profiles = [];
+            }
+        }
+        
+        // تجهيز النتائج
+        result = profiles.map(p => ({
+            profileId: p.profileId,
+            name: p.name,
+            template: p.template || 'غير موجود (سيكون modern)',
+            hasTemplate: p.template ? '✅ نعم' : '❌ لا'
+        }));
+        
+        res.json({
+            total: result.length,
+            profiles: result
+        });
+        
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`
     ╔══════════════════════════════════════════╗

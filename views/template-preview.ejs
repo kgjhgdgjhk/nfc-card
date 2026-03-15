@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC Pro | معاينة القالب <%= template === 'classic' ? 'الكلاسيكي' : template === 'modern' ? 'العصري' : template === 'minimal' ? 'البسيط' : template === 'dark' ? 'الداكن' : template === 'tech' ? 'التقني' : template === 'elegant' ? 'الأنيق' : template === 'corporate' ? 'المؤسسي' : template === 'creative' ? 'الإبداعي' : template === '3d' ? 'ثلاثي الأبعاد' : template === 'neon' ? 'النيون' : '' %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #ffffff 100%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* خلفية متحركة ناعمة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-orb {
+            position: absolute;
+            width: 70vmax;
+            height: 70vmax;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(147, 197, 253, 0.2), rgba(199, 210, 254, 0.1) 70%);
+            top: -20%;
+            right: -20%;
+            animation: floatBg 25s infinite alternate ease-in-out;
+        }
+        
+        .bg-orb-2 {
+            position: absolute;
+            width: 80vmax;
+            height: 80vmax;
+            border-radius: 50%;
+            background: radial-gradient(circle at 70% 70%, rgba(216, 180, 254, 0.15), rgba(187, 222, 252, 0.1) 70%);
+            bottom: -20%;
+            left: -20%;
+            animation: floatBg 30s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes floatBg {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-5%, 5%) scale(1.05); }
+        }
+
+        .preview-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 60px;
+            padding: 50px;
+            box-shadow: 0 40px 70px -25px rgba(0, 30, 60, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(255,255,255,0.6);
+            animation: fadeInScale 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .preview-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .preview-header h1 i {
+            font-size: 2rem;
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .template-badge-large {
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 15px 30px -10px #3b82f6;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .template-badge-large i {
+            font-size: 1.2rem;
+        }
+
+        /* قسم البطاقة والمعاينة */
+        .preview-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        /* معاينة البطاقة */
+        .card-preview-wrapper {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 48px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card-preview-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-preview-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            color: #334155;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .card-preview-title i {
+            color: #3b82f6;
+        }
+
+        .preview-card {
+            width: 100%;
+            aspect-ratio: 750/420;
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: #ffffff;
+            box-shadow: 0 30px 50px -15px rgba(0, 50, 80, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transform: scale(0.9); /* تصغير طفيف لتناسب الحاوية */
+            transform-origin: top center;
+        }
+
+        /* أنماط القوالب المختلفة (مأخوذة من profile-3d) */
+        .card-panel {
+            position: absolute;
+            top: 0;
+            width: 45%;
+            height: 100%;
+            padding: 30px 20px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .card-primary .panel-colored {
+            left: 0;
+            color: white;
+        }
+        .card-primary .panel-text {
+            right: 0;
+        }
+        .card-secondary .panel-colored {
+            right: 0;
+            color: white;
+        }
+        .card-secondary .panel-text {
+            left: 0;
+        }
+
+        /* أنماط القوالب */
+        .template-modern .card-primary .panel-colored,
+        .template-modern .card-secondary .panel-colored {
+            background: linear-gradient(135deg, #667eea, #764ba2, #3b82f6);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+        .template-classic .card-primary .panel-colored,
+        .template-classic .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #2d3748, #1e293b);
+        }
+        .template-minimal .card-primary .panel-colored,
+        .template-minimal .card-secondary .panel-colored {
+            background: #f8fafc;
+            color: #0f172a;
+            border-left: 4px solid #94a3b8;
+        }
+        .template-dark .card-primary .panel-colored,
+        .template-dark .card-secondary .panel-colored {
+            background: #0f172a;
+        }
+        .template-tech .card-primary .panel-colored,
+        .template-tech .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+        }
+        .template-elegant .card-primary .panel-colored,
+        .template-elegant .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #42275a, #734b6d);
+        }
+        .template-corporate .card-primary .panel-colored,
+        .template-corporate .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #1e3c72, #2a5298);
+        }
+        .template-creative .card-primary .panel-colored,
+        .template-creative .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #f12711, #f5af19);
+        }
+        .template-3d .card-primary .panel-colored,
+        .template-3d .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #0b0c10, #1f2833, #0b0c10);
+        }
+        .template-neon .card-primary .panel-colored,
+        .template-neon .card-secondary .panel-colored {
+            background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .wave-divider {
+            position: absolute;
+            top: 0;
+            width: 130px;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .card-primary .wave-divider {
+            left: 42%;
+            transform: translateX(-50%) scaleX(1);
+        }
+        .card-secondary .wave-divider {
+            right: 42%;
+            transform: translateX(50%) scaleX(-1);
+        }
+        .wave-divider svg {
+            width: 100%;
+            height: 100%;
+            fill: #ffffff;
+        }
+
+        .brand-content { width: 100%; }
+        .job-title-display { font-size: 22px; font-weight: 800; margin-bottom: 4px; line-height: 1.2; }
+        .company-name-display { font-size: 14px; opacity: 0.85; font-weight: 500; }
+        .info-content { width: 100%; }
+        .personal-name { font-size: 24px; font-weight: 900; margin-bottom: 5px; line-height: 1.1; }
+
+        .contact-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 5px;
+            margin-bottom: 10px;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            background: rgba(0, 100, 180, 0.03);
+            padding: 6px 8px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 140, 255, 0.08);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .detail-item i { width: 16px; font-size: 12px; }
+        .detail-item span { font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
+
+        .profile-link {
+            margin-top: 10px;
+            font-size: 9px;
+            background: rgba(255,255,255,0.7);
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .profile-link span { overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .copy-link-btn { background: none; border: none; color: #0077be; cursor: pointer; font-size: 10px; }
+
+        /* قسم تفاصيل البيانات */
+        .data-preview {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 48px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.9);
+        }
+
+        .data-preview h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0f172a;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .data-item {
+            background: white;
+            padding: 18px;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .data-label {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .data-value {
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 1.1rem;
+            word-break: break-word;
+        }
+
+        /* أزرار التنقل */
+        .preview-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 45px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 15px 30px -10px #3b82f6;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 40px -12px #3b82f6;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-3px);
+        }
+
+        /* رسالة تأكيد */
+        .hint-message {
+            text-align: center;
+            margin-top: 30px;
+            color: #64748b;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.5);
+            padding: 15px 25px;
+            border-radius: 60px;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            border: 1px solid rgba(255,255,255,0.9);
+        }
+
+        .hint-message i {
+            color: #3b82f6;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .preview-main { grid-template-columns: 1fr; }
+            .preview-container { padding: 30px; }
+            .preview-header { flex-direction: column; align-items: flex-start; }
+            .data-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .preview-card { transform: scale(0.8); }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body class="template-<%= template %>">
+    <div class="background">
+        <div class="bg-orb"></div>
+        <div class="bg-orb-2"></div>
+    </div>
+
+    <div class="preview-container">
+        <div class="preview-header">
+            <h1>
+                <i class="fa-regular fa-eye"></i>
+                معاينة القالب
+            </h1>
+            <div class="template-badge-large">
+                <i class="fa-regular fa-palette"></i>
+                <% if (template === 'modern') { %>عصري<% } %>
+                <% if (template === 'classic') { %>كلاسيكي<% } %>
+                <% if (template === 'minimal') { %>بسيط<% } %>
+                <% if (template === 'dark') { %>داكن<% } %>
+                <% if (template === 'tech') { %>تقني<% } %>
+                <% if (template === 'elegant') { %>أنيق<% } %>
+                <% if (template === 'corporate') { %>مؤسسي<% } %>
+                <% if (template === 'creative') { %>إبداعي<% } %>
+                <% if (template === '3d') { %>ثلاثي الأبعاد<% } %>
+                <% if (template === 'neon') { %>نيون<% } %>
+            </div>
+        </div>
+
+        <div class="preview-main">
+            <!-- معاينة البطاقة المصغرة -->
+            <div class="card-preview-wrapper">
+                <div class="card-preview-title">
+                    <i class="fa-regular fa-id-card"></i>
+                    <span>شكل البطاقة</span>
+                </div>
+                <div class="preview-card card-primary">
+                    <!-- البانل الملون -->
+                    <div class="card-panel panel-colored">
+                        <div class="brand-content">
+                            <div class="job-title-display"><%= formData.title || 'مطور برمجيات' %></div>
+                            <div class="company-name-display"><%= formData.company || 'شركة التقنية' %></div>
+                        </div>
+                    </div>
+                    <!-- البانل النصي -->
+                    <div class="card-panel panel-text">
+                        <div class="info-content">
+                            <div class="personal-name"><%= formData.name || 'أحمد محمد' %></div>
+                            <div class="contact-details">
+                                <div class="detail-item"><i class="fa fa-phone-alt"></i> <span><%= formData.phone ? formData.phone.substring(0,12)+'...' : '+966 50...' %></span></div>
+                                <div class="detail-item"><i class="fa fa-envelope"></i> <span><%= formData.email ? formData.email.split('@')[0]+'...' : 'email...' %></span></div>
+                                <div class="detail-item"><i class="fa fa-globe"></i> <span><%= formData.website ? 'www...' : 'website...' %></span></div>
+                                <div class="detail-item"><i class="fa fa-map-marker-alt"></i> <span><%= formData.address ? formData.address.substring(0,8)+'...' : 'عنوان...' %></span></div>
+                            </div>
+                            <div class="profile-link">
+                                <span>nfc.pro/p/username</span>
+                                <button class="copy-link-btn"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- الموجة -->
+                    <div class="wave-divider">
+                        <svg preserveAspectRatio="none" viewBox="0 0 120 420">
+                            <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#ffffff"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تفاصيل البيانات -->
+            <div class="data-preview">
+                <h3>
+                    <i class="fa-regular fa-address-book"></i>
+                    بيانات ملفك الشخصي
+                </h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="data-label"><i class="fa-regular fa-user"></i> الاسم الكامل</div>
+                        <div class="data-value"><%= formData.name || 'أحمد محمد' %></div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label"><i class="fa-regular fa-briefcase"></i> المسمى الوظيفي</div>
+                        <div class="data-value"><%= formData.title || 'مطور برمجيات' %></div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label"><i class="fa-regular fa-building"></i> الشركة</div>
+                        <div class="data-value"><%= formData.company || 'شركة التقنية' %></div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label"><i class="fa-regular fa-envelope"></i> البريد الإلكتروني</div>
+                        <div class="data-value"><%= formData.email || 'ahmed@example.com' %></div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label"><i class="fa-regular fa-phone"></i> رقم الهاتف</div>
+                        <div class="data-value"><%= formData.phone || '+966 50 123 4567' %></div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label"><i class="fa-regular fa-globe"></i> الموقع الإلكتروني</div>
+                        <div class="data-value"><%= formData.website || 'www.ahmed.com' %></div>
+                    </div>
+                    <div class="data-item" style="grid-column: span 2;">
+                        <div class="data-label"><i class="fa-regular fa-location-dot"></i> العنوان</div>
+                        <div class="data-value"><%= formData.address || 'الرياض، السعودية' %></div>
+                    </div>
+                </div>
+
+                <div class="hint-message">
+                    <i class="fa-regular fa-circle-check"></i>
+                    هذا هو الشكل النهائي لبطاقتك باستخدام القالب <strong><% if (template === 'modern') { %>العصري<% } else if (template === 'classic') { %>الكلاسيكي<% } else if (template === 'minimal') { %>البسيط<% } else if (template === 'dark') { %>الداكن<% } else if (template === 'tech') { %>التقني<% } else if (template === 'elegant') { %>الأنيق<% } else if (template === 'corporate') { %>المؤسسي<% } else if (template === 'creative') { %>الإبداعي<% } else if (template === '3d') { %>ثلاثي الأبعاد<% } else if (template === 'neon') { %>النيون<% } else { %>المختار<% } %></strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-actions">
+            <a href="/create-profile/step2" class="btn btn-secondary">
+                <i class="fas fa-arrow-right"></i>
+                تغيير القالب
+            </a>
+            <a href="/create-profile/step3" class="btn btn-primary">
+                متابعة إلى الحماية
+                <i class="fas fa-shield-alt"></i>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

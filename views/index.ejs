@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NFC Pro  بطاقة ذكية </title>
+  <title>NFC Pro - بطاقة ذكية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -17,14 +17,14 @@
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #f4f9fe;  /* خلفية فاتحة جداً */
+      background: #f4f9fe; /* خلفية فاتحة جداً */
       color: #1e293b;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* خلفية ناعمة متحركة – ألوان فاتحة */
+    /* خلفية فاتحة متحركة */
     .background {
       position: fixed;
       width: 100vw;
@@ -89,7 +89,7 @@
       z-index: 2;
     }
 
-    /* هيدر بألوان فاتحة */
+    /* هيدر */
     header {
       text-align: center;
       margin-bottom: 60px;
@@ -103,63 +103,48 @@
     }
 
     h1 {
-      font-size: 4rem;
-      font-weight: 700;
+      font-size: 4.2rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      background: linear-gradient(145deg, #2563eb, #7c3aed, #38bdf8);
+      /* فقط NFC Pro باللون الرمادي المعدني */
+      background: linear-gradient(145deg, #6b7280, #4b5563, #374151);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     h1 i {
-      font-size: 3.5rem;
-      background: none;
-      -webkit-text-fill-color: #3b82f6;
-      filter: drop-shadow(0 4px 8px rgba(59,130,246,0.2));
-      animation: softWiggle 5s infinite ease-in-out;
+      font-size: 3.8rem;
+      background: linear-gradient(145deg, #6b7280, #4b5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 8px rgba(75,85,99,0.2));
     }
 
-    @keyframes softWiggle {
-      0%,100% { transform: rotate(0deg); }
-      25% { transform: rotate(6deg); }
-      75% { transform: rotate(-4deg); }
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      background: rgba(255,255,255,0.5);
-      backdrop-filter: blur(8px);
-      padding: 10px 30px;
-      border-radius: 60px;
-      display: inline-block;
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 6px 18px rgba(0,20,50,0.05);
-      color: #1e293b;
-      font-weight: 500;
-    }
-
-    /* البطاقة الرئيسية - فاتحة جداً مع ظل خفيف */
+    /* القسم الرئيسي */
     .hero {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 50px;
-      margin-bottom: 80px;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 60px;
+      margin-bottom: 70px;
       align-items: center;
     }
 
+    /* البطاقة - على اليمين */
     .card-preview {
-      perspective: 2000px;
+      perspective: 2500px;
+      order: 2; /* في RTL تجعل البطاقة على اليمين */
     }
 
-    .nfc-card {
+    .metal-card {
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(18px);
       border-radius: 48px;
-      padding: 40px 30px;
+      padding: 45px 35px;
       border: 1px solid rgba(255,255,255,0.7);
       box-shadow: 0 30px 50px -20px rgba(0,80,120,0.2), 0 0 0 1px rgba(255,255,255,0.8) inset;
       transform-style: preserve-3d;
@@ -180,22 +165,17 @@
       padding-bottom: 20px;
     }
 
-    .nfc-icon {
-      font-size: 3.8rem;
-      color: #3b82f6;
-      filter: drop-shadow(0 6px 12px rgba(59,130,246,0.2));
-      animation: iconFloat 4s infinite;
-    }
-
-    @keyframes iconFloat {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    .card-header i {
+      font-size: 3.5rem;
+      background: linear-gradient(145deg, #6b7280, #4b5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .card-header h2 {
       font-size: 2.4rem;
       font-weight: 700;
-      background: linear-gradient(120deg, #2563eb, #7c3aed);
+      background: linear-gradient(145deg, #6b7280, #4b5563);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -204,170 +184,136 @@
       font-size: 2rem;
       font-weight: 600;
       color: #0f172a;
-      margin-bottom: 15px;
-    }
-
-    .description {
-      color: #334155;
-      line-height: 1.6;
-      font-size: 1.1rem;
-      background: rgba(255,255,255,0.5);
-      padding: 15px 20px;
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.9);
-    }
-
-    .badge {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 14px 40px;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 1.15rem;
-      border: none;
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
-      box-shadow: 0 12px 28px -8px #3b82f6;
-      transition: all 0.25s ease;
-      margin-top: 20px;
-    }
-
-    .badge:hover {
-      transform: scale(1.02) translateY(-3px);
-      box-shadow: 0 22px 35px -10px #3b82f6;
-    }
-
-    /* قسم المميزات - زجاجي فاتح */
-    .features {
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(15px);
-      border-radius: 40px;
-      padding: 35px 35px;
-      border: 1px solid rgba(255,255,255,0.7);
-      box-shadow: 0 20px 40px -15px rgba(0,40,80,0.1);
-      animation: slideIn 0.8s 0.2s both;
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(40px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .features h3 {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 30px;
-    }
-
-    .features ul {
-      list-style: none;
-    }
-
-    .features li {
-      padding: 16px 0;
-      font-size: 1.1rem;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 15px;
-      opacity: 0;
-      animation: listFade 0.4s forwards;
     }
 
-    .features li:nth-child(1) { animation-delay: 0.2s; }
-    .features li:nth-child(2) { animation-delay: 0.3s; }
-    .features li:nth-child(3) { animation-delay: 0.4s; }
-    .features li:nth-child(4) { animation-delay: 0.5s; }
-    .features li:nth-child(5) { animation-delay: 0.6s; }
-
-    @keyframes listFade {
-      0% { opacity: 0; transform: translateX(-15px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-
-    .features li i {
-      font-size: 1.7rem;
-      background: linear-gradient(145deg, #3b82f6, #a78bfa);
+    .arabic i {
+      background: linear-gradient(145deg, #6b7280, #4b5563);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* قسم الخطوات */
-    .how-it-works {
-      text-align: center;
-      margin-bottom: 70px;
-      opacity: 0;
-      animation: fadeInUp 0.9s 0.4s forwards;
-    }
-
-    .how-it-works h3 {
-      font-size: 2.4rem;
-      font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 40px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-    }
-
-    .step {
+    /* بيانات الهاتف داخل البطاقة */
+    .phone-data {
       background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(12px);
-      border-radius: 36px;
-      padding: 35px 25px;
-      border: 1px solid rgba(255,255,255,0.7);
-      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 30px;
+      padding: 25px;
+      margin: 20px 0;
+      border: 1px solid rgba(255,255,255,0.9);
     }
 
-    .step:hover {
-      transform: translateY(-10px);
-      background: rgba(255, 255, 255, 0.7);
-      box-shadow: 0 22px 40px -20px #3b82f6;
+    .phone-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
-    .step-number {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(145deg, #60a5fa, #c084fc);
+    .phone-row:last-child {
+      border-bottom: none;
+    }
+
+    .phone-row i {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.5);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: linear-gradient(145deg, #6b7280, #4b5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.3rem;
+    }
+
+    .phone-row span {
+      color: #334155;
+      font-size: 1.1rem;
+    }
+
+    .phone-row strong {
+      color: #0f172a;
+      font-size: 1.2rem;
+      margin-right: auto;
+      font-weight: 500;
+      direction: ltr;
+    }
+
+    /* القسم الأيسر */
+    .info-section {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(15px);
+      border-radius: 48px;
+      padding: 45px 40px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 20px 40px -15px rgba(0,40,80,0.1);
+      animation: slideIn 0.8s 0.2s both;
+      order: 1; /* على اليسار */
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .info-section h3 {
       font-size: 2rem;
       font-weight: 600;
-      margin: 0 auto 22px;
-      color: white;
-      box-shadow: 0 8px 18px #b1d0fc;
+      color: #0f172a;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      padding-bottom: 15px;
     }
 
-    .step h4 {
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 12px;
+    .phone-numbers {
+      margin-bottom: 35px;
     }
 
-    .step p {
-      color: #334155;
+    .phone-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 20px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255,255,255,0.9);
+    }
+
+    .phone-item i {
+      font-size: 1.5rem;
+      background: linear-gradient(145deg, #6b7280, #4b5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .phone-item .number {
+      color: #0f172a;
+      font-size: 1.2rem;
+      direction: ltr;
+    }
+
+    .phone-item .label {
+      color: #64748b;
+      margin-right: auto;
+      font-size: 1rem;
     }
 
     /* زر العرض التجريبي */
-    .demo-link {
+    .demo-section {
+      margin-top: 40px;
       text-align: center;
-      margin-bottom: 50px;
-      opacity: 0;
-      animation: fadeInUp 0.9s 0.6s forwards;
     }
 
-    .demo-link h3 {
-      font-size: 1.8rem;
+    .demo-section h4 {
+      font-size: 1.5rem;
       color: #1e293b;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       font-weight: 500;
     }
 
@@ -384,43 +330,80 @@
       text-decoration: none;
       font-weight: 600;
       font-size: 1.25rem;
-      transition: background 0.2s, border-color 0.2s;
+      transition: all 0.3s ease;
       box-shadow: 0 6px 16px rgba(0,0,0,0.02);
     }
 
     .demo-button i {
-      color: #3b82f6;
+      background: linear-gradient(145deg, #6b7280, #4b5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-size: 1.4rem;
     }
 
     .demo-button:hover {
       background: white;
-      border-color: #a5b4fc;
-      box-shadow: 0 16px 32px -12px #7c3aed;
+      border-color: #cbd5e1;
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px -12px #94a3b8;
     }
 
-    /* footer خفيف */
-    footer {
+    /* زر طلب المنتج */
+    .order-section {
       text-align: center;
-      padding: 20px;
-      color: #5f6b7a;
-      font-size: 0.95rem;
-      border-top: 1px solid rgba(0,0,0,0.05);
-      margin-top: 30px;
+      margin-top: 40px;
+    }
+
+    .order-button {
+      display: inline-block;
+      padding: 20px 80px;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 60px;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.02);
+    }
+
+    .order-button i {
+      margin: 0 10px;
+      background: linear-gradient(145deg, #6b7280, #4b5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .order-button:hover {
+      background: white;
+      border-color: #cbd5e1;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 40px -15px #94a3b8;
     }
 
     /* متجاوب */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr; }
-      h1 { font-size: 3rem; }
+    @media (max-width: 1000px) {
+      .hero { 
+        grid-template-columns: 1fr; 
+        gap: 30px;
+      }
+      .card-preview { order: 1; }
+      .info-section { order: 2; }
     }
 
-    /* تأثيرات إضافية ناعمة */
+    @media (max-width: 600px) {
+      h1 { font-size: 3rem; }
+      .demo-button { padding: 15px 30px; }
+      .order-button { padding: 15px 40px; }
+    }
+
+    /* تأثيرات بسيطة */
     .ripple-effect {
       position: absolute;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(107, 114, 128, 0.2);
       transform: scale(0);
       animation: ripple 0.5s ease-out;
       pointer-events: none;
@@ -430,10 +413,10 @@
       to { transform: scale(6); opacity: 0; }
     }
 
-    /* سكرول ناعم */
+    /* سكرول */
     ::-webkit-scrollbar { width: 10px; }
     ::-webkit-scrollbar-track { background: #e2e8f0; }
-    ::-webkit-scrollbar-thumb { background: #b9d3f0; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 10px; }
   </style>
 </head>
 <body>
@@ -446,53 +429,89 @@
   <div class="container">
     <header>
       <h1>
-        <i class="fa-solid fa-wifi"></i> NFC Pro
+        <i class="fa-solid fa-microchip"></i> NFC PRO
       </h1>
-      <p class="subtitle"><i class="fa-regular fa-circle-check" style="margin-left: 8px;"></i> بطاقة ذكية — انسَ التفاصيل، شارك بنقرة</p>
     </header>
 
     <div class="hero">
+      <!-- البطاقة على اليمين -->
       <div class="card-preview">
-        <div class="nfc-card">
+        <div class="metal-card">
           <div class="card-header">
-            <span class="nfc-icon"><i class="fa-regular fa-id-card"></i></span>
-            <h2>NFC Card</h2>
+            <i class="fa-regular fa-id-card"></i>
+            <h2>البطاقة الذكية</h2>
           </div>
-          <div class="card-body">
-            <p class="arabic"><i class="fa-regular fa-address-card" style="margin-left: 12px;"></i> بطاقة NFC ذكية</p>
-            <p class="description">
-              <i class="fa-solid fa-circle" style="font-size: 0.6rem; color: #3b82f6; margin-left: 6px;"></i>
-              انقر مرة واحدة لفتح صفحتك المهنية — روابط ديناميكية، تحديثات لحظية.
-            </p>
+          <div class="arabic">
+            <i class="fa-regular fa-address-card"></i>
+            بطاقة NFC
           </div>
-          <div class="card-footer">
-            <a href="create-profile" class="badge"><i class="fa-regular fa-hand-point-left" style="margin-left: 8px;"></i> طلب المنتج</a>
+          
+          <!-- بيانات الهاتف داخل البطاقة -->
+          <div class="phone-data">
+            <div class="phone-row">
+              <i class="fa-solid fa-phone"></i>
+              <span>الهاتف</span>
+              <strong dir="ltr">+966 50 123 4567</strong>
+            </div>
+            <div class="phone-row">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span>واتساب</span>
+              <strong dir="ltr">+966 55 987 6543</strong>
+            </div>
+            <div class="phone-row">
+              <i class="fa-regular fa-envelope"></i>
+              <span>البريد</span>
+              <strong>info@nfcpro.com</strong>
+            </div>
           </div>
         </div>
       </div>
 
-      
+      <!-- القسم الأيسر - بيانات وزر العرض التجريبي -->
+      <div class="info-section">
+        <h3><i class="fa-regular fa-address-book"></i> بيانات الاتصال</h3>
+        
+        <div class="phone-numbers">
+          <div class="phone-item">
+            <i class="fa-solid fa-phone"></i>
+            <span class="number" dir="ltr">+966 50 123 4567</span>
+            <span class="label">مبيعات</span>
+          </div>
+          <div class="phone-item">
+            <i class="fa-solid fa-phone"></i>
+            <span class="number" dir="ltr">+966 55 987 6543</span>
+            <span class="label">دعم فني</span>
+          </div>
+          <div class="phone-item">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="number" dir="ltr">+966 50 456 7890</span>
+            <span class="label">واتساب</span>
+          </div>
+          <div class="phone-item">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="number">info@nfcpro.com</span>
+            <span class="label">بريد</span>
+          </div>
+        </div>
+
+        
+      </div>
     </div>
 
-    
-
-    <div class="demo-link">
-      <h3><i class="fa-regular fa-eye" style="margin-left: 8px;"></i> جرب العرض التجريبي:</h3>
-      <a href="/card/card-nfc-001" class="demo-button">
-        <i class="fa-solid fa-play"></i> عرض بطاقة تجريبية <i class="fa-solid fa-arrow-left"></i>
+    <!-- زر طلب المنتج -->
+    <div class="order-section">
+      <a href="create-profile" class="order-button">
+        <i class="fa-regular fa-hand-point-left"></i>
+        طلب المنتج
+        <i class="fa-regular fa-credit-card"></i>
       </a>
     </div>
-
-  
   </div>
 
   <script>
     (function() {
-      // تحريك بسيط وتأثيرات
-      console.log('✨ NFC Pro • تصميم فاتح مع أنميشن');
-
-      // بطاقة تتبع الماوس خفيفة
-      const card = document.querySelector('.nfc-card');
+      // تأثير حركة البطاقة
+      const card = document.querySelector('.metal-card');
       if (card) {
         card.addEventListener('mousemove', (e) => {
           const rect = card.getBoundingClientRect();
@@ -500,7 +519,7 @@
           const y = e.clientY - rect.top;
           const centerX = rect.width / 2;
           const centerY = rect.height / 2;
-          const rotateX = (y - centerY) / 30;   // حركة ناعمة خفيفة
+          const rotateX = (y - centerY) / 30;
           const rotateY = (centerX - x) / 30;
           card.style.transition = 'transform 0.1s';
           card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
@@ -511,8 +530,8 @@
         });
       }
 
-      // ripple effect على الأزرار
-      const buttons = document.querySelectorAll('.badge, .demo-button');
+      // تأثير تموج على الأزرار
+      const buttons = document.querySelectorAll('.demo-button, .order-button');
       buttons.forEach(btn => {
         btn.addEventListener('click', function(e) {
           const ripple = document.createElement('span');
@@ -523,28 +542,18 @@
           ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
           ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
           ripple.style.position = 'absolute';
-          ripple.style.backgroundColor = 'rgba(255,255,255,0.6)';
           this.style.position = 'relative';
           this.appendChild(ripple);
           setTimeout(() => ripple.remove(), 500);
         });
       });
-
-      // عنوان يظهر بحروف متحركة (اختياري)
-      const h1 = document.querySelector('h1');
-      if (h1) {
-        const original = h1.innerText;
-        // نتركه كما هو، لكننا نضيف sparkles
-      }
     })();
   </script>
 
   <style>
-    /* ضبط بعض الهوامش للايقونات */
+    /* تعديل اتجاه الأسهم */
     .fa-arrow-left, .fa-hand-point-left { transform: scaleX(-1); }
-    .card-footer .badge i { margin-right: 4px; }
-    .demo-button i.fa-arrow-left { margin-right: 5px; }
-    .subtitle i { color: #3b82f6; }
+    .demo-button i, .order-button i { margin: 0 8px; }
   </style>
 </body>
 </html>
