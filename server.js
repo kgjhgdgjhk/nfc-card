@@ -486,7 +486,7 @@ app.post('/create-profile/step1', upload.single('profileImage'), async (req, res
         console.log('✅ بيانات تم حفظها في الجلسة:', { name, website, address, profileId });
         
         // ✅ التوجيه إلى الخطوة الثانية
-        res.redirect('http://localhost:3000/create-profile/step2');
+        res.redirect('/create-profile/step2');
 
     } catch (error) {
         console.error('❌ خطأ في /create-profile/step1:', error);
