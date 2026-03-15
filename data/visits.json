@@ -1741,5 +1741,16 @@
     "referer": "مباشر",
     "timestamp": "2026-03-15T20:21:48.848Z",
     "createdAt": "2026-03-15T20:21:48.848Z"
+  },
+  {
+    "profileId": "profile-42f50013",
+    "cardId": "profile-42f50013",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T20:29:21.189Z",
+    "createdAt": "2026-03-15T20:29:21.189Z"
   }
 ]

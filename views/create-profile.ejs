@@ -24,7 +24,7 @@
             color: #1e293b;
         }
 
-        /* خلفية متحركة فاتحة ونقية */
+        /* خلفية متحركة فاتحة */
         .background {
             position: fixed;
             width: 100vw;
@@ -92,9 +92,171 @@
         }
 
         .creation-container {
-            max-width: 900px;
+            max-width: 1300px;
             width: 100%;
             margin: 0 auto;
+        }
+
+        /* الحاوية الرئيسية للكرت والنموذج */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        /* ===== الجانب الأيمن - الكرت ===== */
+        .card-side {
+            position: sticky;
+            top: 40px;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card-preview-wrapper {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(18px);
+            border-radius: 48px;
+            padding: 30px;
+            box-shadow: 
+                0 30px 60px -20px rgba(0, 80, 120, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            color: #334155;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .preview-header i {
+            color: #3b82f6;
+            font-size: 1.3rem;
+        }
+
+        /* البطاقة الرئيسية */
+        .business-card {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            border-radius: 28px;
+            padding: 30px;
+            color: white;
+            box-shadow: 0 30px 40px -20px rgba(102, 126, 234, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .business-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .business-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+        }
+
+        .card-header span {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .card-profile-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .card-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .card-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .card-detail-item i {
+            width: 20px;
+        }
+
+        /* ===== الجانب الأيسر - النموذج ===== */
+        .form-side {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(18px);
             border-radius: 48px;
@@ -103,23 +265,22 @@
                 0 30px 60px -20px rgba(0, 80, 120, 0.2),
                 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
             border: 1px solid rgba(255,255,255,0.7);
-            animation: slideUp 0.8s cubic-bezier(0.2,0.9,0.3,1);
+            animation: slideInLeft 0.8s ease-out;
         }
 
-        @keyframes slideUp {
+        @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateX(-30px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
         }
 
-        /* رأس الخطوات */
         .steps-header {
-            padding: 30px 40px;
+            padding: 25px 30px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             background: rgba(255,255,255,0.3);
         }
@@ -135,8 +296,8 @@
             content: '';
             position: absolute;
             top: 50%;
-            left: 60px;
-            right: 60px;
+            left: 40px;
+            right: 40px;
             height: 2px;
             background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
             transform: translateY(-50%);
@@ -148,23 +309,16 @@
             z-index: 2;
             background: white;
             backdrop-filter: blur(10px);
-            padding: 12px 28px;
+            padding: 8px 20px;
             border-radius: 100px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             color: #64748b;
             border: 1px solid rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            font-size: 0.9rem;
             font-weight: 500;
-        }
-
-        .step-item:hover {
-            border-color: #a5b4fc;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px -10px #cbd5e1;
         }
 
         .step-item.active {
@@ -174,71 +328,49 @@
             box-shadow: 0 10px 25px -8px #90caf9;
         }
 
-        .step-item.completed {
-            background: #f0fdf4;
-            border-color: #86efac;
-            color: #166534;
-        }
-
         .step-number {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             background: #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: 0.8rem;
             color: #334155;
         }
 
         .active .step-number {
             background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
-            transform: scale(1.05);
         }
 
-        .step-item i {
-            font-size: 0.9rem;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.3s ease;
-        }
-
-        .step-item.completed i {
-            opacity: 1;
-            transform: scale(1);
-            color: #22c55e;
-        }
-
-        /* قسم النموذج */
         .form-section {
-            padding: 50px 40px;
+            padding: 30px;
         }
 
         .form-section h2 {
             color: #0f172a;
-            margin-bottom: 40px;
-            font-size: 2rem;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .form-section h2 i {
             background: linear-gradient(145deg, #2563eb, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
+            gap: 15px;
         }
 
         .form-group {
@@ -248,11 +380,15 @@
         }
 
         .form-group:nth-child(1) { animation-delay: 0.1s; }
-        .form-group:nth-child(2) { animation-delay: 0.2s; }
-        .form-group:nth-child(3) { animation-delay: 0.3s; }
-        .form-group:nth-child(4) { animation-delay: 0.4s; }
-        .form-group:nth-child(5) { animation-delay: 0.5s; }
-        .form-group:nth-child(6) { animation-delay: 0.6s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+        .form-group:nth-child(6) { animation-delay: 0.35s; }
+        .form-group:nth-child(7) { animation-delay: 0.4s; }
+        .form-group:nth-child(8) { animation-delay: 0.45s; }
+        .form-group:nth-child(9) { animation-delay: 0.5s; }
+        .form-group:nth-child(10) { animation-delay: 0.55s; }
 
         @keyframes fadeInUp {
             from {
@@ -271,10 +407,10 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             color: #1e293b;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
         .input-icon {
@@ -283,11 +419,11 @@
 
         .input-icon i {
             position: absolute;
-            right: 16px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: #3b82f6;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
             z-index: 2;
         }
@@ -296,31 +432,21 @@
         .input-icon textarea,
         .form-group select {
             width: 100%;
-            padding: 16px 20px;
-            padding-right: 50px;
-            background: rgba(255, 255, 255, 0.8);
+            padding: 12px 16px;
+            padding-right: 40px;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #e2e8f0;
-            border-radius: 24px;
-            font-size: 1rem;
+            border-radius: 18px;
+            font-size: 0.9rem;
             color: #0f172a;
             transition: all 0.3s ease;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
         .form-group textarea {
-            padding: 16px 20px;
+            padding: 12px 16px;
             resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-group select {
-            padding-right: 20px;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: left 16px center;
-            background-size: 16px;
+            min-height: 80px;
         }
 
         .input-icon input:focus,
@@ -329,45 +455,149 @@
             outline: none;
             border-color: #3b82f6;
             background: white;
-            box-shadow: 0 4px 16px rgba(59,130,246,0.15);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.1);
         }
 
-        .input-icon input:focus + i,
-        .input-icon textarea:focus + i {
-            color: #7c3aed;
-            transform: translateY(-50%) scale(1.1);
+        /* حقل الكمية */
+        .quantity-input {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            overflow: hidden;
         }
 
-        .input-icon input::placeholder,
-        .input-icon textarea::placeholder {
-            color: #94a3b8;
-            font-weight: 300;
+        .quantity-input button {
+            width: 40px;
+            height: 45px;
+            background: white;
+            border: none;
+            color: #3b82f6;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-input button:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .quantity-input input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 12px 0;
+        }
+
+        /* حقل رفع الصورة */
+        .image-upload {
+            position: relative;
+        }
+
+        .upload-area {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px dashed #cbd5e1;
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .upload-area i {
+            font-size: 1.5rem;
+            color: #3b82f6;
+            margin-bottom: 5px;
+        }
+
+        .upload-area p {
+            color: #334155;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .upload-area span {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        .upload-preview {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .upload-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-preview .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* تلميحات */
+        .hint {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* أزرار التنقل */
         .form-navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 50px;
-            padding-top: 30px;
+            margin-top: 25px;
+            padding-top: 20px;
             border-top: 1px solid rgba(0,0,0,0.05);
         }
 
         .btn-next,
         .btn-prev {
-            padding: 14px 42px;
+            padding: 12px 35px;
             border-radius: 40px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.25s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             border: none;
             text-decoration: none;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn-next {
@@ -382,26 +612,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        .btn-next::before,
-        .btn-prev::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .btn-next:hover::before,
-        .btn-prev:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
         .btn-next:hover {
             transform: translateY(-3px);
             box-shadow: 0 20px 35px -8px #3b82f6;
@@ -413,50 +623,27 @@
             transform: translateY(-2px);
         }
 
-        .btn-next i,
-        .btn-prev i {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .btn-next:hover i:last-child {
-            transform: translateX(-6px);
-        }
-
-        .btn-prev:hover i:first-child {
-            transform: translateX(6px);
-        }
-
-        /* تلميحات المساعدة */
-        .hint {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .hint i {
-            color: #3b82f6;
-            font-size: 0.9rem;
-        }
-
-        /* تخصيص شريط التمرير */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #e2e8f0;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(145deg, #a5b4fc, #bae6fd);
-            border-radius: 10px;
-        }
-
         /* تصميم متجاوب */
+        @media (max-width: 1000px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-side {
+                position: relative;
+                top: 0;
+                order: 2; /* الكرت ينزل تحت في الموبايل */
+            }
+            
+            .form-side {
+                order: 1;
+            }
+            
+            .business-card {
+                height: 250px;
+            }
+        }
+
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -468,7 +655,7 @@
             
             .steps-progress {
                 flex-direction: column;
-                gap: 12px;
+                gap: 10px;
             }
             
             .steps-progress::before {
@@ -477,18 +664,6 @@
             
             .step-item {
                 width: 100%;
-            }
-            
-            .creation-container {
-                border-radius: 36px;
-            }
-            
-            .form-section {
-                padding: 30px 20px;
-            }
-            
-            .steps-header {
-                padding: 20px;
             }
         }
     </style>
@@ -502,164 +677,262 @@
 
     <div class="profile-creation">
         <div class="creation-container">
-            <div class="steps-header">
-                <div class="steps-progress">
-                    <div class="step-item active">
-                        <span class="step-number">1</span>
-                        <span>الخطوة الاولى</span>
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="step-item">
-                        <span class="step-number">2</span>
-                        <span> الخطوة الثانية</span>
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="step-item">
-                        <span class="step-number">3</span>
-                        <span>الخطوة الثالثة </span>
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="step-item">
-                        <span class="step-number">4</span>
-                        <span>التأكيد</span>
-                        <i class="fas fa-check"></i>
+            <div class="main-layout">
+                <!-- الجانب الأيمن - الكرت -->
+                <div class="card-side">
+                    <div class="card-preview-wrapper">
+                        <div class="preview-header">
+                            <i class="fa-regular fa-id-card"></i>
+                            <span>معاينة البطاقة</span>
+                        </div>
+                        
+                        <div class="business-card" id="livePreview">
+                            <div class="card-row">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-wifi"></i>
+                                    <span>NFC PRO</span>
+                                </div>
+                                <div class="card-profile-image" id="profileImageContainer">
+                                    <img id="profileImagePreview" src="" alt="صورة">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="card-name" id="previewName">أحمد محمد</div>
+                                <div class="card-title" id="previewTitle">مطور برمجيات</div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <div class="card-detail-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span id="previewEmail">ahmed@example.com</span>
+                                </div>
+                                <div class="card-detail-item">
+                                    <i class="fas fa-phone-alt"></i>
+                                    <span id="previewPhone">+966 50 000 0000</span>
+                                </div>
+                                <div class="card-detail-item">
+                                    <i class="fas fa-globe"></i>
+                                    <span id="previewWebsite">www.ahmed.com</span>
+                                </div>
+                                <div class="card-detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span id="previewAddress">الرياض، السعودية</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-section">
-                <h2>
-                    <i class="fas fa-id-card"></i>
-                    أنشئ بطاقتك الذكية
-                </h2>
-                
-                <form id="nfcForm" action="/create-profile/step1" method="POST">
-                    <div class="form-grid">
-                        <div class="form-group full-width">
-                            <label>الاسم الكامل</label>
-                            <div class="input-icon">
-                                <i class="fas fa-user"></i>
-                                <input type="text" name="name" placeholder="أدخل اسمك الكامل" required>
+
+                <!-- الجانب الأيسر - النموذج -->
+                <div class="form-side">
+                    <div class="steps-header">
+                        <div class="steps-progress">
+                            <div class="step-item active">
+                                <span class="step-number">1</span>
+                                <span>البيانات</span>
                             </div>
-                            <div class="hint">
-                                <i class="fas fa-info-circle"></i>
-                                سيظهر هذا الاسم في بطاقتك
+                            <div class="step-item">
+                                <span class="step-number">2</span>
+                                <span>القالب</span>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>البريد الإلكتروني</label>
-                            <div class="input-icon">
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" name="email" placeholder="example@domain.com" required>
+                            <div class="step-item">
+                                <span class="step-number">3</span>
+                                <span>الحماية</span>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>رقم الجوال</label>
-                            <div class="input-icon">
-                                <i class="fas fa-phone-alt"></i>
-                                <input type="tel" name="phone" placeholder="+966 50 000 0000" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>المسمى الوظيفي</label>
-                            <div class="input-icon">
-                                <i class="fas fa-briefcase"></i>
-                                <input type="text" name="title" placeholder="مثال: مطور برمجيات">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>الشركة</label>
-                            <div class="input-icon">
-                                <i class="fas fa-building"></i>
-                                <input type="text" name="company" placeholder="اسم الشركة">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>الموقع الإلكتروني</label>
-                            <div class="input-icon">
-                                <i class="fas fa-globe"></i>
-                                <input type="url" name="website" placeholder="https://example.com">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>العنوان</label>
-                            <div class="input-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <input type="text" name="address" placeholder="المدينة، الشارع">
-                            </div>
-                        </div>
-                        
-                      
-                        
-                        
-                        
-                        
-                        
-                        <div class="form-group full-width">
-                            <label>نبذة تعريفية (اختياري)</label>
-                            <div class="input-icon">
-                                <i class="fas fa-feather"></i>
-                                <textarea name="bio" rows="4" placeholder="اكتب نبذة مختصرة عن نفسك..."></textarea>
-                            </div>
-                            <div class="hint">
-                                <i class="fas fa-lightbulb"></i>
-                                أضف لمحة عن خبراتك ومهاراتك
+                            <div class="step-item">
+                                <span class="step-number">4</span>
+                                <span>التأكيد</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="form-navigation">
-                        <a href="/" class="btn-prev">
-                            <i class="fas fa-arrow-right"></i>
-                            رجوع
-                        </a>
-                        <button type="submit" class="btn-next">
-                            التالي
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
+                    <div class="form-section">
+                        <h2>
+                            <i class="fas fa-pen"></i>
+                            أدخل بياناتك
+                        </h2>
+                        
+                        <form id="nfcForm" action="/create-profile/step1" method="POST" enctype="multipart/form-data">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>الاسم الكامل</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" name="name" id="inputName" placeholder="أدخل اسمك الكامل" required oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>البريد الإلكتروني</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" name="email" id="inputEmail" placeholder="example@domain.com" required oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>رقم الجوال</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-phone-alt"></i>
+                                        <input type="tel" name="phone" id="inputPhone" placeholder="+966 50 000 0000" required oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>المسمى الوظيفي</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-briefcase"></i>
+                                        <input type="text" name="title" id="inputTitle" placeholder="مثال: مطور برمجيات" oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>الشركة</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-building"></i>
+                                        <input type="text" name="company" placeholder="اسم الشركة">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>الموقع الإلكتروني</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-globe"></i>
+                                        <input type="url" name="website" id="inputWebsite" placeholder="https://example.com" oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>العنوان</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <input type="text" name="address" id="inputAddress" placeholder="المدينة، الشارع" oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                
+                                <!-- حقل الكمية -->
+                                <div class="form-group">
+                                    <label>كم بطاقة؟</label>
+                                    <div class="quantity-input">
+                                        <button type="button" onclick="decreaseQuantity()">−</button>
+                                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="100" readonly>
+                                        <button type="button" onclick="increaseQuantity()">+</button>
+                                    </div>
+                                    <div class="hint">
+                                        <i class="fas fa-tag"></i>
+                                        ٩٩ ر.س للبطاقة
+                                    </div>
+                                </div>
+                                
+                                <!-- حقل الصورة -->
+                                <div class="form-group">
+                                    <label>صورة شخصية</label>
+                                    <div class="image-upload">
+                                        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>اضغط لرفع صورة</p>
+                                            <span>PNG, JPG (أقصى 5MB)</span>
+                                        </div>
+                                        <input type="file" id="fileInput" name="profileImage" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                                        <div class="upload-preview" id="imagePreview">
+                                            <img src="" alt="صورة الملف الشخصي">
+                                            <div class="remove-image" onclick="removeImage(event)">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label>نبذة تعريفية (اختياري)</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-feather"></i>
+                                        <textarea name="bio" rows="2" placeholder="اكتب نبذة مختصرة عن نفسك..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <a href="/" class="btn-prev">
+                                    <i class="fas fa-arrow-right"></i>
+                                    رجوع
+                                </a>
+                                <button type="submit" class="btn-next">
+                                    التالي
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✨ NFC Pro - إنشاء بطاقة (تصميم فاتح)');
+            console.log('✨ NFC Pro - الكرت يمين والبيانات يسار');
             
-            // تأثيرات عند التركيز على الحقول
-            const inputs = document.querySelectorAll('input, textarea, select');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'scale(1.01)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'scale(1)';
-                });
-            });
+            // تحديث المعاينة المباشرة
+            window.updatePreview = function() {
+                document.getElementById('previewName').textContent = document.getElementById('inputName').value || 'أحمد محمد';
+                document.getElementById('previewTitle').textContent = document.getElementById('inputTitle').value || 'مطور برمجيات';
+                document.getElementById('previewEmail').textContent = document.getElementById('inputEmail').value || 'ahmed@example.com';
+                document.getElementById('previewPhone').textContent = document.getElementById('inputPhone').value || '+966 50 000 0000';
+                document.getElementById('previewWebsite').textContent = document.getElementById('inputWebsite').value || 'www.ahmed.com';
+                document.getElementById('previewAddress').textContent = document.getElementById('inputAddress').value || 'الرياض، السعودية';
+            };
 
-            // حركة الخطوات
-            const steps = document.querySelectorAll('.step-item');
-            steps.forEach(step => {
-                step.addEventListener('mouseenter', () => {
-                    if (!step.classList.contains('active')) {
-                        step.style.transform = 'translateY(-3px)';
-                    }
-                });
-                
-                step.addEventListener('mouseleave', () => {
-                    step.style.transform = 'translateY(0)';
-                });
-            });
+            // دوال الكمية
+            window.increaseQuantity = function() {
+                const input = document.getElementById('quantity');
+                let value = parseInt(input.value) || 1;
+                if (value < 100) input.value = value + 1;
+            };
 
-            // منع الإرسال الفارغ + رسالة لطيفة
+            window.decreaseQuantity = function() {
+                const input = document.getElementById('quantity');
+                let value = parseInt(input.value) || 1;
+                if (value > 1) input.value = value - 1;
+            };
+
+            // معاينة الصورة
+            window.previewImage = function(input) {
+                const preview = document.getElementById('imagePreview');
+                const profilePreview = document.getElementById('profileImagePreview');
+                const file = input.files[0];
+                
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // للصورة المصغرة في المعاينة
+                        preview.querySelector('img').src = e.target.result;
+                        preview.style.display = 'block';
+                        document.querySelector('.upload-area').style.display = 'none';
+                        
+                        // للصورة في الكرت
+                        profilePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            // إزالة الصورة
+            window.removeImage = function(event) {
+                event.stopPropagation();
+                const preview = document.getElementById('imagePreview');
+                const profilePreview = document.getElementById('profileImagePreview');
+                const fileInput = document.getElementById('fileInput');
+                
+                preview.style.display = 'none';
+                preview.querySelector('img').src = '';
+                profilePreview.src = '';
+                fileInput.value = '';
+                document.querySelector('.upload-area').style.display = 'block';
+            };
+
+            // التحقق من الإرسال
             const form = document.getElementById('nfcForm');
             form.addEventListener('submit', function(e) {
                 const name = document.querySelector('input[name="name"]').value;
@@ -669,15 +942,7 @@
                 if (!name || !email || !phone) {
                     e.preventDefault();
                     alert('الرجاء إدخال جميع الحقول المطلوبة (الاسم، البريد، الجوال)');
-                    return;
                 }
-
-                // تأثير ناعم على الزر
-                const btn = document.querySelector('.btn-next');
-                btn.style.transform = 'scale(0.97)';
-                setTimeout(() => {
-                    btn.style.transform = 'scale(1)';
-                }, 200);
             });
         });
     </script>
