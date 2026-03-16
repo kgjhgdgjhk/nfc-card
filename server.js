@@ -888,7 +888,6 @@ app.get('/admin/card/edit/:cardId', async (req, res) => {
         res.redirect('/admin?error=حدث خطأ في تحميل صفحة التعديل');
     }
 });
-
 // تحديث بيانات البطاقة
 app.post('/admin/card/update/:cardId', async (req, res) => {
     try {
@@ -896,35 +895,47 @@ app.post('/admin/card/update/:cardId', async (req, res) => {
         const updatedData = req.body;
         
         console.log('📝 جاري تحديث البطاقة:', cardId);
-        console.log('📦 البيانات المرسلة:', updatedData);
         
         if (isPostgresConnected) {
-            // تحديث في PostgreSQL
-            // هذا يحتاج دالة updateProfile في ملف Profile.js
-            // للتبسيط، سنستخدم الملفات المحلية أولاً
-            console.log('⚠️ التحديث في PostgreSQL غير مفعل حالياً');
-            return res.redirect('/admin?error=التحديث في PostgreSQL غير مفعل');
+            // ✅ تحديث في PostgreSQL
+            const profile = await Profile.findOne({ where: { profileId: cardId } });
+            
+            if (profile) {
+                await profile.update({
+                    name: updatedData.name || profile.name,
+                    email: updatedData.email || profile.email,
+                    phone: updatedData.phone || profile.phone,
+                    title: updatedData.title || profile.title,
+                    company: updatedData.company || profile.company,
+                    bio: updatedData.bio || profile.bio,
+                    website: updatedData.website || profile.website,
+                    address: updatedData.address || profile.address,
+                    template: updatedData.template || profile.template,
+                    updatedAt: new Date()
+                });
+                
+                console.log('✅ تم تحديث البطاقة في PostgreSQL:', cardId);
+                return res.redirect('/admin?success=تم تحديث البطاقة بنجاح في PostgreSQL');
+            } else {
+                return res.redirect('/admin?error=البطاقة غير موجودة في PostgreSQL');
+            }
         } else {
-            // تحديث في الملف المحلي
+            // تحديث في الملف المحلي (الكود القديم)
             const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
             
-            // قراءة الملف
             let profiles = [];
             try {
                 const data = await fs.readFile(PROFILES_FILE, 'utf8');
                 profiles = JSON.parse(data);
             } catch (error) {
-                console.log('⚠️ ملف البطاقات غير موجود');
                 return res.redirect('/admin?error=ملف البطاقات غير موجود');
             }
             
-            // البحث عن البطاقة
             let index = profiles.findIndex(p => p.profileId === cardId);
             
             if (index !== -1) {
                 const oldCard = profiles[index];
                 
-                // إنشاء كائن محدث
                 const updatedCard = {
                     ...oldCard,
                     name: updatedData.name || oldCard.name,
@@ -939,17 +950,12 @@ app.post('/admin/card/update/:cardId', async (req, res) => {
                     updatedAt: new Date()
                 };
                 
-                // تحديث المصفوفة
                 profiles[index] = updatedCard;
-                
-                // حفظ في الملف
                 await fs.writeFile(PROFILES_FILE, JSON.stringify(profiles, null, 2));
                 
                 console.log('✅ تم تحديث البطاقة بنجاح:', updatedCard.name);
                 res.redirect('/admin?success=تم تحديث البطاقة بنجاح');
-                
             } else {
-                console.log('❌ البطاقة غير موجودة');
                 res.redirect('/admin?error=البطاقة غير موجودة');
             }
         }
@@ -959,19 +965,35 @@ app.post('/admin/card/update/:cardId', async (req, res) => {
         res.redirect('/admin?error=حدث خطأ في تحديث البطاقة: ' + error.message);
     }
 });
-
 // حذف بطاقة
+
 app.post('/admin/card/delete/:cardId', async (req, res) => {
     try {
         const cardId = req.params.cardId;
         console.log('🗑️ جاري حذف البطاقة:', cardId);
         
         if (isPostgresConnected) {
-            // حذف من PostgreSQL
-            console.log('⚠️ الحذف في PostgreSQL غير مفعل حالياً');
-            return res.redirect('/admin?error=الحذف في PostgreSQL غير مفعل');
+            // ✅ حذف من PostgreSQL (تم التعديل)
+            const profile = await Profile.findOne({ where: { profileId: cardId } });
+            
+            if (profile) {
+                // حذف الزيارات المرتبطة أولاً (حفاظاً على تكامل البيانات)
+                await Visit.destroy({ where: { profileId: cardId } });
+                
+                // حذف الطلبات المرتبطة
+                await Order.destroy({ where: { profileId: cardId } });
+                
+                // حذف البروفايل نفسه
+                await profile.destroy();
+                
+                console.log('✅ تم حذف البطاقة من PostgreSQL:', cardId);
+                return res.redirect('/admin?success=تم حذف البطاقة بنجاح من PostgreSQL');
+            } else {
+                console.log('❌ البطاقة غير موجودة في PostgreSQL');
+                return res.redirect('/admin?error=البطاقة غير موجودة');
+            }
         } else {
-            // حذف من الملف المحلي
+            // حذف من الملف المحلي (الكود القديم)
             const PROFILES_FILE = path.join(__dirname, 'data', 'profiles.json');
             
             const data = await fs.readFile(PROFILES_FILE, 'utf8');
@@ -994,7 +1016,7 @@ app.post('/admin/card/delete/:cardId', async (req, res) => {
         
     } catch (error) {
         console.error('❌ خطأ في حذف البطاقة:', error);
-        res.redirect('/admin?error=حدث خطأ في حذف البطاقة');
+        res.redirect('/admin?error=حدث خطأ في حذف البطاقة: ' + error.message);
     }
 });
 
