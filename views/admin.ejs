@@ -812,11 +812,11 @@
                         <td><%= cardIdentifier %></td>
                         <td><%= visitDate %></td>
                         <td>
-                            <span style="display: flex; align-items: center; gap: 5px;">
-                                <span><%= countryFlag %></span>
-                                <span><%= country %></span>
-                            </span>
-                        </td>
+    <span style="display: flex; align-items: center; gap: 5px;">
+        <span><%= visit.countryFlag || '🌐' %></span>
+        <span><%= visit.country || 'غير معروف' %></span>
+    </span>
+</td>
                         <td><%= encryptedIP %></td>
                         <td><%= browser %></td>
                         <td><%= os %></td>
