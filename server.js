@@ -775,12 +775,21 @@ app.get('/admin', async (req, res) => {
             // ✅ استخدام PostgreSQL
             profiles = await getAllProfiles();
             visits = await getAllVisits();
-            // يمكن إضافة دالة للحصول على الطلبات
+            
+            // ✅ جلب الطلبات إذا كانت موجودة
+            try {
+                const { Order } = require('./models/Profile');
+                orders = await Order.findAll();
+            } catch (error) {
+                console.log('⚠️ لا يوجد نموذج للطلبات أو لم يتم العثور عليه');
+                orders = [];
+            }
+            
             stats = {
                 totalProfiles: profiles.length,
                 totalVisits: visits.length,
                 todayVisits: visits.filter(v => 
-                    new Date(v.timestamp).toDateString() === new Date().toDateString()
+                    v && v.timestamp && new Date(v.timestamp).toDateString() === new Date().toDateString()
                 ).length,
                 totalOrders: orders.length
             };
@@ -815,12 +824,13 @@ app.get('/admin', async (req, res) => {
                 totalProfiles: profiles.length,
                 totalVisits: visits.length,
                 todayVisits: visits.filter(v => 
-                    new Date(v.timestamp).toDateString() === new Date().toDateString()
+                    v && v.timestamp && new Date(v.timestamp).toDateString() === new Date().toDateString()
                 ).length,
                 totalOrders: orders.length
             };
         }
         
+        // ✅ إضافة زر تسجيل الخروج
         res.render('admin', {
             title: 'لوحة التحكم',
             profiles,
@@ -828,13 +838,27 @@ app.get('/admin', async (req, res) => {
             orders,
             stats,
             query: req.query || {},
-            isPostgresConnected
+            isPostgresConnected,
+            adminLoggedIn: req.session.adminLoggedIn || false,
+            success: req.query.success || null,
+            error: req.query.error || null
         });
         
     } catch (error) {
         console.error('خطأ في لوحة التحكم:', error);
         res.status(500).send('حدث خطأ في تحميل لوحة التحكم');
     }
+});
+
+// ✅ مسار تسجيل الخروج من لوحة التحكم
+app.get('/admin/logout', (req, res) => {
+    req.session.adminLoggedIn = false;
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('خطأ في تسجيل الخروج:', err);
+        }
+        res.redirect('/admin/login');
+    });
 });
 
 // ============================================
@@ -1020,7 +1044,7 @@ app.post('/admin/card/delete/:cardId', async (req, res) => {
     }
 });
 
-// صفحة عرض جميع البطاقات
+// صفحة عرض جميع البطاقات (معدلة لعرض الكل)
 app.get('/card', async (req, res) => {
     try {
         let profiles = [];
@@ -1037,11 +1061,15 @@ app.get('/card', async (req, res) => {
             }
         }
         
+        // ✅ إزالة الـ slice وعرض جميع البطاقات
         res.render('cards-list', {
-            title: 'البطاقات المتاحة',
-            profiles: profiles.slice(0, 10)
+            title: 'جميع البطاقات المتاحة',
+            profiles: profiles, // عرض الكل بدون تقطيع
+            totalCount: profiles.length,
+            query: req.query || {}
         });
     } catch (error) {
+        console.error('خطأ في عرض البطاقات:', error);
         res.redirect('/');
     }
 });
@@ -1359,7 +1387,115 @@ app.get('/debug-all', async (req, res) => {
         res.json({ error: error.message });
     }
 });
+// ============================================
+// نظام الحماية المتقدم للوحة التحكم
+// ============================================
 
+// كلمة المرور الرئيسية للدخول (يمكنك تغييرها)
+const ADMIN_USERNAME = 'admin'; // اسم المستخدم
+const ADMIN_PASSWORD = 'Albahri2024'; // كلمة المرور - غيرها بشيء معقد
+
+// صفحة تسجيل الدخول للوحة التحكم
+app.get('/admin/login', (req, res) => {
+    // إذا كان المستخدم مسجل الدخول بالفعل، حوله للوحة التحكم
+    if (req.session && req.session.adminLoggedIn) {
+        return res.redirect('/admin');
+    }
+    
+    res.render('admin-login', {
+        title: 'تسجيل الدخول - لوحة التحكم',
+        error: req.query.error || null,
+        layout: false // إذا كان عندك layout
+    });
+});
+
+// التحقق من بيانات الدخول
+app.post('/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    
+    // التحقق من اسم المستخدم وكلمة المرور
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        req.session.adminLoggedIn = true;
+        req.session.adminLoginTime = new Date();
+        
+        // تسجيل محاولة الدخول الناجحة (اختياري)
+        console.log(`✅ دخول ناجح للوحة التحكم: ${username} في ${new Date().toLocaleString()}`);
+        
+        res.redirect('/admin');
+    } else {
+        console.log(`❌ محاولة دخول فاشلة: ${username} من IP: ${req.ip}`);
+        res.redirect('/admin/login?error=بيانات الدخول غير صحيحة');
+    }
+});
+
+// تسجيل الخروج
+app.get('/admin/logout', (req, res) => {
+    req.session.adminLoggedIn = false;
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('خطأ في تسجيل الخروج:', err);
+        }
+        res.redirect('/admin/login');
+    });
+});
+
+// Middleware لحماية لوحة التحكم
+function requireAdminLogin(req, res, next) {
+    // قائمة المسارات المسموح بها بدون تسجيل دخول
+    const publicPaths = [
+        '/admin/login',
+        '/admin/login.css',
+        '/admin/login.js',
+        '/css/',
+        '/js/',
+        '/images/'
+    ];
+    
+    // التحقق إذا كان المسار الحالي عام
+    if (publicPaths.some(path => req.path.startsWith(path))) {
+        return next();
+    }
+    
+    // التحقق من جلسة تسجيل الدخول
+    if (req.session && req.session.adminLoggedIn) {
+        // يمكن إضافة صلاحية الجلسة (مثلاً تنتهي بعد 8 ساعات)
+        const loginTime = req.session.adminLoginTime;
+        if (loginTime) {
+            const hoursSinceLogin = (new Date() - new Date(loginTime)) / (1000 * 60 * 60);
+            if (hoursSinceLogin > 8) { // تنتهي الجلسة بعد 8 ساعات
+                req.session.adminLoggedIn = false;
+                return res.redirect('/admin/login?error=انتهت الجلسة، الرجاء تسجيل الدخول مرة أخرى');
+            }
+        }
+        
+        return next();
+    }
+    
+    // إذا لم يكن مسجل دخول، حوله لصفحة تسجيل الدخول
+    res.redirect('/admin/login');
+}
+
+// تطبيق الحماية على جميع مسارات /admin
+app.use('/admin', requireAdminLogin);
+
+// حماية إضافية: منع الوصول المباشر للملفات الحساسة
+app.use((req, res, next) => {
+    // منع الوصول لملفات الإعدادات
+    const blockedPaths = [
+        '/.env',
+        '/server.js',
+        '/package.json',
+        '/package-lock.json',
+        '/data/',
+        '/models/'
+    ];
+    
+    if (blockedPaths.some(path => req.path.startsWith(path))) {
+        return res.status(403).send('⛔ غير مصرح بالوصول');
+    }
+    
+    next();
+});
 
 app.listen(PORT, () => {
     console.log(`
@@ -1368,7 +1504,7 @@ app.listen(PORT, () => {
     ╠══════════════════════════════════════════╣
     ║  الخادم يعمل على: http://localhost:${PORT}  ║
     ║  إنشاء هوية: http://localhost:${PORT}/create-profile ║
-    ║  لوحة التحكم: http://localhost:${PORT}/admin ║
+    ║  لوحة التحكم: http://localhost:${PORT}/admin/login ║
     ║  فتح القفل: http://localhost:${PORT}/unlock ║
     ╠══════════════════════════════════════════╣
     ║  قاعدة البيانات: ${isPostgresConnected ? '✅ PostgreSQL' : '⚠️  ملفات محلية'} ║
