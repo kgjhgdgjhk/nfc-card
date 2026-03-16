@@ -49,28 +49,13 @@
         .card-panel {
             position: absolute;
             top: 0;
-            width: 45%;
+            width: 50%;
             height: 100%;
             padding: 35px 25px;
             z-index: 5;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-sizing: border-box;
-        }
-
-        /* الجهة المقابلة (النصية) */
-        .card-panel-text {
-            position: absolute;
-            top: 0;
-            width: 55%;
-            height: 100%;
-            padding: 30px 25px;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: transparent;
             box-sizing: border-box;
         }
 
@@ -82,6 +67,8 @@
 
         .card-primary .panel-text {
             right: 0;
+            background: #ffffff;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.05);
         }
 
         .card-secondary .panel-colored {
@@ -91,6 +78,8 @@
 
         .card-secondary .panel-text {
             left: 0;
+            background: #ffffff;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.05);
         }
 
         /* أنماط القوالب المختلفة */
@@ -159,6 +148,76 @@
             background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
         }
 
+        /* ===== خلفيات وألوان النصوص للـ panel-text في كل قالب ===== */
+        
+        /* القوالب الفاتحة - خلفية بيضاء مع نصوص داكنة */
+        .template-modern .card-primary .panel-text,
+        .template-modern .card-secondary .panel-text,
+        .template-classic .card-primary .panel-text,
+        .template-classic .card-secondary .panel-text,
+        .template-minimal .card-primary .panel-text,
+        .template-minimal .card-secondary .panel-text,
+        .template-corporate .card-primary .panel-text,
+        .template-corporate .card-secondary .panel-text,
+        .template-creative .card-primary .panel-text,
+        .template-creative .card-secondary .panel-text {
+            background: #ffffff !important;
+            color: #1e293b !important;
+        }
+
+        /* القوالب الداكنة - خلفية داكنة مع نصوص فاتحة */
+        .template-dark .card-primary .panel-text,
+        .template-dark .card-secondary .panel-text {
+            background: #1e293b !important;
+            color: #f1f5f9 !important;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+
+        .template-tech .card-primary .panel-text,
+        .template-tech .card-secondary .panel-text {
+            background: #1a2f3a !important;
+            color: #e0f2fe !important;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+
+        .template-elegant .card-primary .panel-text,
+        .template-elegant .card-secondary .panel-text {
+            background: #2d1f3a !important;
+            color: #f8f0fc !important;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+
+        .template-3d .card-primary .panel-text,
+        .template-3d .card-secondary .panel-text {
+            background: #1f2833 !important;
+            color: #66fcf1 !important;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        }
+
+        .template-neon .card-primary .panel-text,
+        .template-neon .card-secondary .panel-text {
+            background: #1e1a3a !important;
+            color: #ffffff !important;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+
+        /* تأكيد ألوان النصوص داخل العناصر */
+        .template-dark .panel-text *,
+        .template-tech .panel-text *,
+        .template-elegant .panel-text *,
+        .template-3d .panel-text *,
+        .template-neon .panel-text * {
+            color: inherit !important;
+        }
+
+        .template-modern .panel-text *,
+        .template-classic .panel-text *,
+        .template-minimal .panel-text *,
+        .template-corporate .panel-text *,
+        .template-creative .panel-text * {
+            color: #1e293b !important;
+        }
+
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -169,19 +228,19 @@
         .wave-divider {
             position: absolute;
             top: 0;
-            width: 130px;
+            width: 10px;
             height: 100%;
             z-index: 10;
             pointer-events: none;
         }
 
         .card-primary .wave-divider {
-            left: 42%;
+            left: 50%;
             transform: translateX(-50%) scaleX(1);
         }
 
         .card-secondary .wave-divider {
-            right: 42%;
+            right: 50%;
             transform: translateX(50%) scaleX(-1);
         }
 
@@ -235,10 +294,8 @@
             align-items: center;
             gap: 8px;
             font-size: 18px;
-            background: rgba(0, 100, 180, 0.03);
             padding: 12px 15px;
             border-radius: 50px;
-            border: 1px solid rgba(0, 140, 255, 0.08);
             white-space: nowrap;
             overflow: hidden;
             width: 100%;
@@ -260,6 +317,69 @@
             min-width: 0;
         }
 
+        /* خلفيات detail-item حسب القالب */
+        .template-modern .detail-item {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .template-classic .detail-item {
+            background: rgba(45, 55, 72, 0.1);
+            border: 1px solid rgba(45, 55, 72, 0.2);
+        }
+
+        .template-minimal .detail-item {
+            background: rgba(148, 163, 184, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .template-dark .detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .template-tech .detail-item {
+            background: rgba(45, 212, 191, 0.1);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+        }
+
+        .template-elegant .detail-item {
+            background: rgba(192, 132, 252, 0.1);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+        }
+
+        .template-corporate .detail-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .template-creative .detail-item {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .template-3d .detail-item {
+            background: rgba(102, 252, 241, 0.1);
+            border: 1px solid rgba(102, 252, 241, 0.2);
+        }
+
+        .template-neon .detail-item {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        /* ألوان الأيقونات حسب القالب */
+        .template-modern .detail-item i { color: #667eea; }
+        .template-classic .detail-item i { color: #94a3b8; }
+        .template-minimal .detail-item i { color: #64748b; }
+        .template-dark .detail-item i { color: #60a5fa; }
+        .template-tech .detail-item i { color: #2dd4bf; }
+        .template-elegant .detail-item i { color: #c084fc; }
+        .template-corporate .detail-item i { color: #3b82f6; }
+        .template-creative .detail-item i { color: #f97316; }
+        .template-3d .detail-item i { color: #66fcf1; }
+        .template-neon .detail-item i { color: #a78bfa; }
+
         /* القسم السفلي للكرت الثاني */
         .social-qr-section {
             display: flex;
@@ -277,7 +397,6 @@
 
         .social-links i {
             font-size: 30px;
-            background: #f0f5fd;
             padding: 10px;
             border-radius: 50%;
             transition: 0.2s;
@@ -285,8 +404,49 @@
         }
 
         .social-links i:hover {
-            background: #d4e4ff;
             transform: scale(1.1);
+        }
+
+        /* ألوان الروابط الاجتماعية حسب القالب */
+        .template-modern .social-links i {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+        }
+        .template-classic .social-links i {
+            background: rgba(45, 55, 72, 0.15);
+            color: #2d3748;
+        }
+        .template-minimal .social-links i {
+            background: rgba(148, 163, 184, 0.15);
+            color: #64748b;
+        }
+        .template-dark .social-links i {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+        .template-tech .social-links i {
+            background: rgba(45, 212, 191, 0.15);
+            color: #2dd4bf;
+        }
+        .template-elegant .social-links i {
+            background: rgba(192, 132, 252, 0.15);
+            color: #c084fc;
+        }
+        .template-corporate .social-links i {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+        .template-creative .social-links i {
+            background: rgba(249, 115, 22, 0.15);
+            color: #f97316;
+        }
+        .template-3d .social-links i {
+            background: rgba(102, 252, 241, 0.15);
+            color: #66fcf1;
+        }
+        .template-neon .social-links i {
+            background: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
         }
 
         .qr-code {
@@ -294,12 +454,23 @@
             height: 110px;
             border-radius: 18px;
             margin-bottom: 12px;
-            border: 2px solid #1e2f3f;
+            border: 2px solid;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
+
+        .template-dark .qr-code { border-color: #60a5fa; }
+        .template-tech .qr-code { border-color: #2dd4bf; }
+        .template-3d .qr-code { border-color: #66fcf1; }
+        .template-elegant .qr-code { border-color: #c084fc; }
+        .template-neon .qr-code { border-color: #a78bfa; }
+        .template-modern .qr-code { border-color: #667eea; }
+        .template-classic .qr-code { border-color: #2d3748; }
+        .template-minimal .qr-code { border-color: #64748b; }
+        .template-corporate .qr-code { border-color: #3b82f6; }
+        .template-creative .qr-code { border-color: #f97316; }
 
         .qr-code img {
             width: 100%;
@@ -310,10 +481,16 @@
         .scan-code-text {
             font-size: 15px;
             font-weight: 600;
-            color: #1f4970;
             letter-spacing: 1px;
             cursor: pointer;
         }
+
+        .template-dark .scan-code-text { color: #60a5fa; }
+        .template-tech .scan-code-text { color: #2dd4bf; }
+        .template-3d .scan-code-text { color: #66fcf1; }
+        .template-elegant .scan-code-text { color: #c084fc; }
+        .template-neon .scan-code-text { color: #a78bfa; }
+        .template-modern .scan-code-text { color: #667eea; }
 
         /* رابط البطاقة */
         .profile-link {
@@ -321,10 +498,9 @@
             font-size: 12px;
             direction: ltr;
             text-align: left;
-            background: rgba(255,255,255,0.7);
             padding: 8px 12px;
             border-radius: 30px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -340,185 +516,76 @@
         .copy-link-btn {
             background: none;
             border: none;
-            color: #0077be;
             cursor: pointer;
             font-size: 14px;
             padding: 0 5px;
             flex-shrink: 0;
         }
 
-        /* ========== أنماط ألوان القوالب الكاملة ========== */
-
-        /* لون النص في المنطقة النصية حسب القالب */
-        .template-modern .panel-text,
-        .template-modern .personal-name,
-        .template-modern .detail-item span,
-        .template-modern .profile-link span {
+        /* خلفيات وألوان profile-link حسب القالب */
+        .template-modern .profile-link {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.2);
             color: #1e293b;
         }
-
-        .template-classic .panel-text,
-        .template-classic .personal-name,
-        .template-classic .detail-item span,
-        .template-classic .profile-link span {
+        .template-classic .profile-link {
+            background: rgba(45, 55, 72, 0.1);
+            border-color: rgba(45, 55, 72, 0.2);
             color: #1e293b;
         }
-
-        .template-minimal .panel-text,
-        .template-minimal .personal-name,
-        .template-minimal .detail-item span,
-        .template-minimal .profile-link span {
-            color: #0f172a;
+        .template-minimal .profile-link {
+            background: rgba(148, 163, 184, 0.1);
+            border-color: rgba(148, 163, 184, 0.2);
+            color: #1e293b;
         }
-
-        .template-dark .panel-text,
-        .template-dark .personal-name,
-        .template-dark .detail-item span,
-        .template-dark .profile-link span {
+        .template-corporate .profile-link {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+            color: #1e293b;
+        }
+        .template-creative .profile-link {
+            background: rgba(249, 115, 22, 0.1);
+            border-color: rgba(249, 115, 22, 0.2);
+            color: #1e293b;
+        }
+        .template-dark .profile-link {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
             color: #f1f5f9;
         }
-
-        .template-tech .panel-text,
-        .template-tech .personal-name,
-        .template-tech .detail-item span,
-        .template-tech .profile-link span {
+        .template-tech .profile-link {
+            background: rgba(45, 212, 191, 0.1);
+            border-color: rgba(45, 212, 191, 0.2);
             color: #e0f2fe;
         }
-
-        .template-elegant .panel-text,
-        .template-elegant .personal-name,
-        .template-elegant .detail-item span,
-        .template-elegant .profile-link span {
+        .template-elegant .profile-link {
+            background: rgba(192, 132, 252, 0.1);
+            border-color: rgba(192, 132, 252, 0.2);
             color: #f8f0fc;
         }
-
-        .template-corporate .panel-text,
-        .template-corporate .personal-name,
-        .template-corporate .detail-item span,
-        .template-corporate .profile-link span {
-            color: #1e293b;
-        }
-
-        .template-creative .panel-text,
-        .template-creative .personal-name,
-        .template-creative .detail-item span,
-        .template-creative .profile-link span {
-            color: #1e293b;
-        }
-
-        .template-3d .panel-text,
-        .template-3d .personal-name,
-        .template-3d .detail-item span,
-        .template-3d .profile-link span {
+        .template-3d .profile-link {
+            background: rgba(102, 252, 241, 0.1);
+            border-color: rgba(102, 252, 241, 0.2);
             color: #66fcf1;
         }
-
-        .template-neon .panel-text,
-        .template-neon .personal-name,
-        .template-neon .detail-item span,
-        .template-neon .profile-link span {
+        .template-neon .profile-link {
+            background: rgba(167, 139, 250, 0.1);
+            border-color: rgba(167, 139, 250, 0.2);
             color: #ffffff;
         }
 
-        /* ألوان الأيقونات حسب القالب */
-        .template-modern .detail-item i { color: #667eea; }
-        .template-classic .detail-item i { color: #94a3b8; }
-        .template-minimal .detail-item i { color: #64748b; }
-        .template-dark .detail-item i { color: #60a5fa; }
-        .template-tech .detail-item i { color: #2dd4bf; }
-        .template-elegant .detail-item i { color: #c084fc; }
-        .template-corporate .detail-item i { color: #3b82f6; }
-        .template-creative .detail-item i { color: #f97316; }
-        .template-3d .detail-item i { color: #66fcf1; }
-        .template-neon .detail-item i { color: #a78bfa; }
+        .template-dark .copy-link-btn { color: #60a5fa; }
+        .template-tech .copy-link-btn { color: #2dd4bf; }
+        .template-elegant .copy-link-btn { color: #c084fc; }
+        .template-3d .copy-link-btn { color: #66fcf1; }
+        .template-neon .copy-link-btn { color: #a78bfa; }
+        .template-modern .copy-link-btn { color: #667eea; }
+        .template-classic .copy-link-btn { color: #94a3b8; }
+        .template-minimal .copy-link-btn { color: #64748b; }
+        .template-corporate .copy-link-btn { color: #3b82f6; }
+        .template-creative .copy-link-btn { color: #f97316; }
 
-        /* خلفيات detail-item حسب القالب */
-        .template-dark .detail-item {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .template-tech .detail-item {
-            background: rgba(45, 212, 191, 0.1);
-            border: 1px solid rgba(45, 212, 191, 0.2);
-        }
-
-        .template-elegant .detail-item {
-            background: rgba(192, 132, 252, 0.1);
-            border: 1px solid rgba(192, 132, 252, 0.2);
-        }
-
-        .template-3d .detail-item {
-            background: rgba(102, 252, 241, 0.1);
-            border: 1px solid rgba(102, 252, 241, 0.2);
-        }
-
-        .template-neon .detail-item {
-            background: rgba(167, 139, 250, 0.1);
-            border: 1px solid rgba(167, 139, 250, 0.2);
-        }
-
-        /* ألوان الروابط الاجتماعية */
-        .template-dark .social-links i {
-            background: rgba(255, 255, 255, 0.15);
-            color: #60a5fa;
-        }
-
-        .template-dark .qr-code {
-            border-color: #60a5fa;
-        }
-
-        .template-dark .scan-code-text {
-            color: #60a5fa;
-        }
-
-        .template-dark .profile-link {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .template-dark .copy-link-btn {
-            color: #60a5fa;
-        }
-
-        .template-tech .social-links i {
-            background: rgba(45, 212, 191, 0.15);
-            color: #2dd4bf;
-        }
-
-        .template-elegant .social-links i {
-            background: rgba(192, 132, 252, 0.15);
-            color: #c084fc;
-        }
-
-        .template-3d .social-links i {
-            background: rgba(102, 252, 241, 0.15);
-            color: #66fcf1;
-        }
-
-        .template-3d .qr-code {
-            border-color: #66fcf1;
-        }
-
-        .template-3d .scan-code-text {
-            color: #66fcf1;
-        }
-
-        .template-3d .profile-link {
-            background: rgba(102, 252, 241, 0.1);
-            border-color: rgba(102, 252, 241, 0.3);
-        }
-
-        .template-3d .copy-link-btn {
-            color: #66fcf1;
-        }
-
-        .template-neon .social-links i {
-            background: rgba(167, 139, 250, 0.15);
-            color: #a78bfa;
-        }
-
-        /* ألوان job-title-display و company-name-display في القوالب الداكنة */
+        /* ألوان job-title-display و company-name-display */
         .template-dark .job-title-display,
         .template-dark .company-name-display,
         .template-tech .job-title-display,
@@ -530,52 +597,8 @@
         .template-neon .job-title-display,
         .template-neon .company-name-display {
             color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-
-        /* ألوان personal-name في القوالب الداكنة */
-        .template-dark .personal-name,
-        .template-tech .personal-name,
-        .template-elegant .personal-name,
-        .template-3d .personal-name,
-        .template-neon .personal-name {
-            color: inherit;
-        }
-
-        /* خلفية profile-link حسب القالب */
-        .template-modern .profile-link {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: rgba(102, 126, 234, 0.2);
-        }
-
-        .template-classic .profile-link {
-            background: rgba(45, 55, 72, 0.1);
-            border-color: rgba(45, 55, 72, 0.2);
-        }
-
-        .template-minimal .profile-link {
-            background: rgba(148, 163, 184, 0.1);
-            border-color: rgba(148, 163, 184, 0.2);
-        }
-
-        .template-corporate .profile-link {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: rgba(59, 130, 246, 0.2);
-        }
-
-        .template-creative .profile-link {
-            background: rgba(249, 115, 22, 0.1);
-            border-color: rgba(249, 115, 22, 0.2);
-        }
-
-        /* لون زر النسخ حسب القالب */
-        .template-modern .copy-link-btn { color: #667eea; }
-        .template-classic .copy-link-btn { color: #94a3b8; }
-        .template-minimal .copy-link-btn { color: #64748b; }
-        .template-tech .copy-link-btn { color: #2dd4bf; }
-        .template-elegant .copy-link-btn { color: #c084fc; }
-        .template-corporate .copy-link-btn { color: #3b82f6; }
-        .template-creative .copy-link-btn { color: #f97316; }
-        .template-neon .copy-link-btn { color: #a78bfa; }
 
         /* تصغير النصوص */
         @media (max-width: 800px) {
@@ -589,6 +612,9 @@
         @media (max-width: 650px) {
             .business-card { width: 500px; height: 450px; }
         }
+
+
+        
     </style>
 </head>
 <body class="template-<%= template || 'modern' %>">
@@ -600,26 +626,37 @@
         <!-- البانل الملون - الجهة اليسرى: المسمى الوظيفي واسم الشركة -->
         <div class="card-panel panel-colored">
             <div class="brand-content">
-                <div class="job-title-display" id="jobTitle1"><%= formData.title || 'Job Title' %></div>
-                <div class="company-name-display" id="companyName1"><%= formData.company || 'Company Name' %></div>
+                <div class="job-title-display" id="jobTitle1"><%= formData.title || '' %></div>
+                <div class="company-name-display" id="companyName1"><%= formData.company || '' %></div>
             </div>
         </div>
 
         <!-- البانل النصي - الجهة اليمنى: الاسم وبيانات الاتصال -->
         <div class="card-panel panel-text">
             <div class="info-content">
-                <div class="personal-name" id="personalName1"><%= formData.name || 'H. SERISA' %></div>
+                <div class="personal-name" id="personalName1"><%= formData.name || '' %></div>
                 
                 <div class="contact-details">
-                    <div class="detail-item"><i class="fa fa-phone-alt"></i> <span id="phone1"><%= formData.phone || '+123 456 789' %></span></div>
-                    <div class="detail-item"><i class="fa fa-envelope"></i> <span id="email1"><%= formData.email || 'your@mail.com' %></span></div>
-                    <div class="detail-item"><i class="fa fa-globe"></i> <span id="website1"><%= formData.website || 'www.mail.com' %></span></div>
-                    <div class="detail-item"><i class="fa fa-map-marker-alt"></i> <span id="address1"><%= formData.address || 'your street here' %></span></div>
+                    <% if (formData.phone) { %>
+                    <div class="detail-item"><i class="fa fa-phone-alt"></i> <span id="phone1"><%= formData.phone %></span></div>
+                    <% } %>
+                    
+                    <% if (formData.email) { %>
+                    <div class="detail-item"><i class="fa fa-envelope"></i> <span id="email1"><%= formData.email %></span></div>
+                    <% } %>
+                    
+                    <% if (formData.website) { %>
+                    <div class="detail-item"><i class="fa fa-globe"></i> <span id="website1"><%= formData.website %></span></div>
+                    <% } %>
+                    
+                    <% if (formData.address) { %>
+                    <div class="detail-item"><i class="fa fa-map-marker-alt"></i> <span id="address1"><%= formData.address %></span></div>
+                    <% } %>
                 </div>
                 
                 <!-- رابط البطاقة الرقمية -->
                 <div class="profile-link">
-                    <span id="profileLink1"><%= profileUrl || 'https://nfc.pro/p/username' %></span>
+                    <span id="profileLink1"><%= profileUrl || '' %></span>
                     <button class="copy-link-btn" onclick="copyProfileLink()"><i class="fa-regular fa-copy"></i></button>
                 </div>
             </div>
@@ -628,7 +665,7 @@
         <!-- الموجة الفاصلة -->
         <div class="wave-divider">
             <svg preserveAspectRatio="none" viewBox="0 0 120 420">
-                <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#ffffff"/>
+                <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#1e293b"/>
             </svg>
         </div>
     </div>
@@ -638,8 +675,8 @@
         <!-- البانل الملون - الجهة اليمنى: المسمى الوظيفي واسم الشركة -->
         <div class="card-panel panel-colored">
             <div class="brand-content">
-                <div class="job-title-display" id="jobTitle2"><%= formData.title || 'Job Title' %></div>
-                <div class="company-name-display" id="companyName2"><%= formData.company || 'Company Name' %></div>
+                <div class="job-title-display" id="jobTitle2"><%= formData.title || '' %></div>
+                <div class="company-name-display" id="companyName2"><%= formData.company || '' %></div>
             </div>
         </div>
 
@@ -676,7 +713,7 @@
                 
                 <!-- رابط البطاقة الرقمية -->
                 <div class="profile-link" style="margin-top: 10px;">
-                    <span id="profileLink2"><%= profileUrl || 'https://nfc.pro/p/username' %></span>
+                    <span id="profileLink2"><%= profileUrl || '' %></span>
                     <button class="copy-link-btn" onclick="copyProfileLink()"><i class="fa-regular fa-copy"></i></button>
                 </div>
             </div>
@@ -685,7 +722,7 @@
         <!-- الموجة الفاصلة -->
         <div class="wave-divider">
             <svg preserveAspectRatio="none" viewBox="0 0 120 420">
-                <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#ffffff"/>
+                <path d="M40 0 C90 80 90 340 40 420 L70 420 C120 340 120 80 70 0 Z" fill="#1e293b"/>
             </svg>
         </div>
     </div>
@@ -711,19 +748,19 @@
     // تحديث البطاقات بالبيانات
     document.addEventListener('DOMContentLoaded', function() {
         // تحديث الكرت الأول
-        document.getElementById('jobTitle1').textContent = profileTitle || 'Job Title';
-        document.getElementById('companyName1').textContent = profileCompany || 'Company Name';
-        document.getElementById('personalName1').textContent = profileName || 'H. SERISA';
-        document.getElementById('phone1').textContent = profilePhone || '+123 456 789';
-        document.getElementById('email1').textContent = profileEmail || 'your@mail.com';
-        document.getElementById('website1').textContent = profileWebsite || 'www.mail.com';
-        document.getElementById('address1').textContent = profileAddress || 'your street here';
-        document.getElementById('profileLink1').textContent = profileUrl || 'https://nfc.pro/p/username';
+        document.getElementById('jobTitle1').textContent = profileTitle || '';
+        document.getElementById('companyName1').textContent = profileCompany || '';
+        document.getElementById('personalName1').textContent = profileName || '';
+        if (document.getElementById('phone1')) document.getElementById('phone1').textContent = profilePhone || '';
+        if (document.getElementById('email1')) document.getElementById('email1').textContent = profileEmail || '';
+        if (document.getElementById('website1')) document.getElementById('website1').textContent = profileWebsite || '';
+        if (document.getElementById('address1')) document.getElementById('address1').textContent = profileAddress || '';
+        document.getElementById('profileLink1').textContent = profileUrl || '';
         
         // تحديث الكرت الثاني
-        document.getElementById('jobTitle2').textContent = profileTitle || 'Job Title';
-        document.getElementById('companyName2').textContent = profileCompany || 'Company Name';
-        document.getElementById('profileLink2').textContent = profileUrl || 'https://nfc.pro/p/username';
+        document.getElementById('jobTitle2').textContent = profileTitle || '';
+        document.getElementById('companyName2').textContent = profileCompany || '';
+        document.getElementById('profileLink2').textContent = profileUrl || '';
         
         // تحديث QR code
         if (profileUrl) {
@@ -756,8 +793,9 @@
     // نسخ بيانات الاتصال عند النقر
     document.querySelectorAll('.detail-item').forEach(item => {
         item.addEventListener('click', function(e) {
-            let text = this.innerText.replace(/[^0-9a-zA-Z@.:/]/g, '').trim();
-            if (text) {
+            const textElement = this.querySelector('span');
+            if (textElement && textElement.textContent) {
+                const text = textElement.textContent;
                 navigator.clipboard?.writeText(text).then(() => {
                     alert('✅ تم النسخ: ' + text);
                 });
