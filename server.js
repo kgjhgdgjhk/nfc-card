@@ -1557,37 +1557,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// ============================================
-// دالة جلب الدولة من عنوان IP
-// ============================================
-
-
-async function getCountryFromIP(ip) {
-    try {
-        // تجاهل الـ IP المحلي
-        if (ip === '127.0.0.1' || ip === '::1' || ip.includes('192.168.') || ip.includes('10.0.')) {
-            return { country: 'محلي', flag: '💻', code: 'LOCAL' };
-        }
-
-        // استخدام API مجاني (ip-api.com)
-        const response = await axios.get(`http://ip-api.com/json/${ip}`, {
-            timeout: 3000 // مهلة 3 ثواني
-        });
-
-        if (response.data && response.data.status === 'success') {
-            return {
-                country: response.data.country,
-                flag: getFlagEmoji(response.data.countryCode),
-                code: response.data.countryCode
-            };
-        } else {
-            return { country: 'غير معروف', flag: '🌐', code: 'UNKNOWN' };
-        }
-    } catch (error) {
-        console.log('⚠️ خطأ في جلب الدولة:', error.message);
-        return { country: 'غير معروف', flag: '🌐', code: 'UNKNOWN' };
-    }
-}
 
 // دالة تحويل كود الدولة إلى علم (Emoji Flag)
 function getFlagEmoji(countryCode) {
