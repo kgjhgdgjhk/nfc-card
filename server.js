@@ -264,6 +264,53 @@ async function updateProfileStats(profileId) {
         console.error('خطأ في تحديث الإحصائيات:', error);
     }
 }
+// ============================================
+// دالة جلب الدولة من عنوان IP
+// ============================================
+async function getCountryFromIP(ip) {
+    try {
+        // تجاهل الـ IP المحلي
+        if (ip === '127.0.0.1' || ip === '::1' || ip.includes('192.168.') || ip.includes('10.0.')) {
+            return { country: 'محلي', flag: '💻', code: 'LOCAL' };
+        }
+
+        // استخدام API مجاني (ip-api.com)
+        const response = await axios.get(`http://ip-api.com/json/${ip}`, {
+            timeout: 3000, // مهلة 3 ثواني
+            headers: { 'User-Agent': 'NFC-Card-System' }
+        });
+
+        if (response.data && response.data.status === 'success') {
+            return {
+                country: response.data.country,
+                flag: getFlagEmoji(response.data.countryCode),
+                code: response.data.countryCode
+            };
+        } else {
+            return { country: 'غير معروف', flag: '🌐', code: 'UNKNOWN' };
+        }
+    } catch (error) {
+        console.log('⚠️ خطأ في جلب الدولة:', error.message);
+        return { country: 'غير معروف', flag: '🌐', code: 'UNKNOWN' };
+    }
+}
+
+// دالة تحويل كود الدولة إلى علم (Emoji Flag)
+function getFlagEmoji(countryCode) {
+    if (!countryCode) return '🌐';
+    
+    try {
+        // تحويل الكود (مثل SA) إلى علم (🇸🇦)
+        const codePoints = countryCode
+            .toUpperCase()
+            .split('')
+            .map(char => 127397 + char.charCodeAt(0));
+        
+        return String.fromCodePoint(...codePoints);
+    } catch (error) {
+        return '🌐';
+    }
+}
 
 // تسجيل زيارة
 async function logVisit(profileId, req) {
@@ -284,6 +331,12 @@ async function logVisit(profileId, req) {
             ip = ip.split(',')[0].trim();
         }
         
+        // تنظيف IP من أي مسافات
+        ip = ip.trim();
+        
+        // ✅ جلب الدولة من IP
+        const countryInfo = await getCountryFromIP(ip);
+        
         const userAgent = req.headers['user-agent'] || 'غير معروف';
         const referer = req.headers['referer'] || req.headers['referrer'] || 'مباشر';
         
@@ -291,6 +344,9 @@ async function logVisit(profileId, req) {
             profileId: profileId,
             cardId: profileId,
             ip: ip,
+            country: countryInfo.country,
+            countryFlag: countryInfo.flag,
+            countryCode: countryInfo.code,
             userAgent: userAgent,
             browser: getBrowserInfo(userAgent),
             os: getOSInfo(userAgent),
@@ -299,7 +355,12 @@ async function logVisit(profileId, req) {
             createdAt: new Date()
         };
         
-        console.log('📝 تسجيل زيارة:', { profileId, ip, browser: visitData.browser });
+        console.log('📝 تسجيل زيارة:', { 
+            profileId, 
+            ip, 
+            country: countryInfo.country,
+            browser: visitData.browser 
+        });
         
         if (isPostgresConnected) {
             // ✅ استخدام PostgreSQL
@@ -336,7 +397,6 @@ async function logVisit(profileId, req) {
         return false;
     }
 }
-
 // دوال مساعدة لاستخراج معلومات المتصفح ونظام التشغيل (نفس الكود السابق)
 function getBrowserInfo(userAgent) {
     if (!userAgent) return 'غير معروف';
@@ -1496,6 +1556,51 @@ app.use((req, res, next) => {
     
     next();
 });
+
+// ============================================
+// دالة جلب الدولة من عنوان IP
+// ============================================
+const axios = require('axios');
+
+async function getCountryFromIP(ip) {
+    try {
+        // تجاهل الـ IP المحلي
+        if (ip === '127.0.0.1' || ip === '::1' || ip.includes('192.168.') || ip.includes('10.0.')) {
+            return { country: 'محلي', flag: '💻', code: 'LOCAL' };
+        }
+
+        // استخدام API مجاني (ip-api.com)
+        const response = await axios.get(`http://ip-api.com/json/${ip}`, {
+            timeout: 3000 // مهلة 3 ثواني
+        });
+
+        if (response.data && response.data.status === 'success') {
+            return {
+                country: response.data.country,
+                flag: getFlagEmoji(response.data.countryCode),
+                code: response.data.countryCode
+            };
+        } else {
+            return { country: 'غير معروف', flag: '🌐', code: 'UNKNOWN' };
+        }
+    } catch (error) {
+        console.log('⚠️ خطأ في جلب الدولة:', error.message);
+        return { country: 'غير معروف', flag: '🌐', code: 'UNKNOWN' };
+    }
+}
+
+// دالة تحويل كود الدولة إلى علم (Emoji Flag)
+function getFlagEmoji(countryCode) {
+    if (!countryCode) return '🌐';
+    
+    // تحويل الكود (مثل SA) إلى علم (🇸🇦)
+    const codePoints = countryCode
+        .toUpperCase()
+        .split('')
+        .map(char => 127397 + char.charCodeAt(0));
+    
+    return String.fromCodePoint(...codePoints);
+}
 
 app.listen(PORT, () => {
     console.log(`
