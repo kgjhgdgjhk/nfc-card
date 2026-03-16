@@ -666,6 +666,28 @@
                 width: 100%;
             }
         }
+
+        /* السعر الإجمالي */
+        .total-price {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 60px;
+            padding: 12px 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+        .total-price i {
+            color: #3b82f6;
+        }
+        .price-value {
+            color: #0f172a;
+            direction: ltr;
+        }
     </style>
 </head>
 <body>
@@ -811,7 +833,7 @@
                                     </div>
                                 </div>
                                 
-                                <!-- حقل الكمية -->
+                                <!-- حقل الكمية (مع السعر المباشر) -->
                                 <div class="form-group">
                                     <label>كم بطاقة؟</label>
                                     <div class="quantity-input">
@@ -853,6 +875,13 @@
                                 </div>
                             </div>
                             
+                            <!-- عرض السعر الإجمالي مباشرة تحت الفورم -->
+                            <div class="total-price">
+                                <i class="fas fa-calculator"></i>
+                                <span>الإجمالي :</span>
+                                <span class="price-value" id="totalPriceDisplay">99 ر.س</span>
+                            </div>
+                            
                             <div class="form-navigation">
                                 <a href="/" class="btn-prev">
                                     <i class="fas fa-arrow-right"></i>
@@ -872,8 +901,36 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✨ NFC Pro - الكرت يمين والبيانات يسار');
-            
+            console.log('✨ NFC Pro - الكمية تغير السعر الإجمالي');
+
+            // دالة تحديث السعر الإجمالي بناءً على الكمية
+            function updateTotalPrice() {
+                const quantityInput = document.getElementById('quantity');
+                const quantity = parseInt(quantityInput.value) || 1;
+                const pricePerCard = 99; // سعر البطاقة الواحدة
+                const total = quantity * pricePerCard;
+                document.getElementById('totalPriceDisplay').textContent = total + ' ر.س';
+            }
+
+            // دوال الكمية (مع تحديث السعر)
+            window.increaseQuantity = function() {
+                const input = document.getElementById('quantity');
+                let value = parseInt(input.value) || 1;
+                if (value < 100) {
+                    input.value = value + 1;
+                    updateTotalPrice();  // تحديث السعر
+                }
+            };
+
+            window.decreaseQuantity = function() {
+                const input = document.getElementById('quantity');
+                let value = parseInt(input.value) || 1;
+                if (value > 1) {
+                    input.value = value - 1;
+                    updateTotalPrice();  // تحديث السعر
+                }
+            };
+
             // تحديث المعاينة المباشرة
             window.updatePreview = function() {
                 document.getElementById('previewName').textContent = document.getElementById('inputName').value || 'أحمد محمد';
@@ -882,19 +939,6 @@
                 document.getElementById('previewPhone').textContent = document.getElementById('inputPhone').value || '+966 50 000 0000';
                 document.getElementById('previewWebsite').textContent = document.getElementById('inputWebsite').value || 'www.ahmed.com';
                 document.getElementById('previewAddress').textContent = document.getElementById('inputAddress').value || 'الرياض، السعودية';
-            };
-
-            // دوال الكمية
-            window.increaseQuantity = function() {
-                const input = document.getElementById('quantity');
-                let value = parseInt(input.value) || 1;
-                if (value < 100) input.value = value + 1;
-            };
-
-            window.decreaseQuantity = function() {
-                const input = document.getElementById('quantity');
-                let value = parseInt(input.value) || 1;
-                if (value > 1) input.value = value - 1;
             };
 
             // معاينة الصورة
@@ -944,6 +988,9 @@
                     alert('الرجاء إدخال جميع الحقول المطلوبة (الاسم، البريد، الجوال)');
                 }
             });
+
+            // تحديث السعر عند تحميل الصفحة
+            updateTotalPrice();
         });
     </script>
 </body>

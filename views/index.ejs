@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NFC Pro - بطاقة ذكية</title>
+  <title>NFC Pro | بطاقة ذكية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -17,14 +17,14 @@
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #f4f9fe; /* خلفية فاتحة جداً */
-      color: #1e293b;
+      background: #f8fafc;  /* قاعدة فاتحة جداً */
+      color: #0f1825;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* خلفية فاتحة متحركة */
+    /* ===== خلفية فاتحة عصرية ===== */
     .background {
       position: fixed;
       width: 100vw;
@@ -37,29 +37,29 @@
 
     .gradient-sphere {
       position: absolute;
-      width: 80vw;
-      height: 80vw;
-      background: radial-gradient(circle at 30% 50%, rgba(147, 197, 253, 0.5) 0%, rgba(165, 180, 252, 0.35) 40%, transparent 70%);
+      width: 90vw;
+      height: 90vw;
+      background: radial-gradient(circle at 40% 50%, rgba(191, 219, 254, 0.7) 0%, rgba(224, 242, 254, 0.3) 45%, transparent 75%);
       border-radius: 50%;
-      top: -20%;
+      top: -30%;
       right: -20%;
-      animation: floatSphere 18s ease-in-out infinite;
+      animation: float 16s ease-in-out infinite;
     }
 
     .gradient-sphere-2 {
       position: absolute;
-      width: 70vw;
-      height: 70vw;
-      background: radial-gradient(circle at 70% 50%, rgba(216, 180, 254, 0.45) 0%, rgba(187, 222, 252, 0.4) 50%, transparent 70%);
+      width: 80vw;
+      height: 80vw;
+      background: radial-gradient(circle at 30% 50%, rgba(233, 213, 255, 0.6) 0%, rgba(217, 249, 157, 0.15) 55%, transparent 80%);
       border-radius: 50%;
-      bottom: -20%;
-      left: -20%;
-      animation: floatSphere 22s ease-in-out infinite reverse;
+      bottom: -30%;
+      left: -15%;
+      animation: float 20s ease-in-out infinite reverse;
     }
 
-    @keyframes floatSphere {
+    @keyframes float {
       0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-4%, 4%) scale(1.02); }
+      50% { transform: translate(-5%, 5%) scale(1.02); }
     }
 
     .particles {
@@ -67,193 +67,197 @@
       width: 100%;
       height: 100%;
       background-image: 
-        radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.5) 1.2px, transparent 1.2px),
-        radial-gradient(circle at 75% 60%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
-        radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.5) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
-      background-size: 150px 150px;
-      animation: moveParticles 35s linear infinite;
-      opacity: 0.7;
+        radial-gradient(circle at 15% 30%, rgba(255,255,255,0.8) 1.2px, transparent 1.2px),
+        radial-gradient(circle at 70% 75%, rgba(255,255,255,0.9) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,0.7) 1px, transparent 1px),
+        radial-gradient(circle at 30% 85%, rgba(255,250,240,0.8) 2px, transparent 2px);
+      background-size: 180px 180px;
+      animation: drift 40s linear infinite;
+      opacity: 0.8;
     }
 
-    @keyframes moveParticles {
+    @keyframes drift {
       0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: 200px 200px, -150px 120px, 130px -180px, -100px -120px; }
+      100% { background-position: 250px 200px, -200px 150px, 150px -200px, -180px -150px; }
     }
 
     .container {
       max-width: 1300px;
       margin: 0 auto;
-      padding: 30px 40px;
+      padding: 30px 40px 50px;
       position: relative;
-      z-index: 2;
+      z-index: 5;
     }
 
-    /* هيدر */
+    /* ===== هيدر أنيق ===== */
     header {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: 50px;
       opacity: 0;
-      animation: fadeInUp 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+      animation: fadeUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
     }
 
-    @keyframes fadeInUp {
+    @keyframes fadeUp {
       0% { opacity: 0; transform: translateY(30px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-      font-size: 4.2rem;
+      font-size: 4rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      /* فقط NFC Pro باللون الرمادي المعدني */
-      background: linear-gradient(145deg, #6b7280, #4b5563, #374151);
+      background: linear-gradient(150deg, #2c3e50, #3a4c5e, #2c3e50);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
       display: inline-flex;
       align-items: center;
       gap: 15px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-shadow: 0 4px 12px rgba(0,20,40,0.1);
     }
 
     h1 i {
       font-size: 3.8rem;
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+      background: linear-gradient(150deg, #3a4c5e, #2c3e50);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 8px rgba(75,85,99,0.2));
+      filter: drop-shadow(0 4px 6px rgba(40,60,80,0.15));
     }
 
-    /* القسم الرئيسي */
+    /* ===== المحتوى الرئيسي ===== */
     .hero {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
-      gap: 60px;
+      gap: 50px;
       margin-bottom: 70px;
       align-items: center;
     }
 
-    /* البطاقة - على اليمين */
+    /* بطاقة NFC – على اليمين */
     .card-preview {
       perspective: 2500px;
-      order: 2; /* في RTL تجعل البطاقة على اليمين */
+      order: 2;  /* في RTL تصبح على اليمين */
     }
 
-    .metal-card {
-      background: rgba(255, 255, 255, 0.7);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(18px);
-      border-radius: 48px;
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 56px;
       padding: 45px 35px;
-      border: 1px solid rgba(255,255,255,0.7);
-      box-shadow: 0 30px 50px -20px rgba(0,80,120,0.2), 0 0 0 1px rgba(255,255,255,0.8) inset;
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 30px 50px -25px rgba(50,80,120,0.25), 0 0 0 1px rgba(255,255,255,0.7) inset;
       transform-style: preserve-3d;
-      animation: cardHover 7s infinite alternate ease-in-out;
+      animation: cardFloat 8s infinite alternate ease-in-out;
     }
 
-    @keyframes cardHover {
-      0% { transform: translateY(0) rotateX(1deg) rotateY(-1deg); }
-      100% { transform: translateY(-12px) rotateX(2deg) rotateY(2deg); }
+    @keyframes cardFloat {
+      0% { transform: translateY(0) rotateX(1deg) rotateY(-2deg); }
+      100% { transform: translateY(-15px) rotateX(2.5deg) rotateY(3deg); }
     }
 
     .card-header {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
       margin-bottom: 25px;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      padding-bottom: 18px;
     }
 
     .card-header i {
       font-size: 3.5rem;
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+      background: linear-gradient(145deg, #3a4a5c, #1f2c38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .card-header h2 {
-      font-size: 2.4rem;
+      font-size: 2.5rem;
       font-weight: 700;
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+      background: linear-gradient(145deg, #2c3e50, #1f2b35);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .arabic {
+    .arabic-badge {
       font-size: 2rem;
       font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 20px;
+      color: #192734;
+      margin-bottom: 25px;
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
     }
 
-    .arabic i {
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+    .arabic-badge i {
+      background: linear-gradient(145deg, #3a4a5c, #1f2c38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* بيانات الهاتف داخل البطاقة */
-    .phone-data {
+    /* بيانات داخل البطاقة */
+    .phone-data-modern {
       background: rgba(255, 255, 255, 0.5);
-      border-radius: 30px;
+      border-radius: 38px;
       padding: 25px;
-      margin: 20px 0;
-      border: 1px solid rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.8);
     }
 
-    .phone-row {
+    .data-row {
       display: flex;
       align-items: center;
       gap: 15px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.03);
     }
 
-    .phone-row:last-child {
+    .data-row:last-child {
       border-bottom: none;
     }
 
-    .phone-row i {
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.5);
+    .data-row i {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.6);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+      background: linear-gradient(135deg, #3a4a5c, #1f2c38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
     }
 
-    .phone-row span {
-      color: #334155;
+    .data-row .label {
+      color: #33455a;
+      font-weight: 500;
       font-size: 1.1rem;
     }
 
-    .phone-row strong {
-      color: #0f172a;
+    .data-row .value {
+      color: #0b1725;
       font-size: 1.2rem;
       margin-right: auto;
       font-weight: 500;
       direction: ltr;
+      background: rgba(255,255,255,0.4);
+      padding: 5px 15px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.6);
     }
 
-    /* القسم الأيسر */
-    .info-section {
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(15px);
-      border-radius: 48px;
+    /* القسم الأيسر (البيانات + العرض التجريبي) */
+    .info-panel {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 56px;
       padding: 45px 40px;
       border: 1px solid rgba(255,255,255,0.7);
-      box-shadow: 0 20px 40px -15px rgba(0,40,80,0.1);
-      animation: slideIn 0.8s 0.2s both;
-      order: 1; /* على اليسار */
+      box-shadow: 0 25px 40px -20px rgba(40,60,90,0.15);
+      animation: slideIn 0.7s 0.2s both;
+      order: 1;
     }
 
     @keyframes slideIn {
@@ -261,162 +265,179 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
-    .info-section h3 {
-      font-size: 2rem;
+    .info-panel h3 {
+      font-size: 2.1rem;
       font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 30px;
+      color: #15202b;
+      margin-bottom: 25px;
       border-bottom: 1px solid rgba(0,0,0,0.05);
       padding-bottom: 15px;
-    }
-
-    .phone-numbers {
-      margin-bottom: 35px;
-    }
-
-    .phone-item {
       display: flex;
       align-items: center;
-      gap: 15px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 20px;
-      margin-bottom: 10px;
-      border: 1px solid rgba(255,255,255,0.9);
+      gap: 10px;
     }
 
-    .phone-item i {
-      font-size: 1.5rem;
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+    .info-panel h3 i {
+      background: linear-gradient(145deg, #3a4a5c, #1f2c38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .phone-item .number {
-      color: #0f172a;
+    .contact-list {
+      margin-bottom: 35px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 32px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,0.8);
+      transition: all 0.2s;
+    }
+
+    .contact-item:hover {
+      background: rgba(255,255,255,0.75);
+      transform: scale(1.01);
+    }
+
+    .contact-item i {
+      font-size: 1.7rem;
+      background: linear-gradient(145deg, #3a4a5c, #1f2c38);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      width: 40px;
+      text-align: center;
+    }
+
+    .contact-item .num {
+      color: #0f1a27;
       font-size: 1.2rem;
       direction: ltr;
     }
 
-    .phone-item .label {
-      color: #64748b;
+    .contact-item .tag {
+      color: #4a617c;
       margin-right: auto;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.3);
+      padding: 4px 14px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.5);
     }
 
     /* زر العرض التجريبي */
-    .demo-section {
-      margin-top: 40px;
+    .demo-wrapper {
       text-align: center;
+      margin-top: 20px;
     }
 
-    .demo-section h4 {
-      font-size: 1.5rem;
-      color: #1e293b;
-      margin-bottom: 20px;
+    .demo-wrapper p {
+      font-size: 1.3rem;
+      color: #1c2b3a;
+      margin-bottom: 15px;
       font-weight: 500;
     }
 
-    .demo-button {
+    .demo-btn {
       display: inline-flex;
       align-items: center;
       gap: 20px;
-      padding: 18px 55px;
+      padding: 18px 50px;
       background: rgba(255,255,255,0.5);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.7);
-      border-radius: 50px;
-      color: #1e293b;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 60px;
+      color: #15232e;
       text-decoration: none;
       font-weight: 600;
       font-size: 1.25rem;
-      transition: all 0.3s ease;
+      transition: all 0.25s;
       box-shadow: 0 6px 16px rgba(0,0,0,0.02);
     }
 
-    .demo-button i {
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+    .demo-btn i {
+      background: linear-gradient(145deg, #3a4a5c, #1f2c38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
 
-    .demo-button:hover {
+    .demo-btn:hover {
       background: white;
-      border-color: #cbd5e1;
-      transform: translateY(-3px);
-      box-shadow: 0 16px 32px -12px #94a3b8;
+      border-color: #d0ddea;
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 35px -18px #6f8a9f;
     }
 
-    /* زر طلب المنتج */
-    .order-section {
+    /* زر طلب المنتج الرئيسي */
+    .order-action {
       text-align: center;
       margin-top: 40px;
     }
 
-    .order-button {
+    .order-main-btn {
       display: inline-block;
-      padding: 20px 80px;
-      background: rgba(255,255,255,0.5);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.7);
-      border-radius: 60px;
-      color: #0f172a;
+      padding: 22px 85px;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 70px;
+      color: #0f1f2c;
       text-decoration: none;
       font-weight: 700;
-      font-size: 1.4rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.02);
+      font-size: 1.6rem;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
     }
 
-    .order-button i {
-      margin: 0 10px;
-      background: linear-gradient(145deg, #6b7280, #4b5563);
+    .order-main-btn i {
+      margin: 0 12px;
+      background: linear-gradient(145deg, #3a4a5c, #1f2c38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-size: 1.7rem;
     }
 
-    .order-button:hover {
+    .order-main-btn:hover {
       background: white;
-      border-color: #cbd5e1;
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 20px 40px -15px #94a3b8;
+      border-color: #d0ddea;
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 28px 45px -20px #7b95af;
     }
 
-    /* متجاوب */
+    /* استجابة كاملة */
     @media (max-width: 1000px) {
-      .hero { 
-        grid-template-columns: 1fr; 
-        gap: 30px;
-      }
+      .hero { grid-template-columns: 1fr; gap: 35px; }
       .card-preview { order: 1; }
-      .info-section { order: 2; }
+      .info-panel { order: 2; }
     }
 
     @media (max-width: 600px) {
       h1 { font-size: 3rem; }
-      .demo-button { padding: 15px 30px; }
-      .order-button { padding: 15px 40px; }
+      .glass-card { padding: 30px 20px; }
+      .order-main-btn { padding: 16px 40px; font-size: 1.4rem; }
     }
 
-    /* تأثيرات بسيطة */
-    .ripple-effect {
+    /* تأثير تموج ناعم */
+    .ripple {
       position: absolute;
       border-radius: 50%;
-      background: rgba(107, 114, 128, 0.2);
+      background: rgba(110, 130, 150, 0.15);
       transform: scale(0);
-      animation: ripple 0.5s ease-out;
+      animation: rippleAnim 0.6s ease-out;
       pointer-events: none;
     }
 
-    @keyframes ripple {
-      to { transform: scale(6); opacity: 0; }
+    @keyframes rippleAnim {
+      to { transform: scale(8); opacity: 0; }
     }
 
-    /* سكرول */
-    ::-webkit-scrollbar { width: 10px; }
-    ::-webkit-scrollbar-track { background: #e2e8f0; }
-    ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 10px; }
+    /* تعديل أيقونات الاتجاه */
+    .fa-arrow-left, .fa-hand-point-left { transform: scaleX(-1); }
   </style>
 </head>
 <body>
@@ -434,84 +455,83 @@
     </header>
 
     <div class="hero">
-      <!-- البطاقة على اليمين -->
+      <!-- بطاقة المعاينة (يمين) -->
       <div class="card-preview">
-        <div class="metal-card">
+        <div class="glass-card">
           <div class="card-header">
             <i class="fa-regular fa-id-card"></i>
             <h2>البطاقة الذكية</h2>
           </div>
-          <div class="arabic">
+          <div class="arabic-badge">
             <i class="fa-regular fa-address-card"></i>
-            بطاقة NFC
+            <span>تقنية NFC</span>
           </div>
           
-          <!-- بيانات الهاتف داخل البطاقة -->
-          <div class="phone-data">
-            <div class="phone-row">
+          <div class="phone-data-modern">
+            <div class="data-row">
               <i class="fa-solid fa-phone"></i>
-              <span>الهاتف</span>
-              <strong dir="ltr">+966 50 123 4567</strong>
+              <span class="label">الهاتف</span>
+              <span class="value" dir="ltr">+966 50 123 4567</span>
             </div>
-            <div class="phone-row">
+            <div class="data-row">
               <i class="fa-brands fa-whatsapp"></i>
-              <span>واتساب</span>
-              <strong dir="ltr">+966 55 987 6543</strong>
+              <span class="label">واتساب</span>
+              <span class="value" dir="ltr">+966 55 987 6543</span>
             </div>
-            <div class="phone-row">
+            <div class="data-row">
               <i class="fa-regular fa-envelope"></i>
-              <span>البريد</span>
-              <strong>info@nfcpro.com</strong>
+              <span class="label">البريد</span>
+              <span class="value" dir="ltr">info@nfcpro.com</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- القسم الأيسر - بيانات وزر العرض التجريبي -->
-      <div class="info-section">
+      <!-- اللوحة اليسرى: بيانات وزر العرض التجريبي -->
+      <div class="info-panel">
         <h3><i class="fa-regular fa-address-book"></i> بيانات الاتصال</h3>
         
-        <div class="phone-numbers">
-          <div class="phone-item">
+        <div class="contact-list">
+          <div class="contact-item">
             <i class="fa-solid fa-phone"></i>
-            <span class="number" dir="ltr">+966 50 123 4567</span>
-            <span class="label">مبيعات</span>
+            <span class="num" dir="ltr">+966 50 123 4567</span>
+            <span class="tag">مبيعات</span>
           </div>
-          <div class="phone-item">
+          <div class="contact-item">
             <i class="fa-solid fa-phone"></i>
-            <span class="number" dir="ltr">+966 55 987 6543</span>
-            <span class="label">دعم فني</span>
+            <span class="num" dir="ltr">+966 55 987 6543</span>
+            <span class="tag">دعم فني</span>
           </div>
-          <div class="phone-item">
+          <div class="contact-item">
             <i class="fa-brands fa-whatsapp"></i>
-            <span class="number" dir="ltr">+966 50 456 7890</span>
-            <span class="label">واتساب</span>
+            <span class="num" dir="ltr">+966 50 456 7890</span>
+            <span class="tag">واتساب</span>
           </div>
-          <div class="phone-item">
+          <div class="contact-item">
             <i class="fa-regular fa-envelope"></i>
-            <span class="number">info@nfcpro.com</span>
-            <span class="label">بريد</span>
+            <span class="num">info@nfcpro.com</span>
+            <span class="tag">بريد</span>
           </div>
         </div>
 
-        
+      
       </div>
     </div>
 
-    <!-- زر طلب المنتج -->
-    <div class="order-section">
-      <a href="create-profile" class="order-button">
-        <i class="fa-regular fa-hand-point-left"></i>
-        طلب المنتج
+    <!-- زر طلب المنتج الرئيسي -->
+    <div class="order-action">
+      <a href="create-profile" class="order-main-btn" id="orderBtn">
         <i class="fa-regular fa-credit-card"></i>
+        طلب المنتج
+        <i class="fa-regular fa-hand-point-left"></i>
       </a>
     </div>
   </div>
 
   <script>
     (function() {
-      // تأثير حركة البطاقة
-      const card = document.querySelector('.metal-card');
+      // حركة بارالاكس للبطاقة (تبعية الماوس)
+      const card = document.querySelector('.glass-card');
       if (card) {
         card.addEventListener('mousemove', (e) => {
           const rect = card.getBoundingClientRect();
@@ -519,41 +539,66 @@
           const y = e.clientY - rect.top;
           const centerX = rect.width / 2;
           const centerY = rect.height / 2;
-          const rotateX = (y - centerY) / 30;
-          const rotateY = (centerX - x) / 30;
+          const rotateX = (y - centerY) / 28;
+          const rotateY = (centerX - x) / 28;
           card.style.transition = 'transform 0.1s';
-          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
         card.addEventListener('mouseleave', () => {
-          card.style.transition = 'transform 0.4s';
-          card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+          card.style.transition = 'transform 0.4s ease';
+          card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0)';
         });
       }
 
-      // تأثير تموج على الأزرار
-      const buttons = document.querySelectorAll('.demo-button, .order-button');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          const ripple = document.createElement('span');
-          ripple.className = 'ripple-effect';
-          const rect = this.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          ripple.style.width = ripple.style.height = size + 'px';
-          ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
-          ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
-          ripple.style.position = 'absolute';
-          this.style.position = 'relative';
-          this.appendChild(ripple);
-          setTimeout(() => ripple.remove(), 500);
+      // تأثير تموج ناعم للأزرار
+      function addRipple(button, event) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (event.clientX - rect.left - size/2) + 'px';
+        ripple.style.top = (event.clientY - rect.top - size/2) + 'px';
+        ripple.style.position = 'absolute';
+        button.style.position = 'relative';
+        button.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      }
+
+      const demoBtn = document.getElementById('demoBtn');
+      const orderBtn = document.getElementById('orderBtn');
+      
+      if (demoBtn) {
+        demoBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          addRipple(demoBtn, e);
+          // محاكاة عرض تجريبي (يمكن وضع رابط حقيقي)
+          alert('تم تشغيل العرض التجريبي • سيتم توجيهك إلى معاينة البطاقة');
         });
-      });
+      }
+      
+      if (orderBtn) {
+        orderBtn.addEventListener('click', (e) => {
+          // نسمح بالرابط لكن نضيف تموج
+          addRipple(orderBtn, e);
+          // الرابط يعمل بشكل طبيعي (إلا إذا أردت منع التنقل)
+        });
+      }
+
+      // تموج لأي زر يحمل class يمكن إضافته لاحقاً
     })();
   </script>
 
+  <!-- تحسين اتجاه أيقونات اليد في RTL (اختياري) -->
   <style>
-    /* تعديل اتجاه الأسهم */
-    .fa-arrow-left, .fa-hand-point-left { transform: scaleX(-1); }
-    .demo-button i, .order-button i { margin: 0 8px; }
+    /* ضمن العرض التجريبي والطلب، تجعل الأيقونات متناسقة */
+    .demo-btn i, .order-main-btn i {
+      transform: none;
+    }
+    /* السهم الخلفي يدل على اليسار في RTL */
+    .fa-hand-point-left {
+      transform: scaleX(-1);
+    }
   </style>
 </body>
 </html>

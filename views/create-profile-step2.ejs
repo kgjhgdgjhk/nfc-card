@@ -3,97 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Pro | اختر قالب بطاقتك • 10 قوالب</title>
+    <title>NFC Pro | اختر قالب بطاقتك • 10 تصاميم عصرية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #f4f9fe;
+            background: #f5f9ff;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            color: #1e293b;
+            color: #1a2634;
         }
-        /* نفس الخلفية السابقة */
+
+        /* === خلفية متحركة ناعمة جداً === */
         .background {
             position: fixed;
             width: 100vw;
             height: 100vh;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             z-index: -1;
             overflow: hidden;
         }
-        .gradient-orb {
-            position: absolute;
-            width: 80vmax;
-            height: 80vmax;
-            background: radial-gradient(circle at 30% 50%, rgba(147, 197, 253, 0.5) 0%, rgba(165, 180, 252, 0.4) 50%, transparent 70%);
-            border-radius: 50%;
-            top: -20%;
-            right: -20%;
-            animation: floatOrb 30s ease-in-out infinite;
-        }
-        .gradient-orb-2 {
+        .blob {
             position: absolute;
             width: 70vmax;
             height: 70vmax;
-            background: radial-gradient(circle at 70% 50%, rgba(216, 180, 254, 0.4) 0%, rgba(187, 222, 252, 0.4) 50%, transparent 70%);
+            background: radial-gradient(circle at 40% 50%, rgba(160, 200, 255, 0.35) 0%, rgba(200, 180, 255, 0.2) 60%, transparent 80%);
             border-radius: 50%;
-            bottom: -20%;
-            left: -20%;
-            animation: floatOrb 35s ease-in-out infinite reverse;
+            top: -20%; right: -15%;
+            animation: floatBlob 28s infinite alternate ease-in-out;
         }
-        @keyframes floatOrb {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-5%, 5%) scale(1.05); }
+        .blob2 {
+            width: 80vmax;
+            height: 80vmax;
+            background: radial-gradient(circle at 30% 60%, rgba(255, 210, 210, 0.25) 0%, rgba(255, 240, 180, 0.2) 50%, transparent 75%);
+            bottom: -30%; left: -20%;
+            top: auto; right: auto;
+            animation: floatBlob2 32s infinite alternate;
+        }
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(-3%, 6%) scale(1.1) rotate(3deg); }
+        }
+        @keyframes floatBlob2 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(4%, -5%) scale(1.15) rotate(-5deg); }
         }
         .particles {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 1.5px, transparent 1.5px), radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
-            background-size: 130px 130px;
-            animation: moveParticles 50s linear infinite;
-            opacity: 0.5;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 2px, transparent 2px),
+                radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+            background-size: 150px 150px;
+            animation: particleDrift 50s linear infinite;
         }
-        @keyframes moveParticles {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 200px 200px, -150px 100px; }
+        @keyframes particleDrift {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 300px 200px, -180px 150px, 130px -200px; }
         }
 
         .profile-creation {
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 40px 24px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
         .creation-container {
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(18px);
-            border-radius: 48px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px -20px rgba(0, 80, 120, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 60px;
             border: 1px solid rgba(255,255,255,0.7);
-            animation: slideUp 0.8s cubic-bezier(0.2,0.9,0.3,1);
+            box-shadow: 0 35px 70px -30px rgba(30,60,120,0.25), 0 0 0 1px rgba(255,255,255,0.5) inset;
+            overflow: hidden;
+            animation: containerRise 0.8s cubic-bezier(0.15,0.85,0.35,1) forwards;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes containerRise {
+            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* رأس الخطوات */
         .steps-header {
-            padding: 30px 40px;
+            padding: 30px 45px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             background: rgba(255,255,255,0.3);
         }
@@ -101,179 +107,209 @@
             display: flex;
             justify-content: space-between;
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        .steps-progress::before {
-            content: '';
+        .progress-connector {
             position: absolute;
             top: 50%;
-            left: 60px;
-            right: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            left: 100px;
+            right: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(100,120,200,0.2), #a5b4fc, rgba(100,120,200,0.2), transparent);
             transform: translateY(-50%);
             z-index: 1;
+            border-radius: 10px;
         }
         .step-item {
             position: relative;
-            z-index: 2;
-            background: white;
-            backdrop-filter: blur(10px);
-            padding: 12px 28px;
+            z-index: 3;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            padding: 14px 32px;
             border-radius: 100px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            color: #64748b;
-            border: 1px solid rgba(0,0,0,0.05);
+            gap: 14px;
+            color: #3a4b5e;
+            border: 1px solid rgba(255,255,255,0.8);
             transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.02);
         }
         .step-item.completed {
-            background: #f0fdf4;
-            border-color: #86efac;
-            color: #166534;
+            background: #f1f5f9;
+            border-color: #b9d5fe;
+            color: #1e2b3a;
         }
         .step-item.active {
-            background: linear-gradient(145deg, #ffffff, #f0f9ff);
+            background: white;
             border-color: #3b82f6;
-            color: #1e293b;
-            box-shadow: 0 10px 25px -8px #90caf9;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3); }
-            70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+            color: #0f2b45;
+            box-shadow: 0 10px 25px -8px #3b82f6, 0 0 0 2px rgba(59,130,246,0.2);
         }
         .step-number {
-            width: 32px;
-            height: 32px;
-            background: #e2e8f0;
+            width: 36px; height: 36px;
+            background: #e9eef3;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            color: #334155;
+            font-weight: 700;
+            color: #2c3d55;
+            transition: 0.2s;
         }
         .active .step-number, .completed .step-number {
             background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
         }
+        .step-item i { font-size: 1rem; opacity: 0.8; }
 
+        /* حاوية القوالب */
         .form-section {
-            padding: 50px 40px;
+            padding: 50px 45px;
         }
         .form-section h2 {
-            color: #0f172a;
-            margin-bottom: 40px;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 700;
+            margin-bottom: 20px;
+            color: #122334;
             display: flex;
             align-items: center;
             gap: 15px;
+            letter-spacing: -0.02em;
         }
         .form-section h2 i {
             background: linear-gradient(145deg, #2563eb, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: rotate 3s linear infinite;
-        }
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
-            100% { transform: rotate(0deg); }
+            font-size: 2.4rem;
+            filter: drop-shadow(0 4px 6px #c7d9ff);
         }
 
-        /* شبكة القوالب - 10 قوالب */
-        .templates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-        .template-card {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid #e2e8f0;
-            border-radius: 24px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: cardAppear 0.6s ease-out forwards;
-            box-shadow: 0 10px 25px -12px rgba(0,0,0,0.1);
-        }
-        .template-card:nth-child(1) { animation-delay: 0.1s; }
-        .template-card:nth-child(2) { animation-delay: 0.2s; }
-        .template-card:nth-child(3) { animation-delay: 0.3s; }
-        .template-card:nth-child(4) { animation-delay: 0.4s; }
-        .template-card:nth-child(5) { animation-delay: 0.5s; }
-        .template-card:nth-child(6) { animation-delay: 0.6s; }
-        .template-card:nth-child(7) { animation-delay: 0.7s; }
-        .template-card:nth-child(8) { animation-delay: 0.8s; }
-        .template-card:nth-child(9) { animation-delay: 0.9s; }
-        .template-card:nth-child(10) { animation-delay: 1s; }
-
-        @keyframes cardAppear {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .template-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            border-color: #3b82f6;
-            box-shadow: 0 20px 30px -15px #3b82f6, 0 0 0 1px #a5b4fc inset;
-        }
-        .template-card.selected {
-            border-color: #3b82f6;
-            background: linear-gradient(145deg, #ffffff, #f0f9ff);
-            box-shadow: 0 20px 40px -10px #3b82f6;
-        }
-        .template-preview {
-            height: 160px;
-            position: relative;
-            overflow: hidden;
+        .grid-subtitle {
+            color: #526477;
+            margin-bottom: 35px;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+            gap: 8px;
         }
+
+        /* شبكة القوالب الأنيقة */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 22px;
+            margin: 40px 0 30px;
+        }
+
+        .template-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 32px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+            position: relative;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: cardPop 0.5s ease-out forwards;
+            box-shadow: 0 20px 35px -18px rgba(30,60,100,0.15);
+        }
+        .template-card:nth-child(1) { animation-delay: 0.05s; }
+        .template-card:nth-child(2) { animation-delay: 0.1s; }
+        .template-card:nth-child(3) { animation-delay: 0.15s; }
+        .template-card:nth-child(4) { animation-delay: 0.2s; }
+        .template-card:nth-child(5) { animation-delay: 0.25s; }
+        .template-card:nth-child(6) { animation-delay: 0.3s; }
+        .template-card:nth-child(7) { animation-delay: 0.35s; }
+        .template-card:nth-child(8) { animation-delay: 0.4s; }
+        .template-card:nth-child(9) { animation-delay: 0.45s; }
+        .template-card:nth-child(10) { animation-delay: 0.5s; }
+
+        @keyframes cardPop {
+            0% { opacity: 0; transform: scale(0.88) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .template-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #3b82f6;
+            box-shadow: 0 25px 40px -15px #3b82f6;
+        }
+        .template-card.selected {
+            border: 2px solid #3b82f6;
+            background: white;
+            box-shadow: 0 30px 45px -18px #2563eb;
+        }
+
+        .preview-area {
+            height: 170px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            position: relative;
+            transition: 0.2s;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .preview-area i { font-size: 2rem; margin-bottom: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+
+        /* ألوان وتدرجات القوالب الفريدة */
+        .preview-1 { background: linear-gradient(145deg, #4158D0, #C850C0, #FFCC70); }
+        .preview-2 { background: linear-gradient(145deg, #1f2b3a, #2c3e50, #485b6e); color: #eef2f6; }
+        .preview-3 { background: #ffffff; color: #1f2937; border: 1px solid #d0ddea; text-shadow: none; }
+        .preview-4 { background: linear-gradient(145deg, #0F2027, #203A43, #2C5364); }
+        .preview-5 { background: linear-gradient(145deg, #0f0c29, #302b63, #24243e); }
+        .preview-6 { background: linear-gradient(145deg, #42275a, #734b6d, #b58e9b); }
+        .preview-7 { background: linear-gradient(145deg, #1e3c72, #2a5298, #4b79a1); }
+        .preview-8 { background: linear-gradient(145deg, #f12711, #f5af19, #f5d65e); }
+        .preview-9 { background: linear-gradient(145deg, #0b0c10, #1f2833, #45A29E); }
+        .preview-10 { background: linear-gradient(145deg, #1a1a2e, #16213e, #0f3460); }
+
         .template-info {
-            padding: 20px;
-            border-top: 1px solid #e2e8f0;
+            padding: 18px 15px 15px;
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(4px);
+            border-top: 1px solid rgba(255,255,255,0.5);
         }
         .template-info h3 {
-            color: #0f172a;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #162b3a;
             margin-bottom: 5px;
-            font-size: 1.2rem;
         }
         .template-info p {
-            color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            color: #4c5c6b;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
-        .template-badge {
+        .badge {
             display: inline-block;
             padding: 4px 12px;
-            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
-            color: white;
-            border-radius: 100px;
-            font-size: 0.75rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50px;
+            font-size: 0.7rem;
             font-weight: 600;
+            color: #2c3e50;
+            border: 1px solid #ccdbe9;
+            backdrop-filter: blur(2px);
         }
+        .badge i { margin-left: 4px; color: #3b82f6; }
+
         .selected-icon {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 30px;
-            height: 30px;
+            top: 12px; left: 12px;
+            width: 32px; height: 32px;
             background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             border-radius: 50%;
             display: flex;
@@ -282,28 +318,44 @@
             color: white;
             font-size: 1rem;
             opacity: 0;
-            transform: scale(0) rotate(-180deg);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scale(0) rotate(-90deg);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 10;
+            box-shadow: 0 8px 15px rgba(59,130,246,0.5);
         }
         .template-card.selected .selected-icon {
             opacity: 1;
-            transform: scale(1) rotate(0);
+            transform: scale(1) rotate(0deg);
         }
+
         .radio-input { display: none; }
+
+        .selection-hint {
+            background: rgba(255,255,255,0.5);
+            border-radius: 60px;
+            padding: 14px 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #2c4056;
+            font-weight: 500;
+            margin: 15px 0 25px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .selection-hint i { color: #3b82f6; }
 
         .form-navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 50px;
+            margin-top: 45px;
             padding-top: 30px;
             border-top: 1px solid rgba(0,0,0,0.05);
         }
         .btn-next, .btn-prev {
-            padding: 14px 42px;
-            border-radius: 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 16px 48px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.25s ease;
             display: flex;
@@ -311,58 +363,43 @@
             gap: 12px;
             border: none;
             text-decoration: none;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            color: #1f3a5f;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 10px 20px -10px rgba(0,20,40,0.1);
         }
         .btn-next {
             background: linear-gradient(145deg, #3b82f6, #8b5cf6);
             color: white;
-            box-shadow: 0 12px 28px -10px #3b82f6;
+            border: none;
+            box-shadow: 0 18px 35px -12px #3b82f6;
         }
-        .btn-prev {
-            background: white;
-            color: #334155;
-            border: 1px solid #e2e8f0;
-        }
-        .btn-next:hover { transform: translateY(-3px); box-shadow: 0 20px 35px -8px #3b82f6; }
-        .btn-prev:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-2px); }
-        .btn-next i, .btn-prev i { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .btn-next:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 25px 40px -15px #3b82f6; }
+        .btn-prev:hover { background: white; transform: translateY(-3px); border-color: #bbd1f0; }
+        .btn-next i, .btn-prev i { font-size: 1.3rem; transition: transform 0.3s; }
         .btn-next:hover i:last-child { transform: translateX(-6px); }
         .btn-prev:hover i:first-child { transform: translateX(6px); }
 
-        .hint {
-            font-size: 0.95rem;
-            color: #64748b;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
+        @media (max-width: 1200px) {
+            .templates-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
-        @media (max-width: 768px) {
-            .templates-grid { grid-template-columns: 1fr; }
+        @media (max-width: 900px) {
+            .templates-grid { grid-template-columns: repeat(2, 1fr); }
             .steps-progress { flex-direction: column; gap: 12px; }
-            .steps-progress::before { display: none; }
+            .progress-connector { display: none; }
             .step-item { width: 100%; }
+        }
+        @media (max-width: 500px) {
+            .templates-grid { grid-template-columns: 1fr; }
             .form-section { padding: 30px 20px; }
         }
-
-        /* تصاميم المعاينة للقوالب */
-        .preview-modern { background: linear-gradient(135deg, #667eea, #764ba2); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; }
-        .preview-classic { background: linear-gradient(145deg, #2d3748, #1e293b); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #e2e8f0; }
-        .preview-minimal { background: white; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #1e293b; border: 1px solid #e2e8f0; }
-        .preview-dark { background: #0f172a; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; }
-        .preview-tech { background: linear-gradient(145deg, #0f2027, #203a43, #2c5364); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #e0f2fe; }
-        .preview-elegant { background: linear-gradient(145deg, #42275a, #734b6d); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #f8f0fc; }
-        .preview-corporate { background: #1e3c72; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; background: linear-gradient(145deg, #1e3c72, #2a5298); }
-        .preview-creative { background: linear-gradient(145deg, #f12711, #f5af19); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; }
-        .preview-3d { background: linear-gradient(145deg, #0b0c10, #1f2833, #0b0c10); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #66fcf1; }
-        .preview-neon { background: linear-gradient(145deg, #0f0c29, #302b63, #24243e); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; text-shadow: 0 0 10px cyan; }
     </style>
 </head>
 <body>
     <div class="background">
-        <div class="gradient-orb"></div>
-        <div class="gradient-orb-2"></div>
+        <div class="blob"></div>
+        <div class="blob blob2"></div>
         <div class="particles"></div>
     </div>
 
@@ -370,177 +407,168 @@
         <div class="creation-container">
             <div class="steps-header">
                 <div class="steps-progress">
+                    <span class="progress-connector"></span>
                     <div class="step-item completed">
                         <span class="step-number">1</span>
-                        <span>الخطوة الاولى </span>
-                        <i class="fas fa-check"></i>
+                        <span>الخطوة الاولى</span>
+                        <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="step-item active">
                         <span class="step-number">2</span>
-                        <span>الخطوة الثانية </span>
-                        <i class="fas fa-palette"></i>
+                        <span> الخطوة الثانية</span>
+                        <i class="fas fa-paint-roller"></i>
                     </div>
                     <div class="step-item">
                         <span class="step-number">3</span>
-                        <span>الخطوة الثالثة </span>
+                        <span>الخطوة الثالثة</span>
                     </div>
                     <div class="step-item">
                         <span class="step-number">4</span>
-                        <span>التأكيد</span>
+                        <span>التاكيد</span>
                     </div>
                 </div>
             </div>
-            
+
             <div class="form-section">
                 <h2>
                     <i class="fas fa-palette"></i>
-                    اختر هوية بطاقتك من 10 قوالب
+                    اختر هوية بطاقتك
                 </h2>
-                
+                <div class="grid-subtitle">
+                    <i class="fas fa-crown" style="color: #f5b342;"></i>
+                    ١٠ قوالب احترافية مصممة بعناية
+                </div>
+
                 <form action="/create-profile/step2" method="POST" id="templateForm">
-                    <!-- بيانات الخطوة السابقة -->
-                    <input type="hidden" name="name" value="<%= formData.name %>">
-                    <input type="hidden" name="email" value="<%= formData.email %>">
-                    <input type="hidden" name="phone" value="<%= formData.phone %>">
-                    <input type="hidden" name="title" value="<%= formData.title %>">
-                    <input type="hidden" name="company" value="<%= formData.company %>">
-                    <input type="hidden" name="bio" value="<%= formData.bio %>">
-                    <input type="hidden" name="website" value="<%= formData.website %>">
-                    <input type="hidden" name="address" value="<%= formData.address %>">
-                    
+                    <!-- حقول مخفية (محاكاة) -->
+                    <input type="hidden" name="name" value="أحمد محمد">
+                    <input type="hidden" name="email" value="ahmed@domain.com">
+                    <input type="hidden" name="phone" value="+966501234567">
+
                     <div class="templates-grid">
-                        <!-- 1. القالب العصري -->
-                        <label class="template-card" for="template-modern">
-                            <input type="radio" name="template" id="template-modern" value="modern" class="radio-input">
+                        <!-- 1 عصري متدرج -->
+                        <label class="template-card" for="mod1">
+                            <input type="radio" name="template" id="mod1" value="modern" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-modern">عصري</div>
+                            <div class="preview-area preview-1"><i class="fas fa-bolt"></i> عصري</div>
                             <div class="template-info">
                                 <h3>القالب العصري</h3>
-                                <p>تصميم حديث متدرج بألوان أرجوانية</p>
-                                <span class="template-badge"><i class="fas fa-fire"></i> الأكثر طلباً</span>
+                                <p><i class="fas fa-fire" style="color:#f97316;"></i> الأكثر طلباً</p>
+                                <span class="badge"><i class="fas fa-magic"></i> متدرج نابض</span>
                             </div>
                         </label>
-                        
-                        <!-- 2. القالب الكلاسيكي -->
-                        <label class="template-card" for="template-classic">
-                            <input type="radio" name="template" id="template-classic" value="classic" class="radio-input">
+                        <!-- 2 كلاسيكي معدني -->
+                        <label class="template-card" for="classic1">
+                            <input type="radio" name="template" id="classic1" value="classic" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-classic">كلاسيكي</div>
+                            <div class="preview-area preview-2"><i class="fas fa-building"></i> كلاسيكي</div>
                             <div class="template-info">
                                 <h3>القالب الكلاسيكي</h3>
-                                <p>تصميم رمادي معدني أنيق للمؤسسات</p>
-                                <span class="template-badge"><i class="fas fa-crown"></i> احترافي</span>
+                                <p><i class="fas fa-crown" style="color:#8b5cf6;"></i> احترافي</p>
+                                <span class="badge"><i class="fas fa-shield"></i> معدني</span>
                             </div>
                         </label>
-                        
-                        <!-- 3. القالب البسيط -->
-                        <label class="template-card" for="template-minimal">
-                            <input type="radio" name="template" id="template-minimal" value="minimal" class="radio-input">
+                        <!-- 3 بسيط أبيض -->
+                        <label class="template-card" for="minimal1">
+                            <input type="radio" name="template" id="minimal1" value="minimal" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-minimal">بسيط</div>
+                            <div class="preview-area preview-3" style="color:#1e293b"><i class="fas fa-leaf"></i> بسيط</div>
                             <div class="template-info">
                                 <h3>القالب البسيط</h3>
-                                <p>تصميم أبيض نقي يركز على المحتوى</p>
-                                <span class="template-badge"><i class="fas fa-leaf"></i> minimalist</span>
+                                <p><i class="fas fa-water"></i> نقي Minimal</p>
+                                <span class="badge"><i class="fas fa-circle"></i> أبيض</span>
                             </div>
                         </label>
-                        
-                        <!-- 4. القالب الداكن -->
-                        <label class="template-card" for="template-dark">
-                            <input type="radio" name="template" id="template-dark" value="dark" class="radio-input">
+                        <!-- 4 داكن أنيق -->
+                        <label class="template-card" for="dark1">
+                            <input type="radio" name="template" id="dark1" value="dark" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-dark">داكن</div>
+                            <div class="preview-area preview-4"><i class="fas fa-moon"></i> داكن</div>
                             <div class="template-info">
                                 <h3>القالب الداكن</h3>
-                                <p>تصميم داكن أنيق مناسب للعرض الليلي</p>
-                                <span class="template-badge"><i class="fas fa-moon"></i> dark mode</span>
+                                <p><i class="fas fa-star"></i> night mode</p>
+                                <span class="badge"><i class="fas fa-mask"></i> فخم</span>
                             </div>
                         </label>
-                        
-                        <!-- 5. القالب التقني -->
-                        <label class="template-card" for="template-tech">
-                            <input type="radio" name="template" id="template-tech" value="tech" class="radio-input">
+                        <!-- 5 تقني سايبر -->
+                        <label class="template-card" for="tech1">
+                            <input type="radio" name="template" id="tech1" value="tech" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-tech">تقني</div>
+                            <div class="preview-area preview-5"><i class="fas fa-microchip"></i> تقني</div>
                             <div class="template-info">
                                 <h3>القالب التقني</h3>
-                                <p>تصميم بألوان تقنية زرقاء وخضراء</p>
-                                <span class="template-badge"><i class="fas fa-microchip"></i> tech</span>
+                                <p><i class="fas fa-robot"></i> سايبربانك</p>
+                                <span class="badge"><i class="fas fa-cpu"></i> رقمي</span>
                             </div>
                         </label>
-                        
-                        <!-- 6. القالب الأنيق -->
-                        <label class="template-card" for="template-elegant">
-                            <input type="radio" name="template" id="template-elegant" value="elegant" class="radio-input">
+                        <!-- 6 أنيق فاتن -->
+                        <label class="template-card" for="elegant1">
+                            <input type="radio" name="template" id="elegant1" value="elegant" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-elegant">أنيق</div>
+                            <div class="preview-area preview-6"><i class="fas fa-gem"></i> أنيق</div>
                             <div class="template-info">
                                 <h3>القالب الأنيق</h3>
-                                <p>ألوان أرجوانية ووردية فاخرة</p>
-                                <span class="template-badge"><i class="fas fa-gem"></i> elegant</span>
+                                <p><i class="fas fa-feather"></i> راقي</p>
+                                <span class="badge"><i class="fas fa-sparkles"></i> مخملي</span>
                             </div>
                         </label>
-                        
-                        <!-- 7. القالب المؤسسي -->
-                        <label class="template-card" for="template-corporate">
-                            <input type="radio" name="template" id="template-corporate" value="corporate" class="radio-input">
+                        <!-- 7 مؤسسي أزرق -->
+                        <label class="template-card" for="corp1">
+                            <input type="radio" name="template" id="corp1" value="corporate" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-corporate">مؤسسي</div>
+                            <div class="preview-area preview-7"><i class="fas fa-briefcase"></i> مؤسسي</div>
                             <div class="template-info">
                                 <h3>القالب المؤسسي</h3>
-                                <p>ألوان زرقاء احترافية للشركات</p>
-                                <span class="template-badge"><i class="fas fa-building"></i> corporate</span>
+                                <p><i class="fas fa-chart-line"></i> موثوق</p>
+                                <span class="badge"><i class="fas fa-building"></i> أزرق</span>
                             </div>
                         </label>
-                        
-                        <!-- 8. القالب الإبداعي -->
-                        <label class="template-card" for="template-creative">
-                            <input type="radio" name="template" id="template-creative" value="creative" class="radio-input">
+                        <!-- 8 إبداعي حيوي -->
+                        <label class="template-card" for="creative1">
+                            <input type="radio" name="template" id="creative1" value="creative" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-creative">إبداعي</div>
+                            <div class="preview-area preview-8"><i class="fas fa-paint-brush"></i> إبداعي</div>
                             <div class="template-info">
                                 <h3>القالب الإبداعي</h3>
-                                <p>ألوان برتقالية وحمراء جريئة</p>
-                                <span class="template-badge"><i class="fas fa-paint-brush"></i> creative</span>
+                                <p><i class="fas fa-sun"></i> حيوي</p>
+                                <span class="badge"><i class="fas fa-palette"></i> فني</span>
                             </div>
                         </label>
-                        
-                        <!-- 9. القالب ثلاثي الأبعاد -->
-                        <label class="template-card" for="template-3d">
-                            <input type="radio" name="template" id="template-3d" value="3d" class="radio-input">
+                        <!-- 9 ثلاثي الأبعاد -->
+                        <label class="template-card" for="d3">
+                            <input type="radio" name="template" id="d3" value="3d" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-3d">3D</div>
+                            <div class="preview-area preview-9"><i class="fas fa-cube"></i> 3D</div>
                             <div class="template-info">
                                 <h3>القالب ثلاثي الأبعاد</h3>
-                                <p>تصميم مستقبلي بألوان سايبربانك</p>
-                                <span class="template-badge"><i class="fas fa-cube"></i> 3D</span>
+                                <p><i class="fas fa-vr-cardboard"></i> مستقبلي</p>
+                                <span class="badge"><i class="fas fa-cubes"></i> عمق</span>
                             </div>
                         </label>
-                        
-                        <!-- 10. القالب النيون -->
-                        <label class="template-card" for="template-neon">
-                            <input type="radio" name="template" id="template-neon" value="neon" class="radio-input">
+                        <!-- 10 نيون متوهج -->
+                        <label class="template-card" for="neon1">
+                            <input type="radio" name="template" id="neon1" value="neon" class="radio-input">
                             <div class="selected-icon"><i class="fas fa-check"></i></div>
-                            <div class="template-preview preview-neon">نيون</div>
+                            <div class="preview-area preview-10"><i class="fas fa-lightbulb"></i> نيون</div>
                             <div class="template-info">
                                 <h3>القالب النيون</h3>
-                                <p>تصميم باهر بألوان نيون متوهجة</p>
-                                <span class="template-badge"><i class="fas fa-lightbulb"></i> neon</span>
+                                <p><i class="fas fa-bolt"></i> متوهج</p>
+                                <span class="badge"><i class="fas fa-sun"></i> مشع</span>
                             </div>
                         </label>
                     </div>
 
-                    <div class="hint">
-                        <i class="fas fa-mouse-pointer"></i>
-                        اختر القالب الذي يعكس شخصيتك المهنية
+                    <div class="selection-hint">
+                        <i class="fas fa-hand-pointer"></i>
+                        <span>اختر قالباً وسنعرضه مباشرة في الخطوة القادمة</span>
                     </div>
-                    
+
                     <div class="form-navigation">
-                        <a href="/create-profile" class="btn-prev">
+                        <a href="#" class="btn-prev">
                             <i class="fas fa-arrow-right"></i>
                             السابق
                         </a>
-                        <button type="submit" class="btn-next">
+                        <button type="submit" class="btn-next" id="submitBtn">
                             التالي
                             <i class="fas fa-arrow-left"></i>
                         </button>
@@ -551,61 +579,65 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✨ NFC Pro - 10 قوالب');
-            
-            // تفعيل اختيار القالب
-            const templateCards = document.querySelectorAll('.template-card');
-            
-            templateCards.forEach(card => {
+        (function() {
+            const cards = document.querySelectorAll('.template-card');
+            const form = document.getElementById('templateForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const hint = document.querySelector('.selection-hint span');
+
+            // إزالة أي تحديد مسبق
+            cards.forEach(c => c.classList.remove('selected'));
+
+            cards.forEach(card => {
                 card.addEventListener('click', function(e) {
-                    templateCards.forEach(c => c.classList.remove('selected'));
+                    // إزالة selected من الكل
+                    cards.forEach(c => c.classList.remove('selected'));
                     this.classList.add('selected');
                     const radio = this.querySelector('input[type="radio"]');
                     radio.checked = true;
-                    
-                    // تأثير بسيط
+
+                    // رد فعل لمسي
                     this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
+                    setTimeout(() => { this.style.transform = ''; }, 150);
+
+                    // تحديث النص التحفيزي
+                    if (hint) hint.innerText = 'تم الاختيار ✓ تابع إلى التالي';
                 });
             });
 
-            // التحقق من التحديد قبل الإرسال
-            const form = document.getElementById('templateForm');
             form.addEventListener('submit', function(e) {
                 const selected = document.querySelector('input[name="template"]:checked');
-                
                 if (!selected) {
                     e.preventDefault();
-                    const hint = document.querySelector('.hint');
-                    hint.style.color = '#ef4444';
-                    hint.innerHTML = '<i class="fas fa-exclamation-circle"></i> الرجاء اختيار قالب أولاً';
+                    const originalHint = document.querySelector('.selection-hint');
+                    originalHint.style.background = '#fee2e2';
+                    originalHint.style.borderColor = '#f87171';
+                    originalHint.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#b91c1c;"></i> <span style="color:#b91c1c;">لم تختر قالباً بعد! اختر من القوالب أعلاه</span>';
                     setTimeout(() => {
-                        hint.style.color = '#64748b';
-                        hint.innerHTML = '<i class="fas fa-mouse-pointer"></i> اختر القالب الذي يعكس شخصيتك المهنية';
+                        originalHint.style.background = 'rgba(255,255,255,0.5)';
+                        originalHint.style.borderColor = 'rgba(255,255,255,0.8)';
+                        originalHint.innerHTML = '<i class="fas fa-hand-pointer"></i><span>اختر قالباً وسنعرضه مباشرة في الخطوة القادمة</span>';
                     }, 3000);
                 } else {
-                    const btn = document.querySelector('.btn-next');
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> جاري التحميل...';
                 }
             });
 
-            // تأثيرات hover
-            templateCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    if (!this.classList.contains('selected')) {
-                        this.style.borderColor = '#a5b4fc';
+            // تحسين hover مع border
+            cards.forEach(c => {
+                c.addEventListener('mouseenter', () => {
+                    if (!c.classList.contains('selected')) {
+                        c.style.borderColor = '#a5b4fc';
                     }
                 });
-                card.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('selected')) {
-                        this.style.borderColor = '#e2e8f0';
+                c.addEventListener('mouseleave', () => {
+                    if (!c.classList.contains('selected')) {
+                        c.style.borderColor = 'rgba(255,255,255,0.8)';
                     }
                 });
             });
-        });
+        })();
     </script>
 </body>
 </html>

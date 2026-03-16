@@ -102,17 +102,11 @@
             background-size: 200% 200%;
             animation: gradientShift 8s ease infinite;
         }
-        .template-modern .panel-text {
-            color: #1e293b;
-        }
         
         /* 2. القالب الكلاسيكي - classic */
         .template-classic .card-primary .panel-colored,
         .template-classic .card-secondary .panel-colored {
             background: linear-gradient(145deg, #2d3748, #1e293b);
-        }
-        .template-classic .panel-text {
-            color: #1e293b;
         }
         
         /* 3. القالب البسيط - minimal */
@@ -122,21 +116,11 @@
             color: #0f172a;
             border-left: 4px solid #94a3b8;
         }
-        .template-minimal .panel-text {
-            color: #0f172a;
-        }
         
         /* 4. القالب الداكن - dark */
         .template-dark .card-primary .panel-colored,
         .template-dark .card-secondary .panel-colored {
             background: #0f172a;
-        }
-        .template-dark .panel-text {
-            color: #e2e8f0;
-        }
-        .template-dark .personal-name,
-        .template-dark .detail-item span {
-            color: #f1f5f9;
         }
         
         /* 5. القالب التقني - tech */
@@ -144,17 +128,11 @@
         .template-tech .card-secondary .panel-colored {
             background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
         }
-        .template-tech .panel-text {
-            color: #e0f2fe;
-        }
         
         /* 6. القالب الأنيق - elegant */
         .template-elegant .card-primary .panel-colored,
         .template-elegant .card-secondary .panel-colored {
             background: linear-gradient(145deg, #42275a, #734b6d);
-        }
-        .template-elegant .panel-text {
-            color: #f8f0fc;
         }
         
         /* 7. القالب المؤسسي - corporate */
@@ -162,17 +140,11 @@
         .template-corporate .card-secondary .panel-colored {
             background: linear-gradient(145deg, #1e3c72, #2a5298);
         }
-        .template-corporate .panel-text {
-            color: #1e293b;
-        }
         
         /* 8. القالب الإبداعي - creative */
         .template-creative .card-primary .panel-colored,
         .template-creative .card-secondary .panel-colored {
             background: linear-gradient(145deg, #f12711, #f5af19);
-        }
-        .template-creative .panel-text {
-            color: #1e293b;
         }
         
         /* 9. القالب ثلاثي الأبعاد - 3d */
@@ -180,17 +152,11 @@
         .template-3d .card-secondary .panel-colored {
             background: linear-gradient(145deg, #0b0c10, #1f2833, #0b0c10);
         }
-        .template-3d .panel-text {
-            color: #66fcf1;
-        }
         
         /* 10. القالب النيون - neon */
         .template-neon .card-primary .panel-colored,
         .template-neon .card-secondary .panel-colored {
             background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
-        }
-        .template-neon .panel-text {
-            color: #fff;
         }
 
         @keyframes gradientShift {
@@ -381,6 +347,236 @@
             flex-shrink: 0;
         }
 
+        /* ========== أنماط ألوان القوالب الكاملة ========== */
+
+        /* لون النص في المنطقة النصية حسب القالب */
+        .template-modern .panel-text,
+        .template-modern .personal-name,
+        .template-modern .detail-item span,
+        .template-modern .profile-link span {
+            color: #1e293b;
+        }
+
+        .template-classic .panel-text,
+        .template-classic .personal-name,
+        .template-classic .detail-item span,
+        .template-classic .profile-link span {
+            color: #1e293b;
+        }
+
+        .template-minimal .panel-text,
+        .template-minimal .personal-name,
+        .template-minimal .detail-item span,
+        .template-minimal .profile-link span {
+            color: #0f172a;
+        }
+
+        .template-dark .panel-text,
+        .template-dark .personal-name,
+        .template-dark .detail-item span,
+        .template-dark .profile-link span {
+            color: #f1f5f9;
+        }
+
+        .template-tech .panel-text,
+        .template-tech .personal-name,
+        .template-tech .detail-item span,
+        .template-tech .profile-link span {
+            color: #e0f2fe;
+        }
+
+        .template-elegant .panel-text,
+        .template-elegant .personal-name,
+        .template-elegant .detail-item span,
+        .template-elegant .profile-link span {
+            color: #f8f0fc;
+        }
+
+        .template-corporate .panel-text,
+        .template-corporate .personal-name,
+        .template-corporate .detail-item span,
+        .template-corporate .profile-link span {
+            color: #1e293b;
+        }
+
+        .template-creative .panel-text,
+        .template-creative .personal-name,
+        .template-creative .detail-item span,
+        .template-creative .profile-link span {
+            color: #1e293b;
+        }
+
+        .template-3d .panel-text,
+        .template-3d .personal-name,
+        .template-3d .detail-item span,
+        .template-3d .profile-link span {
+            color: #66fcf1;
+        }
+
+        .template-neon .panel-text,
+        .template-neon .personal-name,
+        .template-neon .detail-item span,
+        .template-neon .profile-link span {
+            color: #ffffff;
+        }
+
+        /* ألوان الأيقونات حسب القالب */
+        .template-modern .detail-item i { color: #667eea; }
+        .template-classic .detail-item i { color: #94a3b8; }
+        .template-minimal .detail-item i { color: #64748b; }
+        .template-dark .detail-item i { color: #60a5fa; }
+        .template-tech .detail-item i { color: #2dd4bf; }
+        .template-elegant .detail-item i { color: #c084fc; }
+        .template-corporate .detail-item i { color: #3b82f6; }
+        .template-creative .detail-item i { color: #f97316; }
+        .template-3d .detail-item i { color: #66fcf1; }
+        .template-neon .detail-item i { color: #a78bfa; }
+
+        /* خلفيات detail-item حسب القالب */
+        .template-dark .detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .template-tech .detail-item {
+            background: rgba(45, 212, 191, 0.1);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+        }
+
+        .template-elegant .detail-item {
+            background: rgba(192, 132, 252, 0.1);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+        }
+
+        .template-3d .detail-item {
+            background: rgba(102, 252, 241, 0.1);
+            border: 1px solid rgba(102, 252, 241, 0.2);
+        }
+
+        .template-neon .detail-item {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        /* ألوان الروابط الاجتماعية */
+        .template-dark .social-links i {
+            background: rgba(255, 255, 255, 0.15);
+            color: #60a5fa;
+        }
+
+        .template-dark .qr-code {
+            border-color: #60a5fa;
+        }
+
+        .template-dark .scan-code-text {
+            color: #60a5fa;
+        }
+
+        .template-dark .profile-link {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .template-dark .copy-link-btn {
+            color: #60a5fa;
+        }
+
+        .template-tech .social-links i {
+            background: rgba(45, 212, 191, 0.15);
+            color: #2dd4bf;
+        }
+
+        .template-elegant .social-links i {
+            background: rgba(192, 132, 252, 0.15);
+            color: #c084fc;
+        }
+
+        .template-3d .social-links i {
+            background: rgba(102, 252, 241, 0.15);
+            color: #66fcf1;
+        }
+
+        .template-3d .qr-code {
+            border-color: #66fcf1;
+        }
+
+        .template-3d .scan-code-text {
+            color: #66fcf1;
+        }
+
+        .template-3d .profile-link {
+            background: rgba(102, 252, 241, 0.1);
+            border-color: rgba(102, 252, 241, 0.3);
+        }
+
+        .template-3d .copy-link-btn {
+            color: #66fcf1;
+        }
+
+        .template-neon .social-links i {
+            background: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
+        }
+
+        /* ألوان job-title-display و company-name-display في القوالب الداكنة */
+        .template-dark .job-title-display,
+        .template-dark .company-name-display,
+        .template-tech .job-title-display,
+        .template-tech .company-name-display,
+        .template-elegant .job-title-display,
+        .template-elegant .company-name-display,
+        .template-3d .job-title-display,
+        .template-3d .company-name-display,
+        .template-neon .job-title-display,
+        .template-neon .company-name-display {
+            color: white;
+        }
+
+        /* ألوان personal-name في القوالب الداكنة */
+        .template-dark .personal-name,
+        .template-tech .personal-name,
+        .template-elegant .personal-name,
+        .template-3d .personal-name,
+        .template-neon .personal-name {
+            color: inherit;
+        }
+
+        /* خلفية profile-link حسب القالب */
+        .template-modern .profile-link {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+
+        .template-classic .profile-link {
+            background: rgba(45, 55, 72, 0.1);
+            border-color: rgba(45, 55, 72, 0.2);
+        }
+
+        .template-minimal .profile-link {
+            background: rgba(148, 163, 184, 0.1);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        .template-corporate .profile-link {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .template-creative .profile-link {
+            background: rgba(249, 115, 22, 0.1);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        /* لون زر النسخ حسب القالب */
+        .template-modern .copy-link-btn { color: #667eea; }
+        .template-classic .copy-link-btn { color: #94a3b8; }
+        .template-minimal .copy-link-btn { color: #64748b; }
+        .template-tech .copy-link-btn { color: #2dd4bf; }
+        .template-elegant .copy-link-btn { color: #c084fc; }
+        .template-corporate .copy-link-btn { color: #3b82f6; }
+        .template-creative .copy-link-btn { color: #f97316; }
+        .template-neon .copy-link-btn { color: #a78bfa; }
+
         /* تصغير النصوص */
         @media (max-width: 800px) {
             .business-card { width: 600px; height: 350px; }
@@ -393,18 +589,6 @@
         @media (max-width: 650px) {
             .business-card { width: 500px; height: 450px; }
         }
-
-        /* لون الأيقونات حسب القالب */
-        .template-modern .detail-item i { color: #667eea; }
-        .template-classic .detail-item i { color: #94a3b8; }
-        .template-minimal .detail-item i { color: #64748b; }
-        .template-dark .detail-item i { color: #60a5fa; }
-        .template-tech .detail-item i { color: #2dd4bf; }
-        .template-elegant .detail-item i { color: #c084fc; }
-        .template-corporate .detail-item i { color: #3b82f6; }
-        .template-creative .detail-item i { color: #f97316; }
-        .template-3d .detail-item i { color: #66fcf1; }
-        .template-neon .detail-item i { color: #a78bfa; }
     </style>
 </head>
 <body class="template-<%= template || 'modern' %>">

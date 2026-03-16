@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Pro | حماية البطاقة </title>
+    <title>NFC Pro | إعدادات الخصوصية والحماية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #f4f9fe;  /* خلفية فاتحة جداً */
+            background: #f4f9fe;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -92,7 +92,7 @@
         }
 
         .creation-container {
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.7);
@@ -172,19 +172,6 @@
             border-color: #3b82f6;
             color: #1e293b;
             box-shadow: 0 10px 25px -8px #90caf9;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3);
-            }
-            70% {
-                box-shadow: 0 0 0 12px rgba(59, 130, 246, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-            }
         }
 
         .step-number {
@@ -234,13 +221,7 @@
             background: linear-gradient(145deg, #2563eb, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.2rem;
-            animation: shieldPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes shieldPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            font-size: 2rem;
         }
 
         /* أقسام الحماية */
@@ -279,13 +260,15 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            border-bottom: 2px solid rgba(59,130,246,0.1);
+            padding-bottom: 15px;
         }
 
         .security-section h3 i {
             background: linear-gradient(145deg, #2563eb, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
 
         /* خيارات التبديل */
@@ -456,7 +439,7 @@
         }
 
         .password-field small {
-            color: #64748b !important;
+            color: #64748b;
             display: block;
             margin-top: 12px;
             font-size: 0.9rem;
@@ -465,6 +448,70 @@
         .password-field small i {
             color: #3b82f6;
             margin-left: 5px;
+        }
+
+        /* تلميحات أمنية */
+        .security-tip {
+            background: linear-gradient(145deg, #eef2ff, #ffffff);
+            border: 1px solid #a5b4fc;
+            border-radius: 20px;
+            padding: 15px 22px;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .security-tip i {
+            color: #3b82f6;
+            font-size: 1.6rem;
+        }
+
+        .security-tip p {
+            color: #1e293b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* مؤشر الخصوصية */
+        .privacy-meter {
+            background: rgba(255,255,255,0.5);
+            border-radius: 30px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .privacy-meter h4 {
+            color: #0f172a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .meter-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .privacy-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.9rem;
         }
 
         /* أزرار التنقل */
@@ -505,26 +552,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        .btn-next::before,
-        .btn-prev::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .btn-next:hover::before,
-        .btn-prev:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
         .btn-next:hover {
             transform: translateY(-3px);
             box-shadow: 0 20px 35px -8px #3b82f6;
@@ -548,35 +575,6 @@
 
         .btn-prev:hover i:first-child {
             transform: translateX(6px);
-        }
-
-        /* تلميحات أمنية */
-        .security-tip {
-            background: linear-gradient(145deg, #eef2ff, #ffffff);
-            border: 1px solid #a5b4fc;
-            border-radius: 20px;
-            padding: 15px 22px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); }
-            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.25); }
-        }
-
-        .security-tip i {
-            color: #3b82f6;
-            font-size: 1.6rem;
-        }
-
-        .security-tip p {
-            color: #1e293b;
-            font-size: 0.95rem;
-            line-height: 1.6;
         }
 
         /* تصميم متجاوب */
@@ -612,10 +610,6 @@
                 padding: 30px 20px;
             }
             
-            .steps-header {
-                padding: 20px;
-            }
-
             .form-section h2 {
                 font-size: 1.8rem;
             }
@@ -677,12 +671,12 @@
                 <div class="steps-progress">
                     <div class="step-item completed">
                         <span class="step-number">1</span>
-                        <span> الخطوة الاولى</span>
+                        <span>الخطوة الاولى</span>
                         <i class="fas fa-check"></i>
                     </div>
                     <div class="step-item completed">
                         <span class="step-number">2</span>
-                        <span> الخطوة الثانية</span>
+                        <span>الخطوة الثانية</span>
                         <i class="fas fa-check"></i>
                     </div>
                     <div class="step-item active">
@@ -700,7 +694,7 @@
             <div class="form-section">
                 <h2>
                     <i class="fas fa-shield-alt"></i>
-                    حماية ملفك الشخصي
+                    إعدادات الخصوصية المتقدمة
                 </h2>
                 
                 <form action="/create-profile/step3" method="POST" id="securityForm">
@@ -708,15 +702,12 @@
                     <input type="hidden" name="name" value="أحمد محمد">
                     <input type="hidden" name="email" value="ahmed@example.com">
                     <input type="hidden" name="phone" value="+966500000000">
-                    <input type="hidden" name="title" value="مطور برمجيات">
-                    <input type="hidden" name="company" value="شركة التقنية">
-                    <input type="hidden" name="bio" value="مطور ويب بخبرة 5 سنوات">
-                    <input type="hidden" name="template" value="modern">
                     
+                    <!-- قسم حماية كلمة المرور -->
                     <div class="security-section">
                         <h3>
                             <i class="fas fa-lock"></i>
-                            حماية بكلمة مرور
+                            حماية الوصول
                         </h3>
                         
                         <div class="toggle-switch" onclick="document.getElementById('enablePassword').click()">
@@ -724,7 +715,7 @@
                                 <i class="fas fa-key"></i>
                                 <div class="toggle-text">
                                     <div class="toggle-label">تفعيل الحماية بكلمة مرور</div>
-                                    <div class="toggle-description">تأمين معلوماتك الحساسة بكلمة مرور اختيارية</div>
+                                    <div class="toggle-description">تأمين ملفك الشخصي بكلمة مرور قوية</div>
                                 </div>
                             </div>
                             <label class="switch">
@@ -738,23 +729,25 @@
                             <input type="password" name="password" placeholder="أدخل كلمة المرور">
                             <small>
                                 <i class="fas fa-info-circle"></i>
-                                اختيارية - اتركها فارغة إذا كنت لا تريد حماية
+                                كلمة المرور تحمي بياناتك الحساسة
                             </small>
                         </div>
                     </div>
-                    
+
+                    <!-- قسم الخصوصية المتقدم -->
                     <div class="security-section">
                         <h3>
-                            <i class="fas fa-shield-alt"></i>
-                            إعدادات الخصوصية
+                            <i class="fas fa-user-secret"></i>
+                            إعدادات الخصوصية المتقدمة
                         </h3>
                         
+                        <!-- إحصائيات المسح -->
                         <div class="toggle-switch" onclick="document.getElementById('enableStats').click()">
                             <div class="toggle-info">
                                 <i class="fas fa-chart-line"></i>
                                 <div class="toggle-text">
                                     <div class="toggle-label">إحصائيات المسح</div>
-                                    <div class="toggle-description">تمكين إحصائيات المسح (عدد المرات، آخر مسح)</div>
+                                    <div class="toggle-description">إظهار عدد مرات مسح البطاقة وتواريخ آخر مسح</div>
                                 </div>
                             </div>
                             <label class="switch">
@@ -762,13 +755,14 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        
+
+                        <!-- تنزيل vCard -->
                         <div class="toggle-switch" onclick="document.getElementById('allowVCard').click()">
                             <div class="toggle-info">
                                 <i class="fas fa-address-card"></i>
                                 <div class="toggle-text">
                                     <div class="toggle-label">تنزيل بطاقة الاتصال (vCard)</div>
-                                    <div class="toggle-description">السماح بتنزيل بطاقة الاتصال vCard</div>
+                                    <div class="toggle-description">السماح بتنزيل جهات الاتصال بصيغة vCard</div>
                                 </div>
                             </div>
                             <label class="switch">
@@ -776,11 +770,72 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
+
+                        <!-- إخفاء جهات الاتصال -->
+                        <div class="toggle-switch" onclick="document.getElementById('hideContacts').click()">
+                            <div class="toggle-info">
+                                <i class="fas fa-eye-slash"></i>
+                                <div class="toggle-text">
+                                    <div class="toggle-label">إخفاء جهات الاتصال الحساسة</div>
+                                    <div class="toggle-description">عرض أول حرفين فقط من البيانات للزوار</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="hideContacts" name="hideContacts">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- حماية الروابط -->
+                        <div class="toggle-switch" onclick="document.getElementById('linkProtection').click()">
+                            <div class="toggle-info">
+                                <i class="fas fa-link"></i>
+                                <div class="toggle-text">
+                                    <div class="toggle-label">حماية الروابط بكلمة مرور</div>
+                                    <div class="toggle-description">الروابط المهمة تحتاج تأكيد هوية قبل الفتح</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="linkProtection" name="linkProtection">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- سجل الزوار -->
+                        <div class="toggle-switch" onclick="document.getElementById('visitorLog').click()">
+                            <div class="toggle-info">
+                                <i class="fas fa-clock"></i>
+                                <div class="toggle-text">
+                                    <div class="toggle-label">تفعيل سجل الزوار</div>
+                                    <div class="toggle-description">معرفة من زار ملفك ومتى</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="visitorLog" name="visitorLog" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
                     </div>
 
+                    <!-- تلميح أمني متقدم -->
                     <div class="security-tip">
                         <i class="fas fa-shield-alt"></i>
-                        <p>نصيحة: تفعيل الحماية بكلمة مرور يضيف طبقة أمان إضافية لبياناتك المهنية</p>
+                        <p>نصيحة: تفعيل "إخفاء جهات الاتصال الحساسة" و"حماية الروابط" يضيف طبقة أمان إضافية لبياناتك المهنية</p>
+                    </div>
+
+                    <!-- مؤشر الخصوصية -->
+                    <div class="privacy-meter">
+                        <h4>
+                            <i class="fas fa-chart-pie"></i>
+                            مستوى الخصوصية الحالي
+                        </h4>
+                        <div class="meter-bar">
+                            <div class="meter-fill" style="width: 85%;"></div>
+                        </div>
+                        <div class="privacy-stats">
+                            <span>6 خيارات مفعلة</span>
+                            <span>مستوى عالي</span>
+                        </div>
                     </div>
                     
                     <div class="form-navigation">
@@ -789,7 +844,7 @@
                             السابق
                         </a>
                         <button type="submit" class="btn-next" id="submitBtn">
-                            التالي
+                            متابعة للتأكيد
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
@@ -800,7 +855,7 @@
 
     <div class="security-status">
         <i class="fas fa-shield-alt" style="margin-left: 8px; color: #3b82f6;"></i>
-        مستوى الحماية: قوي
+        مستوى الحماية: عالي جداً
     </div>
 
     <script>
@@ -810,33 +865,53 @@
             
             if (checkbox.checked) {
                 passwordField.classList.add('show');
-                // تأثير اهتزاز للحقل
                 passwordField.style.animation = 'none';
                 passwordField.offsetHeight;
                 passwordField.style.animation = 'slideDown 0.4s ease-out';
+                updatePrivacyMeter();
             } else {
                 passwordField.classList.remove('show');
+                updatePrivacyMeter();
+            }
+        }
+
+        function updatePrivacyMeter() {
+            // تحديث مؤشر الخصوصية بناءً على الخيارات المفعلة
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const enabledCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const meterFill = document.querySelector('.meter-fill');
+            const statsSpan = document.querySelector('.privacy-stats span:first-child');
+            
+            if (meterFill && statsSpan) {
+                const percentage = (enabledCount / 6) * 100;
+                meterFill.style.width = percentage + '%';
+                statsSpan.textContent = enabledCount + ' خيارات مفعلة';
             }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔒 NFC Pro - إعدادات الحماية (تصميم فاتح)');
+            console.log('🔒 NFC Pro - إعدادات الخصوصية المتقدمة');
+
+            // ربط جميع مفاتيح التبديل بتحديث المؤشر
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updatePrivacyMeter);
+            });
 
             // تأثيرات تفاعلية للتبديل
             const toggles = document.querySelectorAll('.toggle-switch');
             toggles.forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
-                    // منع النقر المزدوج على الـ checkbox
                     if (e.target.type !== 'checkbox') {
                         const checkbox = this.querySelector('input[type="checkbox"]');
                         checkbox.checked = !checkbox.checked;
                         
-                        // تحديث حقل كلمة المرور إذا كان المفتاح الخاص به
                         if (checkbox.id === 'enablePassword') {
                             togglePasswordField();
+                        } else {
+                            updatePrivacyMeter();
                         }
                         
-                        // تأثير عند التبديل
                         this.style.transform = 'scale(0.99)';
                         setTimeout(() => {
                             this.style.transform = '';
@@ -854,11 +929,9 @@
                 if (passwordCheck.checked && !passwordField.value) {
                     e.preventDefault();
                     
-                    // رسالة خطأ
                     const passwordDiv = document.getElementById('passwordField');
                     passwordDiv.style.borderColor = '#ef4444';
                     
-                    // إظهار رسالة
                     const errorMsg = document.createElement('div');
                     errorMsg.style.color = '#ef4444';
                     errorMsg.style.marginTop = '12px';
@@ -866,21 +939,18 @@
                     errorMsg.style.fontWeight = '500';
                     errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> الرجاء إدخال كلمة المرور';
                     
-                    // إزالة أي رسالة خطأ سابقة
                     const oldError = passwordDiv.querySelector('.error-message');
                     if (oldError) oldError.remove();
                     
                     errorMsg.classList.add('error-message');
                     passwordDiv.appendChild(errorMsg);
                     
-                    // تأثير على الزر
                     const btn = document.getElementById('submitBtn');
                     btn.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         btn.style.transform = '';
                     }, 200);
                 } else {
-                    // تأثير على الزر
                     const btn = document.getElementById('submitBtn');
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
                 }

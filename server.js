@@ -1034,20 +1034,46 @@ app.get('/template-preview/:template', async (req, res) => {
     try {
         const template = req.params.template;
         
-        // إذا كان هناك بيانات في الجلسة، استخدمها، وإلا استخدم بيانات تجريبية
-        let formData = req.session.profileData || {
-            name: 'أحمد محمد',
-            title: 'مطور برمجيات',
-            company: 'شركة التقنية',
-            email: 'ahmed@example.com',
-            phone: '+966 50 123 4567',
-            website: 'www.ahmed.com',
-            address: 'الرياض، السعودية',
-            bio: 'مطور ويب بخبرة 5 سنوات في تطوير التطبيقات'
-        };
+        // التحقق من صحة القالب
+        const validTemplates = ['modern', 'classic', 'minimal', 'dark', 'tech', 'elegant', 'corporate', 'creative', '3d', 'neon'];
+        if (!validTemplates.includes(template)) {
+            console.log('⚠️ قالب غير صالح:', template);
+            return res.redirect('/create-profile/step2?error=قالب غير صالح');
+        }
         
+        // التحقق من وجود بيانات في الجلسة
+        if (!req.session.profileData) {
+            console.log('⚠️ لا توجد بيانات في الجلسة، استخدام بيانات تجريبية');
+            // استخدام بيانات تجريبية مع القالب المختار
+            req.session.profileData = {
+                name: 'أحمد محمد',
+                title: 'مطور برمجيات',
+                company: 'شركة التقنية',
+                email: 'ahmed@example.com',
+                phone: '+966 50 123 4567',
+                website: 'www.ahmed.com',
+                address: 'الرياض، السعودية',
+                bio: 'مطور ويب بخبرة 5 سنوات',
+                template: template // إضافة القالب هنا
+            };
+        } else {
+            // تحديث القالب في بيانات الجلسة الموجودة
+            req.session.profileData.template = template;
+        }
+        
+        // الحصول على البيانات المحدثة من الجلسة
+        const formData = req.session.profileData;
         const profileId = formData.profileId || `demo-${Date.now()}`;
         const profileUrl = `${req.baseUrlFull}/p/${profileId}`;
+        
+        console.log('✅ عرض معاينة القالب:', {
+            template: template,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            title: formData.title,
+            company: formData.company
+        });
         
         res.render('template-preview', {
             formData: formData,
@@ -1058,11 +1084,10 @@ app.get('/template-preview/:template', async (req, res) => {
         });
         
     } catch (error) {
-        console.error('خطأ في معاينة القالب:', error);
-        res.redirect('/');
+        console.error('❌ خطأ في معاينة القالب:', error);
+        res.redirect('/create-profile/step2?error=حدث خطأ في المعاينة');
     }
 });
-
 // عرض البطاقة المحفوظة
 app.get('/card/:cardId', async (req, res) => {
     try {

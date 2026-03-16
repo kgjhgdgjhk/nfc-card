@@ -1752,5 +1752,93 @@
     "referer": "مباشر",
     "timestamp": "2026-03-15T20:29:21.189Z",
     "createdAt": "2026-03-15T20:29:21.189Z"
+  },
+  {
+    "profileId": "profile-7a1e1e66",
+    "cardId": "profile-7a1e1e66",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:31:36.699Z",
+    "createdAt": "2026-03-15T21:31:36.699Z"
+  },
+  {
+    "profileId": "profile-ed3c7722",
+    "cardId": "profile-ed3c7722",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:36:24.331Z",
+    "createdAt": "2026-03-15T21:36:24.331Z"
+  },
+  {
+    "profileId": "profile-47f2d178",
+    "cardId": "profile-47f2d178",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:40:04.519Z",
+    "createdAt": "2026-03-15T21:40:04.519Z"
+  },
+  {
+    "profileId": "profile-b3acdf62",
+    "cardId": "profile-b3acdf62",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:43:50.942Z",
+    "createdAt": "2026-03-15T21:43:50.942Z"
+  },
+  {
+    "profileId": "profile-ea7461df",
+    "cardId": "profile-ea7461df",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:46:34.614Z",
+    "createdAt": "2026-03-15T21:46:34.614Z"
+  },
+  {
+    "profileId": "profile-eac0ef94",
+    "cardId": "profile-eac0ef94",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:52:08.493Z",
+    "createdAt": "2026-03-15T21:52:08.493Z"
+  },
+  {
+    "profileId": "profile-1bb42146",
+    "cardId": "profile-1bb42146",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-15T21:59:46.449Z",
+    "createdAt": "2026-03-15T21:59:46.449Z"
+  },
+  {
+    "profileId": "profile-f02debaf",
+    "cardId": "profile-f02debaf",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "browser": "Microsoft Edge",
+    "os": "Windows 10/11",
+    "referer": "مباشر",
+    "timestamp": "2026-03-16T19:54:42.531Z",
+    "createdAt": "2026-03-16T19:54:42.531Z"
   }
 ]
