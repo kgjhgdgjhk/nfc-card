@@ -128,7 +128,7 @@ const Profile = sequelize.define('Profile', {
 });
 
 // ============================================
-// تعريف نموذج Visit (الزيارات)
+// تعريف نموذج Visit (الزيارات) - محدث مع حقول الدولة
 // ============================================
 const Visit = sequelize.define('Visit', {
   id: {
@@ -146,10 +146,31 @@ const Visit = sequelize.define('Visit', {
   },
   cardId: DataTypes.STRING,
   ip: DataTypes.STRING,
+  
+  // ✅ حقول الدولة المنفصلة (جديدة)
+  country: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null
+  },
+  countryFlag: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null
+  },
+  countryCode: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null
+  },
+  
+  // معلومات المتصفح والجهاز
   userAgent: DataTypes.TEXT,
   browser: DataTypes.STRING,
   os: DataTypes.STRING,
   referer: DataTypes.STRING,
+  
+  // ✅ حقل location القديم (اختياري - يمكن الاحتفاظ به أو حذفه)
   location: {
     type: DataTypes.JSONB,
     defaultValue: {
@@ -161,7 +182,6 @@ const Visit = sequelize.define('Visit', {
   timestamps: true,
   tableName: 'visits'
 });
-
 // ============================================
 // تعريف نموذج Order (الطلبات)
 // ============================================
@@ -308,6 +328,22 @@ async function getAllVisits(limit = 100) {
         model: Profile,
         attributes: ['name', 'profileId']
       }],
+      attributes: [
+        'id', 
+        'profileId', 
+        'cardId', 
+        'ip', 
+        'country',        // ✅ الحقل الجديد
+        'countryFlag',     // ✅ الحقل الجديد
+        'countryCode',     // ✅ الحقل الجديد
+        'userAgent', 
+        'browser', 
+        'os', 
+        'referer', 
+        'location', 
+        'createdAt', 
+        'updatedAt'
+      ],
       order: [['createdAt', 'DESC']],
       limit
     });
@@ -317,7 +353,6 @@ async function getAllVisits(limit = 100) {
     return [];
   }
 }
-
 // ============================================
 // تصدير النماذج والدوال المساعدة
 // ============================================
